@@ -6,7 +6,7 @@ class FLIPS.SlideShowView extends Backbone.View
   el: '.deck-container'
 
   constructor: (opts) ->
-    super opts
+    super
 
     @model.bind "change", =>
       $ =>
