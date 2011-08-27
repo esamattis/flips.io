@@ -25,8 +25,7 @@ app.configure('production', ->
 
 # Slide mock
 mock =
-  id: 123
-  html: '<div class="slide" id="title-slide"> 
+  content: '<div class="slide" id="title-slide"> 
 		<h1>Getting Started with deck.js</h1> 
 	</div> 
  
@@ -58,6 +57,10 @@ app.get('/', (req, res) ->
 
 app.get('/:id', (req, res) ->
   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
+)
+
+app.get('/api/:id', (req, res) ->
+  res.send(mock)
 )
 
 app.listen(3000)
