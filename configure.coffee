@@ -1,3 +1,4 @@
+fs = require "fs"
 
 express = require 'express'
 stylus = require 'stylus'
@@ -48,7 +49,10 @@ app.configure ->
   app.use express.static __dirname + '/public'
 
 app.configure 'development', ->
+  console.log "pid is", process.pid
+  fs.writeFile __dirname + "/flips.pid", "#{ process.pid }".trim()
   app.use express.errorHandler dumpExceptions: true, showStack: true
+
 
 app.configure 'production', ->
   app.use express.errorHandler()
