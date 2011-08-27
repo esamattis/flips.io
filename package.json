@@ -1,11 +1,22 @@
 {
-    "name": "application-name"
+    "name": "flips.op"
   , "version": "0.0.1"
   , "private": true
+  , "devDependencies": {
+      "supervisor": ""
+  }
   , "dependencies": {
-      "nko": ""
-    , "express": "2.4.4"
-    , "jade": ">= 0.0.1"
-    , "backbone": "0.5.3"
+      "coffee-script": ""
+      , "express": ""
+      , "express": ""
+      , "express-share": ""
+      , "jade": ""
+      , "markdown-js": ""
+      , "connect-form": ""
+      , "stylus": ""
+      , "nib": ""
+      , "underscore": ""
+      , "underscore.string": ""
+      , "nko": ""
   }
 }

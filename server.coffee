@@ -59,9 +59,15 @@ app.get('/:id', (req, res) ->
   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
 )
 
+
 app.get('/api/:id', (req, res) ->
   res.send(mock)
 )
 
-app.listen(3000)
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env)
+
+exports.app = app
+
+if require.main is module
+  app.listen(8000)
+  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env)
+

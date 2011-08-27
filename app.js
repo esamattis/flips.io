@@ -1,14 +1,17 @@
-var http = require('http');
 
-require('nko')("48YWkNlKZe/RWmln", function(err, res) {
-  if (err) throw err
-    res.on('data', function(d) { console.log(d.toString()); });
-});
+if ( process.env.NODE_ENV === 'production') {
+  require('nko')("48YWkNlKZe/RWmln", function(err, res) {
+      if (err) {
+        throw err;
+      }
+      res.on('data', function(d) {
+        console.log("Reported to node.ko", d.toString());
+      });
+  });
+}
 
-var app = http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello Sliders!\n');
-});
+require("coffee-script");
+var app = require("./server");
 
 app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
   console.log('Ready');
