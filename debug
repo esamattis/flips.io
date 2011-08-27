@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+node-inspector &
+node --debug app.js
+
