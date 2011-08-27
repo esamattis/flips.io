@@ -64,7 +64,7 @@ class Preview extends Backbone.View
     console.log "RELOADING PREVIEW", @id
     @iframe.attr "src", ""
     @iframe.attr "src", "/view/#{ @id }"
-    $.jGrowl("Saved and reloading preview now")
+    utils.info "Saved and reloading preview now"
 
 
 class FLIPS.Workspace extends Backbone.Router
