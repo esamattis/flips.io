@@ -56,7 +56,7 @@ class Editor extends Backbone.View
 class Preview extends Backbone.View
 
   constructor: (opts) ->
-    super
+    super 
     @id = opts.id
     @iframe = @$("iframe")
 
@@ -66,6 +66,20 @@ class Preview extends Backbone.View
     @iframe.attr "src", "/view/#{ @id }"
     $.jGrowl("Saved and reloading preview now")
 
+# Refactor to listen to model's init and change events?
+# class Links extends Backbone.View
+#   el: '#links'
+#   
+#   constructor: (opts) ->
+#     super
+#     
+#     @id = opts.id
+#     @publicLink = @$('#public_link')
+#     @remoteLink = @$('#remote_link')
+#   
+#   render: ->
+#     @publicLink.attr('href', "/view/#{@id}").show()
+#     @remoteLink.attr('href', "/r/#{@id}").show()
 
 class FLIPS.Workspace extends Backbone.Router
 
@@ -74,12 +88,24 @@ class FLIPS.Workspace extends Backbone.Router
     "edit/:id": "edit"
 
   constructor: (opts) ->
-   super
-   @preview = new Preview
-    el: ".preview"
+    super
+   
+    @preview = new Preview
+      el: ".preview"
+      
+    # @links = new Links
 
   initEditor: (model) ->
     @editor = new Editor model: model
+    
+    init = =>
+      id = model.get "id"
+      @preview.id = id
+      @preview.reload()
+      
+      # @links.id = id
+      # @links.render
+      
     
     @editor.bind "init", =>
       @preview.id = model.get "id"
