@@ -1,4 +1,10 @@
 var http = require('http');
+
+require('nko')("48YWkNlKZe/RWmln", function(err, res) {
+  if (err) throw err
+    res.on('data', function(d) { console.log(d.toString()); });
+});
+
 var app = http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.end('Hello Sliders!\n');
