@@ -35,8 +35,10 @@ class Editor extends Backbone.View
     @model.set html: html
     @model.save null,
       success: (e) =>
-        utils.msg.info "saved #{ @model.get "id" }", true
-        @model.trigger "saved", @model
+        utils.msg.info "saved #{ @model.get "id" }"
+        setTimeout =>
+          @model.trigger "saved", @model
+        , 1000
 
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"

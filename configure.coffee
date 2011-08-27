@@ -19,20 +19,8 @@ app.configure ->
   app.shareFs __dirname + "/client/vendor/jquery.js"
   app.shareFs __dirname + "/client/vendor/underscore.js"
   app.shareFs __dirname + "/client/vendor/backbone.js"
-  
-  # deck.js with extensions
-  app.shareFs __dirname + "/client/vendor/deck.js/modernizr.custom.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.core.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.goto.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.hash.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.menu.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.navigation.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.status.js"  
-  
-  # Couldn't find uncompressed version of this so we had to move ACE include to layout
-  # app.shareFs __dirname + "/client/vendor/ace/ace.js"
-  # app.shareFs __dirname + "/client/vendor/ace/mode-html.js"
-  
+
+
   app.shareFs __dirname + "/client/namespace.js"
   app.shareFs __dirname + "/client/utils.coffee"
   app.shareFs __dirname + "/client/models.coffee"

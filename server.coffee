@@ -79,7 +79,7 @@ app.get "/view/:id", (req, res) ->
       slideShowView = new FLIPS.SlideShowView
         model: new FLIPS.models.SlideShow
           id: _.last window.location.pathname.split("/")
-        
+
 
   res.render "slideshow"
     layout: false

@@ -4,16 +4,12 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
 
-    // deck.js
-    link(rel='stylesheet', href='/stylesheets/deck.js/deck.core.css')
     link(rel='stylesheet', href='/styles.css')
-    
-    :coffeescript
-      window._SC = {}
-    
+
+
     script(type="text/javascript", src="/javascripts/ace/ace.js")
     script(type="text/javascript", src="/javascripts/ace/mode-html.js")
-    
+
     !{renderScriptTags()}
 
   body!= body
