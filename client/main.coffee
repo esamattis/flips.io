@@ -3,9 +3,6 @@ utils = NS "FLIPS.utils"
 
 SlideShow = FLIPS.models.SlideShow
 
-
-
-
 class Editor extends Backbone.View
   el: ".edit_view"
 
@@ -18,7 +15,6 @@ class Editor extends Backbone.View
     @model.bind "change", (slide) =>
       @editor.getSession().setValue slide.get "html"
       # console.log "changed", JSON.stringify @model.attributes
-      @$("textarea").val slide.get "html"
 
     @model.fetch()
 
@@ -62,6 +58,7 @@ class Preview extends Backbone.View
     console.log "RELOADING PREVIEW", @id
     @iframe.attr "src", ""
     @iframe.attr "src", "/view/#{ @id }"
+    $.jGrowl("Saved and reloading preview now")
 
 
 class FLIPS.Workspace extends Backbone.Router
