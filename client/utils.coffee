@@ -29,6 +29,8 @@ utils.mock = """<div class="slide" id="title-slide">
                 </ol>
         </div>"""
 
+utils.getSocket = -> io.connect window.location.origin
+
 class LightBox extends Backbone.View
 
   show: (type, msg, modal) ->

@@ -3,8 +3,10 @@
 _  = require 'underscore'
 _.mixin require 'underscore.string'
 
-app = module.exports = require "./configure"
+{app, io} = require "./configure"
+module.exports = app
 db = require "./db"
+
 
 popBackboneId = (ob) ->
   id = ob.id
@@ -33,7 +35,6 @@ app.post "/slides", (req, res) ->
       res.send 501
       res.end JSON.stringify err
       return
-    console.log "posted", doc
     res.end JSON.stringify doc
 
 app.put "/slides/:id", (req, res) ->
@@ -69,20 +70,39 @@ app.get "/slides/:id", (req, res) ->
       res.end JSON.stringify err
       return
 
-    console.log "got", doc
     res.end JSON.stringify doc
 
 
 app.get "/view/:id", (req, res) ->
   res.exec ->
     $ ->
-      window.slideShowView = new FLIPS.SlideShowView
+      window.slideShowView = new FLIPS.views.SlideShowView
         model: new FLIPS.models.SlideShow
           id: _.last window.location.pathname.split("/")
 
 
   res.render "slideshow"
     layout: false
+
+app.get "/r/:id", (req, res) ->
+  res.exec ->
+    new FLIPS.views.Remote
+
+  res.render "remote"
+    layout: false
+
+
+io.sockets.on 'connection', (socket) ->
+  console.log "got socket"
+
+  socket.on "manage", (ob) ->
+    console.log "i want to manage", ob
+    @broadcast.to(ob.target).emit "command", ob.command
+
+  socket.on "obey", (id) ->
+    console.log "i want to obey", id
+    @join id
+
 
 
 if require.main is module

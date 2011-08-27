@@ -1,5 +1,7 @@
 $ = jQuery
+
 utils = NS "FLIPS.utils"
+
 
 SlideShow = FLIPS.models.SlideShow
 
