@@ -6,22 +6,19 @@ app = module.exports = express.createServer()
 
 # Configuration
 
-app.configure(->
+app.configure ->
   app.set('views', __dirname + '/views')
   app.set('view engine', 'jade')
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(app.router)
   app.use(express.static(__dirname + '/public'))
-)
 
-app.configure('development', ->
+app.configure 'development', ->
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
-)
 
-app.configure('production', ->
+app.configure 'production', ->
   app.use(express.errorHandler())
-)
 
 # Slide mock
 mock =
@@ -49,20 +46,16 @@ mock =
 
 # Routes
 
-app.get('/', (req, res) ->
-  res.render('index',
+app.get '/', (req, res) ->
+  res.render 'index',
     title: 'Express'
-  )
-)
 
-app.get('/:id', (req, res) ->
+app.get '/:id', (req, res) ->
   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
-)
 
 
-app.get('/api/:id', (req, res) ->
+app.get '/api/:id', (req, res) ->
   res.send(mock)
-)
 
 
 exports.app = app
