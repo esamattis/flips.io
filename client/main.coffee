@@ -21,9 +21,10 @@ class Editor extends Backbone.View
       @editor.getSession().setValue slide.get "html"
       # console.log "changed", JSON.stringify @model.attributes
 
-    @model.fetch
-      success: =>
-        @trigger 'init', @
+    if @model.get "id" 
+      @model.fetch
+        success: =>
+          @trigger 'init', @
 
   getDocId: ->
     @model.get "id"
@@ -39,9 +40,7 @@ class Editor extends Backbone.View
     @model.save null,
       success: (e) =>
         utils.msg.info "saved #{ @model.get "id" }"
-        setTimeout =>
-          @model.trigger "saved", @model
-        , 1000
+        @model.trigger "saved", @model
 
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"
@@ -83,6 +82,7 @@ class FLIPS.Workspace extends Backbone.Router
     @editor = new Editor model: model
     
     @editor.bind "init", =>
+      @preview.id = model.get "id"
       @preview.reload()
     
     model.bind "saved", =>
