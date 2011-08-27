@@ -76,7 +76,7 @@ app.get "/slides/:id", (req, res) ->
 app.get "/view/:id", (req, res) ->
   res.exec ->
     $ ->
-      slideShowView = new FLIPS.SlideShowView
+      window.slideShowView = new FLIPS.SlideShowView
         model: new FLIPS.models.SlideShow
           id: _.last window.location.pathname.split("/")
 
