@@ -17,7 +17,7 @@ class Editor extends Backbone.View
 
     @model.bind "change", (slide) =>
       @editor.getSession().setValue slide.get "html"
-      console.log "changed", JSON.stringify @model.attributes
+      # console.log "changed", JSON.stringify @model.attributes
       @$("textarea").val slide.get "html"
 
     @model.fetch()
@@ -31,11 +31,12 @@ class Editor extends Backbone.View
 
   save: ->
     html = @editor.getSession().getValue()
-    console.log "saving", JSON.stringify @model.attributes
+    # console.log "saving", JSON.stringify @model.attributes
     @model.set html: html
     @model.save null,
       success: (e) =>
         utils.msg.info "saved #{ @model.get "id" }", true
+        @model.trigger "saved", @model
 
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"
@@ -46,6 +47,21 @@ class Editor extends Backbone.View
 
   hasEditUrl: -> !!window.location.hash
 
+
+
+class Preview extends Backbone.View
+
+  constructor: (opts) ->
+    super
+    @id = opts.id
+    @iframe = @$("iframe")
+
+  reload: ->
+    console.log "RELOADING PREVIEW", @id
+    @iframe.attr "src", ""
+    @iframe.attr "src", "/view/#{ @id }"
+
+
 class FLIPS.Workspace extends Backbone.Router
 
   routes:
@@ -54,20 +70,24 @@ class FLIPS.Workspace extends Backbone.Router
 
   constructor: (opts) ->
    super
+   @preview = new Preview
+    el: ".preview"
 
+  initEditor: (model) ->
+    @editor = new Editor model: model
+    model.bind "saved", =>
+      @preview.id = model.get "id"
+      @preview.reload()
 
   edit: (id) ->
     console.log "edit", id
     if @editor?.getDocId() isnt id
-      @editor = new Editor
-        model: new SlideShow
-          id: id
+      @initEditor new SlideShow
+        id: id
 
   start: ->
     console.log "start"
-    @editor = new Editor
-      eyl: ".edit_view"
-      model: new SlideShow
+    @initEditor new SlideShow
     @editor.model.set html: utils.mock
 
 
