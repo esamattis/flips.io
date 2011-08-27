@@ -3,19 +3,29 @@ fs = require "fs"
 express = require 'express'
 stylus = require 'stylus'
 nib = require 'nib'
+io = require 'socket.io'
+
 
 compile = (str, path) ->
   stylus(str).set("filename", path).use(nib())
 
 {addCodeSharingTo} = require("express-share")
 
-app = module.exports = express.createServer()
+app = express.createServer()
+io = require('socket.io').listen app
+
+io.configure ->
+  io.set 'log level', 0
+
+exports.app = app
+exports.io = io
 
 # Configuration
 
 app.configure ->
   app.use express.bodyParser()
   addCodeSharingTo app
+  app.shareUrl "/socket.io/socket.io.js"
   app.shareFs __dirname + "/client/vendor/jquery.js"
   app.shareFs __dirname + "/client/vendor/underscore.js"
   app.shareFs __dirname + "/client/vendor/backbone.js"
@@ -26,6 +36,7 @@ app.configure ->
   app.shareFs __dirname + "/client/models.coffee"
   app.shareFs __dirname + "/client/main.coffee"
   app.shareFs __dirname + "/client/slideshow.coffee"
+  app.shareFs __dirname + "/client/remote.coffee"
 
   # Bug? Does not work under stylesheets dirs
   app.use stylus.middleware

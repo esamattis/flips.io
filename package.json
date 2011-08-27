@@ -8,7 +8,6 @@
   , "dependencies": {
       "coffee-script": ""
       , "express": ""
-      , "express": ""
       , "express-share": ""
       , "jade": ""
       , "socket.io": ""
