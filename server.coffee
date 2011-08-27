@@ -76,8 +76,10 @@ app.get "/slides/:id", (req, res) ->
 app.get "/view/:id", (req, res) ->
   res.exec ->
     $ ->
-      slideShowRouter = new FLIPS.SlideShowRouter
-      Backbone.history.start()
+      slideShowView = new FLIPS.SlideShowView
+        model: new FLIPS.models.SlideShow
+          id: _.last window.location.pathname.split("/")
+        
 
   res.render "slideshow"
     layout: false
