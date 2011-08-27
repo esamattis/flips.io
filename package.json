@@ -1,14 +1,9 @@
 {
-  "author": "",
-  "name": "sliders",
-  "version": "0.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:nko2/sliders.git"
-  },
-  "engines": {
-    "node": "~v0.4.10"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+    "name": "application-name"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.4.4"
+    , "jade": ">= 0.0.1"
+  }
 }
