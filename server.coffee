@@ -47,23 +47,29 @@ mock =
 
 app.get '/', (req, res) ->
   res.render 'index',
-    title: 'Express'
+    title: 'Flips.io'
 
 app.post "/slides", (req, res) ->
-  console.log "body", req.body
-  res.end()
+  res.contentType 'json'
+  console.log "posting body", req.body
+  db.save req.body, (err, doc) ->
+    throw err if err
+    console.log "saved", doc
+    res.end JSON.stringify doc
 
 app.put "/slides/:id", (req, res) ->
-  console.log "body", req.body
+  console.log "putting body", req.body
   res.end()
 
 
 app.get "/slides/:id", (req, res) ->
-  res.contentType('json')
-  console.log "params", req.params
-  res.end JSON.stringify
-    foo: "bar"
-    id2: "id2 #{ req.params.id }"
+  res.contentType 'json'
+  console.log "getting params", req.params
+
+  db.get req.params.id, (err, doc) ->
+    throw err if err
+    console.log "got", doc
+    res.end JSON.stringify doc
 
 
 # app.get '/:id', (req, res) ->

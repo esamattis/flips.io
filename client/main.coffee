@@ -1,3 +1,4 @@
+$ = jQuery
 
 class Slide extends Backbone.Model
 
@@ -7,13 +8,58 @@ class Slide extends Backbone.Model
     alert "hello"
 
 
-$ ->
-  slide = new Slide id: "slide-sdf"
-  # slide.set foo: "bar"
-  # slide.set lol: "jee"
-  # slide.save()
+class Editor extends Backbone.View
+  el: ".edit_view"
 
-  slide.fetch()
-  slide.bind "change", ->
-    console.log slide.toJSON()
-  console.log slide.toJSON()
+  constructor: ->
+    super
+    @model.bind "change", (slide) =>
+      @$("textarea").val slide.get "html"
+
+    @model.fetch()
+
+
+  events:
+    "click .save": "save"
+
+  save: ->
+    html = @$("textarea").val()
+    console.log "saving", html, @model
+    @model.set html: html
+    @model.save null,
+      success: (e) =>
+        console.log "we have now id", @model.get("id")
+        if not @hasEditUrl()
+          window.location.hash = "#edit/#{ @model.get("id") }"
+
+      error: (e) =>
+        console.log "failed to save", @model, e
+
+  hasEditUrl: -> !!window.location.hash
+
+class Workspace extends Backbone.Router
+
+  constructor: (opts) ->
+   super opts
+
+  routes:
+    "": "start"
+    "edit/:id": "edit"
+
+  edit: (id) ->
+    console.log "edit", id
+    @editor = new Editor
+      model: new Slide
+        id: id
+
+  start: ->
+    console.log "start"
+    @editor = new Editor
+      model: new Slide
+
+
+$ ->
+  ws = new Workspace
+  Backbone.history.start()
+
+
