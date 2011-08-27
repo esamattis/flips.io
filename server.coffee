@@ -1,17 +1,29 @@
 # Module dependencies.
 
 express = require 'express'
+_  = require 'underscore'
+_.mixin require 'underscore.string'
+{addCodeSharingTo} = require("express-share")
 
 app = module.exports = express.createServer()
 
 # Configuration
 
 app.configure ->
+  addCodeSharingTo app
+  app.shareFs __dirname + "/client/vendor/jquery.js"
+  app.shareFs __dirname + "/client/vendor/underscore.js"
+  app.shareFs __dirname + "/client/vendor/backbone.js"
+  app.shareFs __dirname + "/client/vendor/deck.js/deck.core.js"
+  app.shareFs __dirname + "/client/vendor/deck.js/modernizr.custom.js"
+  app.shareFs __dirname + "/client/namespace.js"
+  app.shareFs __dirname + "/client/main.coffee"
+
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
   app.use express.bodyParser()
   app.use express.methodOverride()
-  app.use app.router
+  # app.use app.router
   app.use express.static __dirname + '/public'
 
 app.configure 'development', ->
