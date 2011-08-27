@@ -29,7 +29,9 @@ app.configure ->
   app.shareFs __dirname + "/client/vendor/deck.js/deck.status.js"  
   
   app.shareFs __dirname + "/client/vendor/ace/ace.js"
-  app.shareFs __dirname + "/client/vendor/ace/mode-html.js"
+  
+  # Couldn't find uncompressed version of this so we had to move this to layout
+  # app.shareFs __dirname + "/client/vendor/ace/mode-html.js"
   app.shareFs __dirname + "/client/namespace.js"
   app.shareFs __dirname + "/client/utils.coffee"
   app.shareFs __dirname + "/client/models.coffee"
