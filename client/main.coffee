@@ -32,10 +32,14 @@ class Slide extends Backbone.Model
 class Editor extends Backbone.View
   el: ".edit_view"
 
-  constructor: ->
-    super
+  constructor: (opts) ->
+    super opts
+    @editor = ace.edit(opts.editor)
+    HTMLmode = require("ace/mode/html").Mode
+    @editor.getSession().setMode(new HTMLmode())
+    
     @model.bind "change", (slide) =>
-      @$("textarea").val slide.get "html"
+      @editor.getSession().setValue slide.get "html"
 
     @model.fetch()
 
@@ -44,7 +48,7 @@ class Editor extends Backbone.View
     "click .save": "save"
 
   save: ->
-    html = @$("textarea").val()
+    html = @editor.getSession().getValue()
     console.log "saving", html, @model
     @model.set html: html
     @model.save null,
@@ -70,12 +74,14 @@ class Workspace extends Backbone.Router
   edit: (id) ->
     console.log "edit", id
     @editor = new Editor
+      editor: "editor"
       model: new Slide
         id: id
 
   start: ->
     console.log "start"
     @editor = new Editor
+      editor: "editor"
       model: new Slide
     @editor.model.set html: mock
 

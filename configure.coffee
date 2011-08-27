@@ -20,6 +20,8 @@ app.configure ->
   app.shareFs __dirname + "/client/vendor/backbone.js"
   app.shareFs __dirname + "/client/vendor/deck.js/deck.core.js"
   app.shareFs __dirname + "/client/vendor/deck.js/modernizr.custom.js"
+  app.shareFs __dirname + "/client/vendor/ace/ace.js"
+  app.shareFs __dirname + "/client/vendor/ace/mode-html.js"
   app.shareFs __dirname + "/client/namespace.js"
   app.shareFs __dirname + "/client/utils.coffee"
   app.shareFs __dirname + "/client/main.coffee"
