@@ -4,10 +4,33 @@ html
     title Flips.io
     link(rel='stylesheet', href='/stylesheets/style.css')
 
-    // deck.js
+    // deck.js with extensions
     link(rel='stylesheet', href='/stylesheets/deck.js/deck.core.css')
+    link(rel='stylesheet', href='/stylesheets/deck.js/deck.goto.css')
+    link(rel='stylesheet', href='/stylesheets/deck.js/deck.hash.css')
+    link(rel='stylesheet', href='/stylesheets/deck.js/deck.menu.css')
+    link(rel='stylesheet', href='/stylesheets/deck.js/deck.navigation.css')
+    link(rel='stylesheet', href='/stylesheets/deck.js/deck.status.css')
+    
     link(rel='stylesheet', href='/styles.css')
     !{renderScriptTags()}
-  body
-    .wrapper
-      .deck-container
+  body.deck-container
+  
+    // goto
+    form(action=".", method="get").goto-form
+      laber(for="goto-slide") Go to slide:
+      input(type="number", name="slidenum")#goto-slide
+      input(type="submit", value="Go")
+      
+    // status
+    p.deck-status
+      span.deck-status-current
+      /
+      span.deck-status-total
+      
+    // navigation
+    a(href="#", title="Previous").deck-prev-link &#8592;
+    a(href="#", title="Next").deck-next-link &#8594;
+    
+    // hash
+    a(href=".", title="Permalink to this slide").deck-permalink #
