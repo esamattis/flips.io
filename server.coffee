@@ -35,6 +35,23 @@ app.get '/', (req, res) ->
   res.render 'index',
     title: 'Express'
 
+app.post "/slides", (req, res) ->
+  console.log "body", req.body
+  res.end()
+
+app.put "/slides/:id", (req, res) ->
+  console.log "body", req.body
+  res.end()
+
+
+app.get "/slides/:id", (req, res) ->
+  res.contentType('json')
+  console.log "params", req.params
+  res.end JSON.stringify
+    foo: "bar"
+    id2: "id2 #{ req.params.id }"
+
+
 # app.get '/:id', (req, res) ->
 #   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
 # 
