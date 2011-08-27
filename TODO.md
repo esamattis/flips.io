@@ -1,0 +1,20 @@
+
+# TODOs
+
+## Must have
+
+1. Manage should always tell to which slide to change to. Not next!
+1. bit.ly integration
+1. Password for manage view
+1. Reload public view  using socket.io
+1. Manage conflicts. What if same revision is saved twice?
+1. Make it look nice
+1. Prevent JavaScript
+
+## Nice to have
+
+1. Edit CSS
+1. Optimize iframe loading with postMessage
+1. Rervert to revision
+1. Allow preprocessor usage. Jade, Haml etc.
+1. Ignore manage messages -button for public views
