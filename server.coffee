@@ -1,36 +1,9 @@
 # Module dependencies.
 
-express = require 'express'
 _  = require 'underscore'
 _.mixin require 'underscore.string'
-{addCodeSharingTo} = require("express-share")
 
-app = module.exports = express.createServer()
-
-# Configuration
-
-app.configure ->
-  addCodeSharingTo app
-  app.shareFs __dirname + "/client/vendor/jquery.js"
-  app.shareFs __dirname + "/client/vendor/underscore.js"
-  app.shareFs __dirname + "/client/vendor/backbone.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/deck.core.js"
-  app.shareFs __dirname + "/client/vendor/deck.js/modernizr.custom.js"
-  app.shareFs __dirname + "/client/namespace.js"
-  app.shareFs __dirname + "/client/main.coffee"
-
-  app.set 'views', __dirname + '/views'
-  app.set 'view engine', 'jade'
-  app.use express.bodyParser()
-  app.use express.methodOverride()
-  # app.use app.router
-  app.use express.static __dirname + '/public'
-
-app.configure 'development', ->
-  app.use express.errorHandler dumpExceptions: true, showStack: true
-
-app.configure 'production', ->
-  app.use express.errorHandler()
+app = module.exports = require "./configure"
 
 # Slide mock
 mock =
@@ -62,15 +35,14 @@ app.get '/', (req, res) ->
   res.render 'index',
     title: 'Express'
 
-app.get '/:id', (req, res) ->
-  res.render('slide', title: "Slide #{req.params.id}", slide: mock)
+# app.get '/:id', (req, res) ->
+#   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
+# 
+# 
+# app.get '/api/:id', (req, res) ->
+#   res.send mock
 
 
-app.get '/api/:id', (req, res) ->
-  res.send mock
-
-
-exports.app = app
 
 if require.main is module
   app.listen(8000)
