@@ -25,7 +25,7 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
-  console.log "POST", req.body
+  # console.log "POST", req.body
 
   db.save req.body, (err, doc) ->
     if err
@@ -41,7 +41,7 @@ app.put "/slides/:id", (req, res) ->
 
 
   id = popBackboneId req.body
-  console.log "PUT", req.body
+  # console.log "PUT", req.body
 
   db.save id, req.body, (err, doc) ->
     if err
@@ -60,7 +60,7 @@ app.get "/slides", (req, res) ->
 
 app.get "/slides/:id", (req, res) ->
   res.contentType 'json'
-  console.log "GET", req.params
+  # console.log "GET", req.params
 
   db.get req.params.id, (err, doc) ->
     if err
