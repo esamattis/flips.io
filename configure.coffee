@@ -24,7 +24,9 @@ app.configure ->
   app.shareFs __dirname + "/client/vendor/ace/mode-html.js"
   app.shareFs __dirname + "/client/namespace.js"
   app.shareFs __dirname + "/client/utils.coffee"
+  app.shareFs __dirname + "/client/models.coffee"
   app.shareFs __dirname + "/client/main.coffee"
+  app.shareFs __dirname + "/client/slideshow.coffee"
 
   # Bug? Does not work under stylesheets dirs
   app.use stylus.middleware

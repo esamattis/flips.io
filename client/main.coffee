@@ -1,17 +1,9 @@
 $ = jQuery
 utils = NS "FLIPS.utils"
 
+SlideShow = FLIPS.models.SlideShow
 
-class Slide extends Backbone.Model
 
-  urlRoot: "/slides"
-
-  hello: ->
-    alert "hello"
-
-  toJSON: ->
-    html: @get "html"
-    id: @get "id"
 
 
 class Editor extends Backbone.View
@@ -19,7 +11,7 @@ class Editor extends Backbone.View
 
   constructor: (opts) ->
     super opts
-    @editor = ace.edit(opts.editor)
+    @editor = ace.edit "editor"
     HTMLmode = require("ace/mode/html").Mode
     @editor.getSession().setMode(new HTMLmode())
 
@@ -54,32 +46,29 @@ class Editor extends Backbone.View
 
   hasEditUrl: -> !!window.location.hash
 
-class Workspace extends Backbone.Router
-
-  constructor: (opts) ->
-   super opts
+class FLIPS.Workspace extends Backbone.Router
 
   routes:
     "": "start"
     "edit/:id": "edit"
 
+  constructor: (opts) ->
+   super
+
+
   edit: (id) ->
     console.log "edit", id
     if @editor?.getDocId() isnt id
       @editor = new Editor
-        model: new Slide
+        model: new SlideShow
           id: id
 
   start: ->
     console.log "start"
     @editor = new Editor
-      editor: "editor"
-      model: new Slide
+      eyl: ".edit_view"
+      model: new SlideShow
     @editor.model.set html: utils.mock
 
-
-$ ->
-  ws = new Workspace
-  Backbone.history.start()
 
 

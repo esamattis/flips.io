@@ -15,6 +15,11 @@ popBackboneId = (ob) ->
 # Routes
 
 app.get '/', (req, res) ->
+  res.exec ->
+    $ ->
+      ws = new FLIPS.Workspace
+      Backbone.history.start()
+
   res.render 'index',
     title: 'Flips.io'
 
@@ -68,13 +73,14 @@ app.get "/slides/:id", (req, res) ->
     res.end JSON.stringify doc
 
 
-# app.get '/:id', (req, res) ->
-#   res.render('slide', title: "Slide #{req.params.id}", slide: mock)
-# 
-# 
-# app.get '/api/:id', (req, res) ->
-#   res.send mock
+app.get "/view/:id", (req, res) ->
+  res.exec ->
+    $ ->
+      slideShowRouter = new FLIPS.SlideShowRouter
+      Backbone.history.start()
 
+  res.render "slideshow"
+    layout: false
 
 
 if require.main is module
