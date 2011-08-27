@@ -1,2 +1,6 @@
-h1 Slide
-#test= slide.html
+.deck-container(style='border:1px solid black;')!= slide.html
+
+script(type='text/javascript')
+	$(function() {
+		$.deck('.slide');
+	});
