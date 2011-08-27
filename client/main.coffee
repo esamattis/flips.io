@@ -28,6 +28,18 @@ class Slide extends Backbone.Model
   hello: ->
     alert "hello"
 
+class LightBox extends Backbone.View
+
+  error: (msg) ->
+    alert "ERROR: #{ msg }"
+
+  warning: (msg) ->
+    alert "WARNING: #{ msg }"
+
+  info: (msg) ->
+    alert "INFO: #{ msg }"
+
+  hide: ->
 
 class Editor extends Backbone.View
   el: ".edit_view"
@@ -57,8 +69,8 @@ class Editor extends Backbone.View
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"
 
-      error: (e) =>
-        console.log "failed to save", @model, e
+      error: (e, err) =>
+        console.log "failed to save", @model, e, err
 
   hasEditUrl: -> !!window.location.hash
 
@@ -66,6 +78,7 @@ class Workspace extends Backbone.Router
 
   constructor: (opts) ->
    super opts
+   messages = new LightBox
 
   routes:
     "": "start"
