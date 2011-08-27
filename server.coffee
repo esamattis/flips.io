@@ -5,6 +5,20 @@ _.mixin require 'underscore.string'
 
 app = module.exports = require "./configure"
 
+db = require "./db"
+
+app.get "/laskuri", (req, res) ->
+  db.getAlways "laskuri", count: 0, (err, doc) ->
+    count = doc.count + 1
+    console.log "saving", doc.count
+    db.save "laskuri", count: count, (err, couchres) ->
+      if err
+        console.log err
+        res.end "err #{ JSON.stringify err }"
+        return
+      res.end "count: #{ doc.count }"
+
+
 # Slide mock
 mock =
   content: '<div class="slide" id="title-slide">

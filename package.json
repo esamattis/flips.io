@@ -1,5 +1,5 @@
 {
-    "name": "flips.op"
+    "name": "flips.io"
   , "version": "0.0.1"
   , "private": true
   , "devDependencies": {
@@ -17,6 +17,7 @@
       , "nib": ""
       , "underscore": ""
       , "underscore.string": ""
+      , "cradle": ""
       , "nko": ""
   }
 }
