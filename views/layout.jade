@@ -11,9 +11,9 @@ html
     :coffeescript
       window._SC = {}
     
-    !{renderScriptTags()}
-    
-    // explicitly include the minified html mode for ACE (Epeli's js manager doesn't like :()
+    script(type="text/javascript", src="/javascripts/ace/ace.js")
     script(type="text/javascript", src="/javascripts/ace/mode-html.js")
+    
+    !{renderScriptTags()}
 
   body!= body
