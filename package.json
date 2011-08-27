@@ -11,6 +11,7 @@
       , "express": ""
       , "express-share": ""
       , "jade": ""
+      , "socket.io": ""
       , "markdown-js": ""
       , "connect-form": ""
       , "stylus": ""
