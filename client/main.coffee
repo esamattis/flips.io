@@ -19,7 +19,9 @@ class Editor extends Backbone.View
       @editor.getSession().setValue slide.get "html"
       # console.log "changed", JSON.stringify @model.attributes
 
-    @model.fetch()
+    @model.fetch
+      success: =>
+        @trigger 'init', @
 
   getDocId: ->
     @model.get "id"
@@ -77,6 +79,10 @@ class FLIPS.Workspace extends Backbone.Router
 
   initEditor: (model) ->
     @editor = new Editor model: model
+    
+    @editor.bind "init", =>
+      @preview.reload()
+    
     model.bind "saved", =>
       @preview.id = model.get "id"
       @preview.reload()
@@ -84,8 +90,11 @@ class FLIPS.Workspace extends Backbone.Router
   edit: (id) ->
     console.log "edit", id
     if @editor?.getDocId() isnt id
-      @initEditor new SlideShow
+      ss = new SlideShow
         id: id
+
+      @initEditor ss
+
 
   start: ->
     console.log "start"
