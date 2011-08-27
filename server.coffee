@@ -4,20 +4,12 @@ _  = require 'underscore'
 _.mixin require 'underscore.string'
 
 app = module.exports = require "./configure"
-
 db = require "./db"
 
-app.get "/laskuri", (req, res) ->
-  db.getAlways "laskuri", count: 0, (err, doc) ->
-    count = doc.count + 1
-    console.log "saving", doc.count
-    db.save "laskuri", count: count, (err, couchres) ->
-      if err
-        console.log err
-        res.end "err #{ JSON.stringify err }"
-        return
-      res.end "count: #{ doc.count }"
-
+popBackboneId = (ob) ->
+  id = ob.id
+  delete ob.id
+  id
 
 
 # Routes
@@ -28,23 +20,50 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
-  console.log "posting body", req.body
+  console.log "POST", req.body
+
   db.save req.body, (err, doc) ->
-    throw err if err
-    console.log "saved", doc
+    if err
+      console.log "error posting", req.body, err
+      res.send 501
+      res.end JSON.stringify err
+      return
+    console.log "posted", doc
     res.end JSON.stringify doc
 
 app.put "/slides/:id", (req, res) ->
-  console.log "putting body", req.body
-  res.end()
+  res.contentType 'json'
 
+
+  id = popBackboneId req.body
+  console.log "PUT", req.body
+
+  db.save id, req.body, (err, doc) ->
+    if err
+      console.log "error updating", req.body, err
+      res.send 501
+      res.end JSON.stringify err
+      return
+
+    res.end JSON.stringify doc
+
+
+app.get "/slides", (req, res) ->
+  res.contentType 'json'
+  console.log "GET SLIDES", req.body, req.params
+  res.end()
 
 app.get "/slides/:id", (req, res) ->
   res.contentType 'json'
-  console.log "getting params", req.params
+  console.log "GET", req.params
 
   db.get req.params.id, (err, doc) ->
-    throw err if err
+    if err
+      console.log "error getting", req.params, err
+      res.send 501
+      res.end JSON.stringify err
+      return
+
     console.log "got", doc
     res.end JSON.stringify doc
 
