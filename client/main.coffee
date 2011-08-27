@@ -10,7 +10,10 @@ class Editor extends Backbone.View
     super opts
     @editor = ace.edit "editor"
     HTMLmode = require("ace/mode/html").Mode
+    @editor.getSession().setTabSize(2);
+    @editor.getSession().setUseWrapMode(true);
     @editor.getSession().setMode(new HTMLmode())
+
 
     @model.bind "change", (slide) =>
       @editor.getSession().setValue slide.get "html"
