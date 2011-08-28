@@ -8,8 +8,25 @@ SlideShow = FLIPS.models.SlideShow
 class Editor extends Backbone.View
   el: ".edit_view"
 
+
   constructor: (opts) ->
-    super opts
+    super
+    @saveButton = $ "#save"
+    @saveButton.click => @save()
+
+    @initAce()
+
+    @model.bind "change", (slide) =>
+      @editor.getSession().setValue slide.get "html"
+      # console.log "changed", JSON.stringify @model.attributes
+
+    if @model.get "id"
+      @model.fetch
+        success: =>
+          @trigger 'init', @
+
+
+  initAce: ->
     @editor = ace.edit "editor"
     HTMLmode = require("ace/mode/html").Mode
     @editor.getSession().setTabSize(2);
@@ -23,21 +40,11 @@ class Editor extends Backbone.View
     $(".ace_gutter").hide()
     $(".ace_scroller").css('width',  parseInt($(".ace_scroller").css('width')) + lineNumberWidth)
 
-    @model.bind "change", (slide) =>
-      @editor.getSession().setValue slide.get "html"
-      # console.log "changed", JSON.stringify @model.attributes
-
-    if @model.get "id"
-      @model.fetch
-        success: =>
-          @trigger 'init', @
 
   getDocId: ->
     @model.get "id"
 
 
-  events:
-    "click .save": "save"
 
   save: ->
     html = @editor.getSession().getValue()
@@ -62,7 +69,7 @@ class Editor extends Backbone.View
 class Preview extends Backbone.View
 
   constructor: (opts) ->
-    super 
+    super
     @id = opts.id
     @iframe = @$("iframe")
 
@@ -75,14 +82,14 @@ class Preview extends Backbone.View
 # Refactor to listen to model's init and change events?
 # class Links extends Backbone.View
 #   el: '#links'
-#   
+#
 #   constructor: (opts) ->
 #     super
-#     
+#
 #     @id = opts.id
 #     @publicLink = @$('#public_link')
 #     @remoteLink = @$('#remote_link')
-#   
+#
 #   render: ->
 #     @publicLink.attr('href', "/view/#{@id}").show()
 #     @remoteLink.attr('href', "/r/#{@id}").show()
@@ -95,15 +102,15 @@ class FLIPS.Workspace extends Backbone.Router
 
   constructor: (opts) ->
     super
-   
+
     @preview = new Preview
       el: ".preview"
-      
+
     # @links = new Links
 
   initEditor: (model) ->
     @editor = new Editor model: model
-    
+
     @editor.bind "init", =>
       @preview.id = model.get "id"
       @preview.reload()
