@@ -108,7 +108,7 @@ class Preview extends Backbone.View
 
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
-    if @iframe.attr("src") is "/initial"
+    if @iframe.attr("src") is "/start/initial"
       @iframe.attr "src", @model.getPresentationURL()
       console.log "setting iframe to real url #{ @iframe.attr "src" }"
     else
