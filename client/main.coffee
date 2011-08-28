@@ -98,6 +98,13 @@ class FLIPS.Workspace extends Backbone.Router
   initEditor: (model) ->
     @editor = new Editor model: model
     
+    # Hide the line numbering, doesn't work perfectly
+    lineNumberWidth = parseInt($(".ace_scroller").css('left'))
+    alert(lineNumberWidth)
+    $(".ace_scroller").css('left', '0px')
+    $(".ace_gutter").hide()
+    $(".ace_scroller").css('width',  parseInt($(".ace_scroller").css('width')) + lineNumberWidth)
+    
     @editor.bind "init", =>
       @preview.id = model.get "id"
       @preview.reload()
