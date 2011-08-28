@@ -109,8 +109,6 @@ class Preview extends Backbone.View
     @iframe = @$("iframe")
     @model.bind "change:id", => @reload()
     @model.bind "saved", => @reload()
-    @model.bind "initialfetch", =>
-      @reload()
 
 
   reload: ->

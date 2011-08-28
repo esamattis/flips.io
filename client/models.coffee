@@ -33,9 +33,11 @@ class models.SlideShowModel extends Backbone.Model
       origCb? e
 
     if not @get "id"
+      console.log "using mock"
       @set html: utils.mock
       @triggerInitialFetch "default"
       origCb? e
       opts.success @
     else
+      console.log "really fecthing"
       super opts

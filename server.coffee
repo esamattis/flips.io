@@ -70,6 +70,9 @@ app.put "/slides/:id", (req, res) ->
         res.end JSON.stringify err
         return
 
+      # Update cache for manage sockets
+      secretCache[id] = secret
+
       res.end JSON.stringify doc
 
 
@@ -90,7 +93,6 @@ app.get "/slides/:id", (req, res) ->
       return
 
     secret = doc.secret
-    console.log "test db:", secret, "cookie:",  req.cookies.secret
     if secret and req.cookies.secret isnt secret
       doc.readOnly = true
       delete doc.secret
@@ -120,7 +122,6 @@ app.get "/start/initial", (req, res) ->
     layout: false
 
 
-secretCache = {}
 
 app.get "/r/:id", (req, res) ->
   res.exec ->
@@ -135,16 +136,40 @@ allowedCmds =
   goto: true
   reload: true
 
-io.sockets.on 'connection', (socket) ->
+secretCache = {}
 
-  socket.on "manage", (ob) ->
-
+routeManage = (ob) ->
     if not allowedCmds[ob.name]
       console.log "Illegal command #{ ob.name } for #{ ob.target }"
       return
 
-    @broadcast.to(ob.target).emit "command", ob
+    if secretCache[ob.target] is null or secretCache[ob.target] is ""
+      console.log "no secret. routing"
+      @broadcast.to(ob.target).emit "command", ob
 
+    else if secretCache[ob.target] is undefined
+      console.log "secret not in cache"
+
+      db.get ob.target, (err, doc) =>
+        if doc.secret
+          secretCache[ob.target] = doc.secret
+        else
+          secretCache[ob.target] = null
+
+        console.log "got secret from couch, recursing"
+        routeManage.call @, ob
+
+    else if secretCache[ob.target] is ob.secret
+      console.log "secret ok. routing"
+      @broadcast.to(ob.target).emit "command", ob
+
+    else
+      console.log "wrong secret #{ ob.secret } should be #{ secretCache[ob.target] }"
+      @emit "error", "bad secret"
+
+
+io.sockets.on 'connection', (socket) ->
+  socket.on "manage", routeManage
   socket.on "obey", (id) ->
     @join id
 
