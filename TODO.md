@@ -11,6 +11,7 @@
 1. Remove line numbers from editor
 1. Prevent JavaScript insertion
 1. Refactor views to use render pattern
+1. Allow navigating in preview even if the iframe is not active
 
 ## Nice to have
 
