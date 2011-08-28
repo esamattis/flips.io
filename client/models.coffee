@@ -1,11 +1,6 @@
 models = NS "FLIPS.models"
 utils = NS "FLIPS.utils"
 
-log = console.log
-console.log = (msg, others...) ->
-  msg = "#{ window.location.href }: #{ msg }"
-  others.unshift msg
-  log.apply this, others
 
 
 class models.SlideShowModel extends Backbone.Model
@@ -14,12 +9,26 @@ class models.SlideShowModel extends Backbone.Model
 
   constructor: ->
     super
-
-    if not @get "id"
-      console.log "no id for model. setting default"
-      @set html: utils.mock
+    @triggerInitialFetch = _.once (source) =>
+      @trigger "initialfetch",
+        source: source
+        target: @
 
 
   toJSON: ->
     html: @get "html"
     id: @get "id"
+
+  fetch: (opts={}) ->
+    origCb = opts.success
+    opts.success = (e) =>
+      @triggerInitialFetch "db"
+      origCb? e
+
+    if not @get "id"
+      @set html: utils.mock
+      @triggerInitialFetch "default"
+      origCb? e
+      opts.success @
+    else
+      super opts
