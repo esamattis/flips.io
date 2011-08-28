@@ -16,23 +16,20 @@ class Editor extends Backbone.View
 
     @initAce()
 
-    @model.bind "initialfetch",  =>
-      console.log "settting HTML"
-      @removeUnsavedNotification()
+    @model.bind "initialfetch", (e) =>
+      if e.source is "default"
+        @showUnsavedNotification()
+      else
+        @hideUnsavedNotification()
+
       @setEditorContents @model.get "html"
 
       @editor.getSession().on "change", =>
         console.log "CHANGE"
         @showUnsavedNotification()
 
-    @model.bind "change", (slide) =>
 
-    if @model.get "id"
-      @model.fetch
-        success: =>
-          @model.trigger 'initialfetch', @
-    else
-      @setEditorContents @model.get "html"
+    @model.fetch()
 
   setEditorContents: (code) ->
     @editor.getSession().setValue code
@@ -70,7 +67,7 @@ class Editor extends Backbone.View
 
   showUnsavedNotification: ->
     @saveButton.text "Save*"
-  removeUnsavedNotification: ->
+  hideUnsavedNotification: ->
     @saveButton.text "Save"
 
   save: ->
@@ -79,7 +76,7 @@ class Editor extends Backbone.View
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
-        @removeUnsavedNotification()
+        @hideUnsavedNotification()
 
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"
