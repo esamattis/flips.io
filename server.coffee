@@ -3,6 +3,8 @@
 _  = require 'underscore'
 _.mixin require 'underscore.string'
 
+
+{alphabet} = require "./urlshortener"
 {app, io} = require "./configure"
 module.exports = app
 db = require "./db"
@@ -37,9 +39,8 @@ app.get '/', (req, res) ->
 app.post "/slides", (req, res) ->
   res.contentType 'json'
   urlgen.getNext (url) ->
-    req.body.url = url
 
-    db.save req.body, (err, doc) ->
+    db.save url, req.body, (err, doc) ->
       if err
         console.log "error posting", req.body, err
         res.send 501
@@ -83,7 +84,7 @@ app.get "/slides/:id", (req, res) ->
     res.end JSON.stringify doc
 
 
-app.get "/view/:id", (req, res) ->
+app.get new RegExp("^/([#{ alphabet }]+$)"), (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView
@@ -94,7 +95,7 @@ app.get "/view/:id", (req, res) ->
     layout: false
 
 
-app.get "/initial", (req, res) ->
+app.get "/start/initial", (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView
