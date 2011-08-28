@@ -17,8 +17,11 @@ class Editor extends Backbone.View
     @initAce()
 
 
+    @model.bind "initialfetch",  =>
+      console.log "settting HTML"
+      @setEditorContents @model.get "html"
+
     @model.bind "change", (slide) =>
-       @setEditorContents slide.get "html"
 
     if @model.get "id"
       @model.fetch
