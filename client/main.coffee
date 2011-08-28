@@ -53,11 +53,9 @@ class Editor extends Backbone.View
 
   save: ->
     html = @editor.getSession().getValue()
-    # console.log "saving", JSON.stringify @model.attributes
     @model.set html: html
     @model.save null,
       success: (e) =>
-        utils.msg.info "saved #{ @model.get "id" }"
         @model.trigger "saved", @model
 
         if not @hasEditUrl()
@@ -103,14 +101,14 @@ class Links extends Backbone.View
   constructor: (opts) ->
     super
     @publicLink = @$('.public_link a')
-    @remoteLink = @$('#remote_link')
+    @remoteLink = @$('.remote_link a')
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
 
   render: ->
     console.log "RENDERING LINKS"
-    @publicLink.attr('href', "/view/#{@model.id}").show()
-    @remoteLink.attr('href', "/r/#{@model.id}").show()
+    @publicLink.attr('href', "/view/#{@model.id}").show "slow"
+    @remoteLink.attr('href', "/r/#{@model.id}").show "slow"
 
 class FLIPS.Workspace extends Backbone.Router
 
