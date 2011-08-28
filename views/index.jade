@@ -18,7 +18,7 @@
     button.btn.primary#save(original-title="Ctrl+S") Save
 
   .secret.item
-    label.tip(for="secret", original-title="Use this to protect editing and remote controlling of this slide show") Secret
+    label.tip(for="secret", original-title="Define a password to protect editing and remote controlling of this slide show") Secret
     input.large#secret(type="password")
     input.large#secret_clear(type="text")
     a#toggle_secret(href="#", style="margin-left: 5px;") Show
@@ -36,7 +36,9 @@
 .preview
   iframe(frameborder="0", src="/start/initial")
 
-.about Flips.io was created for 
+.about 
+  a(href="http://flips.io") Flips.io 
+  \created for 
   a(href="http://nodeknockout.com/") Node Knockout 2011
   .
 

@@ -13,7 +13,6 @@ jQuery.fn.edited = (callback) ->
 
         active = false
 
-
         that.focusin ->
             active = true
         that.focusout ->
@@ -33,7 +32,7 @@ utils.mock = """<div class="slide">
     <h2>Create Slide Show</h2>
     <div class="slide">
       <h3>Add slides</h3>
-      <p>Slide content is simple HTML.</p>
+      <p>Slides are basic HTML.</p>
     </div>
     <div class="slide">
       <h3>Click save</h3>
@@ -50,7 +49,7 @@ utils.mock = """<div class="slide">
     <h2>Learn more</h2>
     <ul>
       <div class="slide">
-        <li><a href="#">Flips.io presentation</a></li>
+        <li><a href="#">Another Flips.io presentation</a></li>
         <li><a href="http://imakewebthings.github.com/deck.js/introduction/">Deck.js presentation</a></li>
       </div>
     </ul>
