@@ -1,8 +1,6 @@
 models = NS "FLIPS.models"
 utils = NS "FLIPS.utils"
 
-
-
 class models.SlideShowModel extends Backbone.Model
 
   urlRoot: "/slides"
