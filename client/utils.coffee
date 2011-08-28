@@ -8,39 +8,31 @@ utils.guidGenerator = ->
   (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
 
 utils.mock = """<div class="slide" id="title-slide">
-                <h1>Getting Started with flips.io and deck.js</h1>
-        </div>
+    <h1>Getting Started wdsdsith deck.js</h1>
+  </div>
 
-        <div class="slide" id="how-to-overview">
-                <h2>How to Make a Deck</h2>
-                <ol>
-                        <li>
-                                <h3>Write Slides</h3>
-                                <p>Slide content is simple&nbsp;HTML.</p>
-                        </li>
-                        <li>
-                                <h3>Choose Themes</h3>
-                                <p>One for slide styles and one for deck&nbsp;transitions.</p>
-                        </li>
-                        <li>
-                                <h3>Include Extensions</h3>
-                                <p>Add extra functionality to your deck, or leave it stripped&nbsp;down.</p>
-                        </li>
-                </ol>
-        </div>"""
+  <div class="slide" id="how-to-overview">
+    <h2>How to Make a Dedsafsadck</h2>
+    <ol>
+      <li>
+        <h3>Write Slides</h3>
+        <p>Slide content is simple&nbsp;HTML.</p>
+      </li>
+      <li>
+        <h3>Choose Thememks</h3>
+        <p>One for slide styles and one for deck&nbsp;transitions.</p>
+      </li>
+      <li>
+        <h3>Include Extensions</h3>
+        <p>Add extra functionality to youreck, or leave it stripped&nbsp;down.</p>
+      </li>
+    </ol>
+  </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
 
 
-$.fn.hrefTargetTop = (cb) ->
-  @unbind("click").click (e) ->
-    # If link is clicked with middle button don't do anything special
-    # and let the link open as usual (in a background tab in most
-    # browsers).
-    if e.which isnt 2
-      e.preventDefault()
-      cb?()
-      window.top.location.href = $(@).attr("href") + window.location.hash
+
 
 
 
