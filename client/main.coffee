@@ -11,11 +11,11 @@ class Editor extends Backbone.View
   constructor: (opts) ->
     super
     
-    @password = new Password
+    @secret = new Secret
     
     @saveButton = $ "#save"
     @saveButton.tipsy
-      gravity: 'n',
+      gravity: 's',
       opacity: 1
     @saveButton.click => @save()
 
@@ -77,7 +77,7 @@ class Editor extends Backbone.View
     html = @editor.getSession().getValue()
     @model.set 
       html: html, 
-      password: @password.password()
+      secret: @secret.secret()
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
@@ -129,10 +129,10 @@ class Links extends Backbone.View
     @remoteLink = @$('.remote_link a')
     
     @publicLink.tipsy
-      gravity: 'n',
+      gravity: 's',
       opacity: 1
     @remoteLink.tipsy
-      gravity: 'n',
+      gravity: 's',
       opacity: 1
     
     @model.bind "change:id", => @render()
@@ -143,19 +143,19 @@ class Links extends Backbone.View
       @publicLink.attr('href',@model.getPresentationURL()).show "slow"
       @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
 
-class Password extends Backbone.View
-  el: '.password'
+class Secret extends Backbone.View
+  el: '.secret'
   
   constructor: (opts) ->
     super
     
     @$('label').tipsy
-      gravity: 'n',
+      gravity: 's',
       opacity: 1
     
-    @toggle = @$('#toggle_password')
-    @hidden = @$('#pass')
-    @plain = @$('#pass_clear').hide()
+    @toggle = @$('#toggle_secret')
+    @hidden = @$('#secret')
+    @plain = @$('#secret_clear').hide()
     @isPlainText = false
     
     @toggle.click (e) =>
@@ -170,7 +170,7 @@ class Password extends Backbone.View
             
       e.preventDefault()
       
-  password: ->
+  secret: ->
     if @isPlainText
       return @plain.val()
     else

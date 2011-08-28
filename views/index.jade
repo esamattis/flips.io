@@ -8,11 +8,11 @@
   .save_button.item
     button.btn.primary#save(original-title="Ctrl+S") Save
 
-  .password.item
-    label.tip(for="pass", original-title="Use this to protect remote controlling") Remote Password
-    input.large#pass(type="password")
-    input.large#pass_clear(type="text")
-    a#toggle_password(href="#", style="margin-left: 5px;") Show
+  .secret.item
+    label.tip(for="secret", original-title="Use this to protect editing and remote controlling") Secret
+    input.large#secret(type="password")
+    input.large#secret_clear(type="text")
+    a#toggle_secret(href="#", style="margin-left: 5px;") Show
   
   .remote_link.item.link
     a(href="#", target="_blank", original-title="Master remote controller") Remote
@@ -23,8 +23,6 @@
 
 .edit_view
   #editor
-
-
 
 .preview
   iframe(frameborder="0", src="/initial")

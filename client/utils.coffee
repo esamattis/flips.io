@@ -25,7 +25,7 @@ utils.mock = """<div class="slide">
   </div>
 
   <div class="slide">
-    <h2>Embed video</h2>
+    <h2>Example: Embed video</h2>
     <iframe width="420" height="345" src="http://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allowfullscreen></iframe>
   </div>
 
@@ -35,7 +35,7 @@ utils.mock = """<div class="slide">
     <a href="http://ajaxorg.github.com/ace/" target="_blank"><img src="http://i.imgur.com/M1zIC.png" /></a>
     <a href="http://nodejs.org/" target="_blank"><img src="http://i.imgur.com/xdNvu.png" /></a>
     <a href="http://couchdb.apache.org/" target="_blank"><img src="http://i.imgur.com/QnwKY.png" /></a>
-    <p align="center">also <a href="http://socket.io/" target="_blank">Socket.IO</a>, <a href="http://documentcloud.github.com/backbone/" target="_blank">Backbone.js</a> and many more</p>
+    <p align="center">also <a href="http://socket.io/" target="_blank">Socket.IO</a>, <a href="http://expressjs.com/" target="_blank">Express</a>, <a href="http://documentcloud.github.com/backbone/" target="_blank">Backbone.js</a> and many more</p>
   </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
