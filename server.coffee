@@ -80,9 +80,20 @@ app.get "/view/:id", (req, res) ->
         model: new FLIPS.models.SlideShow
           id: _.last window.location.pathname.split("/")
 
+  res.render "slideshow"
+    layout: false
+
+
+app.get "/initial", (req, res) ->
+  res.exec ->
+    $ ->
+      window.slideShowView = new FLIPS.views.SlideShowView
+        model: new FLIPS.models.SlideShow
 
   res.render "slideshow"
     layout: false
+
+
 
 app.get "/r/:id", (req, res) ->
   res.exec ->
@@ -91,9 +102,6 @@ app.get "/r/:id", (req, res) ->
   res.render "remote"
     layout: false
 
-app.get "/initial", (req, res) ->
-  res.render "initial"
-    layout: false
 
 io.sockets.on 'connection', (socket) ->
   console.log "got socket"

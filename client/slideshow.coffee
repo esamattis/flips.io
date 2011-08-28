@@ -15,6 +15,11 @@ class views.SlideShowView extends Backbone.View
   constructor: (opts) ->
     super
     @socket = utils.getSocket()
+
+    if not @model.get "id"
+      @model.set html: utils.mock
+      @render()
+
     @socket.on "connect", =>
       console.log "connected"
       if @model.get "id"
@@ -28,10 +33,7 @@ class views.SlideShowView extends Backbone.View
       @[cmd]?()
 
     @model.bind "change", =>
-      $ =>
-
-        @render()
-        $.deck(".slide")
+      @render()
 
     @model.fetch()
 
@@ -54,3 +56,4 @@ class views.SlideShowView extends Backbone.View
 
   render: ->
     $(@el).prepend @model.get "html"
+    $.deck(".slide")
