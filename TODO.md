@@ -16,6 +16,7 @@
 ## Nice to have
 
 1. Edit CSS
+1. Asset manager for images.
 1. Optimize iframe loading with postMessage
 1. Rervert to revision
 1. Allow preprocessor usage. Jade, Haml etc.
