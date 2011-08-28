@@ -8,9 +8,11 @@ SlideShowModel = FLIPS.models.SlideShowModel
 class Editor extends Backbone.View
   el: ".edit_view"
 
-
   constructor: (opts) ->
     super
+    
+    @password = new Password
+    
     @saveButton = $ "#save"
     @saveButton.tipsy
       gravity: 'n',
@@ -43,7 +45,6 @@ class Editor extends Backbone.View
     HTMLmode = require("ace/mode/html").Mode
     session = @editor.getSession()
     session.setTabSize(2);
-    # session.setUseWrapMode(true);
     session.setMode(new HTMLmode())
 
 
@@ -74,7 +75,9 @@ class Editor extends Backbone.View
 
   save: ->
     html = @editor.getSession().getValue()
-    @model.set html: html
+    @model.set 
+      html: html, 
+      password: @password.password()
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
@@ -166,13 +169,18 @@ class Password extends Backbone.View
       @isPlainText = !@isPlainText
             
       e.preventDefault()
+      
+  password: ->
+    if @isPlainText
+      return @plain.val()
+    else
+      return @hidden.val()
 
 class FLIPS.Workspace extends Backbone.Router
 
   routes:
     "": "start"
     "edit/:id": "edit"
-
 
   initViews: (opts={}) ->
     console.log "initing views"
@@ -187,9 +195,6 @@ class FLIPS.Workspace extends Backbone.Router
     @preview = new Preview
       el: ".preview"
       model: model
-      
-    @password = new Password
-
 
   edit: (id) ->
     console.log "EDIT ROUTE", id

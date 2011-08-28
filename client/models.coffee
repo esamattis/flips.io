@@ -25,6 +25,7 @@ class models.SlideShowModel extends Backbone.Model
 
   toJSON: ->
     html: @get "html"
+    password: @get "password"
     id: @get "id"
 
   fetch: (opts={}) ->
