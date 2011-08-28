@@ -5,7 +5,7 @@ log = console.log
 console.log = (msg, others...) ->
   msg = "#{ window.location.href }: #{ msg }"
   others.unshift msg
-  log.call this, msg
+  log.apply this, others
 
 
 class models.SlideShowModel extends Backbone.Model

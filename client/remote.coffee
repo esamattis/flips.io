@@ -7,18 +7,24 @@ class views.Remote extends Backbone.View
     super
     @id = _.last window.location.pathname.split("/")
     @socket = utils.getSocket()
+    @current = 0
+
     @socket.on "connect", =>
       console.log "connected"
+
       $("#next").click (e) =>
+        console.log "nexting"
         @socket.emit "manage",
           target: @id
-          name: "next"
+          name: "goto"
+          args: [++@current]
 
       $("#prev").click (e) =>
+        console.log "preving"
         @socket.emit "manage",
           target: @id
-          name: "prev"
-
+          name: "goto"
+          args: [--@current]
 
 
 

@@ -25,8 +25,8 @@ class views.SlideShowView extends Backbone.View
           @_connectToRemote()
 
     @socket.on "command", (ob) =>
+      console.log "got cmd", ob.args
       ob.args ?= []
-      console.log "got cmd", ob
       @[ob.name]?.apply this, ob.args
 
     @model.bind "change", =>
