@@ -48,7 +48,7 @@ class Editor extends Backbone.View
     # Add save shortcut
     canon = require('pilot/canon')
     canon.addCommand
-      name: 'myCommand'
+      name: 'saveCommand'
       bindKey:
         win: "Ctrl-S"
         mac: "Command-S"
