@@ -18,3 +18,5 @@
 1. Allow preprocessor usage. Jade, Haml etc.
 1. Ignore manage messages -button for public views
 1. Select which deck.js plugins to use
+
+Fix deck.js current page in the status extension!

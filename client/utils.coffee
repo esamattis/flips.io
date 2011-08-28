@@ -19,9 +19,9 @@ utils.mock = """<div class="slide">
     <h2>Create Slide Show</h2>
     <h3>Add slides</h3>
     <p>Slide content is simple HTML.</p>
-    <pre><p>&lt;div class="slide"&gt;
+    <pre>&lt;div class="slide"&gt;
     &lt;h1&gt;Hello World!&lt;/h1&gt;
-  &lt;/div&gt;</p></pre>
+  &lt;/div&gt;</pre>
   </div>
 
   <div class="slide">
