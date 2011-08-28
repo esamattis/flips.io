@@ -10,7 +10,7 @@
 .topbar
   .fill
     .container(style="width: 100%;")
-      h3(style="margin-left: 15px;")
+      h3#logo(style="margin-left: 15px;")
         a Flips.io
 
 .toolbar
@@ -36,11 +36,11 @@
 .preview
   iframe(frameborder="0", src="/start/initial")
 
-.about
-  :markdown
-    Flips.io was created for [Node Knockout 2011](http://nodeknockout.com/).
+.about Flips.io was created for 
+  a(href="http://nodeknockout.com/") Node Knockout 2011
+  .
 
-  &copy; 2011 Alexander Hanhikoski, Esa-Matti Suuronen
+  p &copy; 2011 Alexander Hanhikoski, Esa-Matti Suuronen
 
 script(type="text/javascript", src="http://static.wehearvoices.net/widget.js")
 script(type="text/javascript", src="http://widget.wehearvoices.net/node/init.js?user_id=39e49e1c-d1b9-11e0-956c-fefdb24f91c5")

@@ -3,3 +3,4 @@ node_modules
 flips.pid
 styles.css
 public/remote.css
+sequence.db
