@@ -85,9 +85,12 @@ class Editor extends Backbone.View
       secret: @secret.getSecret()
 
 
+    console.log "sending save #{ document.cookie }"
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
+        # $.cookies.set "secret", @model.get "secret"
+        document.cookie = "secret=#{  @model.get "secret" }"
         @hideUnsavedNotification()
 
         if not @hasEditUrl()
@@ -107,12 +110,17 @@ class Preview extends Backbone.View
     super
     @socket = utils.getSocket()
     @iframe = @$("iframe")
+
     @model.bind "change:id", => @reload()
-    @model.bind "saved", => @reload()
+    @model.bind "saved", =>
+      @setSecret @model.get "secret"
+      @reload()
     @model.bind "initialfetch", (e) =>
       if e.source is "db"
         @reload()
 
+  setSecret: (secret) ->
+    @secret = secret
 
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
@@ -124,6 +132,7 @@ class Preview extends Backbone.View
       @socket.emit "manage",
         target: @model.get "id"
         name: "reload"
+        secret: docCookies.getItem("secret")
 
 
 
@@ -161,7 +170,8 @@ class AskSecret extends Backbone.View
 
     @button.click (e) =>
       e.preventDefault()
-      $.cookies.set "secret", @input.val()
+      # $.cookies.set "secret", @input.val()
+      document.cookie = "secret=#{ @input.val() }"
       window.location.reload()
 
   ask: ->
