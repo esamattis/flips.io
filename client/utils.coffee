@@ -26,7 +26,7 @@ utils.mock = """<div class="slide">
 
   <div class="slide">
     <h2>Example: Embed video</h2>
-    <iframe width="420" height="345" src="http://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allowfullscreen></iframe>
+    <iframe src="http://player.vimeo.com/video/14784101?portrait=0" width="500" height="290" frameborder="0"></iframe>
   </div>
 
   <div class="slide">
