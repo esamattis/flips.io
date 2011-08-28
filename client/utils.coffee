@@ -8,7 +8,7 @@ utils.guidGenerator = ->
   (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
 
 utils.mock = """<div class="slide">
-    <h1>Getting Started with Flips.io</h1>
+    <h1>Getting Started with Flips.IO</h1>
   </div>
 
   <div class="slide">
@@ -19,15 +19,17 @@ utils.mock = """<div class="slide">
         <p>&lt;div class="slide"&gt;...&lt;/div&gt;</p>
         <p>Slide content is simple HTML.</p>
       </li>
-      <li>
-        <h3>Choose Thememks</h3>
-        <p>One for slide styles and one for deck transitions.</p>
-      </li>
-      <li>
-        <h3>Include Extensions</h3>
-        <p>Add extra functionality to youreck, or leave it stripped own.</p>
-      </li>
     </ol>
+  </div>
+
+  <div class="slide">
+    <h2>Embed Pics</h2>
+    <img src="http://i.imgur.com/1GJOC.jpg" alt="" title="Hosted by imgur.com" />
+  </div>
+
+  <div class="slide">
+    <h2>Embed video</h2>
+    <iframe width="560" height="345" src="http://www.youtube.com/embed/6Io3aSEkG_s" frameborder="0" allowfullscreen></iframe>
   </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
