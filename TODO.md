@@ -1,4 +1,3 @@
-
 # TODOs
 
 ## Must have
@@ -9,7 +8,8 @@
 1. Reload public view  using socket.io
 1. Manage conflicts. What if same revision is saved twice?
 1. Make it look nice
-1. Prevent JavaScript
+1. Remove line numbers from editor
+1. Prevent JavaScript insertion
 
 ## Nice to have
 
@@ -18,3 +18,4 @@
 1. Rervert to revision
 1. Allow preprocessor usage. Jade, Haml etc.
 1. Ignore manage messages -button for public views
+1. Select which deck.js plugins to use
