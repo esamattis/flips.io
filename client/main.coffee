@@ -75,6 +75,7 @@ class Preview extends Backbone.View
 
   constructor: (opts) ->
     super
+    @socket = utils.getSocket()
     @iframe = @$("iframe")
     @model.bind "change:id", => @reload()
     @model.bind "saved", => @reload()
@@ -84,9 +85,16 @@ class Preview extends Backbone.View
 
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
-    @iframe.attr "src", ""
-    @iframe.attr "src", "/view/#{ @model.id }"
-    utils.msg.info "Saved and reloading preview now"
+    if @iframe.attr("src") is "/initial"
+      @iframe.attr "src", "/view/#{ @model.id }"
+      console.log "setting iframe to real url #{ @iframe.attr "src" }"
+    else
+      console.log "reloading iframe via socket"
+      @socket.emit "manage",
+        target: @model.get "id"
+        name: "reload"
+
+
 
 # Refactor to listen to model's init and change events?
 class Links extends Backbone.View

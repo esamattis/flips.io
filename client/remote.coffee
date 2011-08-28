@@ -12,12 +12,12 @@ class views.Remote extends Backbone.View
       $("#next").click (e) =>
         @socket.emit "manage",
           target: @id
-          command: "next"
+          name: "next"
 
       $("#prev").click (e) =>
         @socket.emit "manage",
           target: @id
-          command: "prev"
+          name: "prev"
 
 
 

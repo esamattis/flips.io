@@ -102,16 +102,21 @@ app.get "/r/:id", (req, res) ->
   res.render "remote"
     layout: false
 
+allowedCmds =
+  goto: true
+  reload: true
 
 io.sockets.on 'connection', (socket) ->
-  console.log "got socket"
 
   socket.on "manage", (ob) ->
-    console.log "i want to manage", ob
-    @broadcast.to(ob.target).emit "command", ob.command
+
+    if not allowedCmds[ob.name]
+      console.log "Illegal command #{ ob.name } for #{ ob.target }"
+      return
+
+    @broadcast.to(ob.target).emit "command", ob
 
   socket.on "obey", (id) ->
-    console.log "i want to obey", id
     @join id
 
 
