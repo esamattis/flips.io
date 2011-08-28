@@ -6,6 +6,7 @@ _.mixin require 'underscore.string'
 {app, io} = require "./configure"
 module.exports = app
 db = require "./db"
+urlgen = require "./shorturlgenerator"
 
 
 popBackboneId = (ob) ->
@@ -18,10 +19,10 @@ urlId = 1
 
 # Routes
 # http://localhost:5984/flips/_design/slides/_view/urlIds?key=3
-app.get "/urls/:urlId", (req, res) ->
+app.get "/urls/:url", (req, res) ->
   res.contentType 'json'
-  console.log "sdf", req.params.urlId
-  db.getDocumentByUrlId req.params.urlId, (err, doc) ->
+  console.log "sdf", req.params.url
+  db.getDocByURL req.params.url, (err, doc) ->
     res.end JSON.stringify doc
 
 app.get '/', (req, res) ->
@@ -35,16 +36,16 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
+  urlgen.getNext (url) ->
+    req.body.url = url
 
-  req.body.shortUrlId = ++urlId
-
-  db.save req.body, (err, doc) ->
-    if err
-      console.log "error posting", req.body, err
-      res.send 501
-      res.end JSON.stringify err
-      return
-    res.end JSON.stringify doc
+    db.save req.body, (err, doc) ->
+      if err
+        console.log "error posting", req.body, err
+        res.send 501
+        res.end JSON.stringify err
+        return
+      res.end JSON.stringify doc
 
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'

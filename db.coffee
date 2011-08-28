@@ -30,14 +30,13 @@ db.getAlways = (id, initdoc, cb) ->
       cb? null, doc
 
 db.save '_design/slides',
-  urlIds:
+  url:
     map: (doc) ->
-      if doc.shortUrlId
-        emit doc.shortUrlId, doc
+      if doc.url
+        emit doc.url, doc
 
-db.getDocumentByUrlId = (urlId, cb) ->
-  urlId = parseInt urlId, 10
-  db.view "slides/urlIds", key: urlId,  (err, docs) ->
+db.getDocByURL = (url, cb) ->
+  db.view "slides/url", key: url,  (err, docs) ->
     console.log "GETC", err, docs
     doc = if _.isEmpty(docs) then null else _.first(docs).value
     cb err, doc
