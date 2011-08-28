@@ -21,7 +21,7 @@ class Editor extends Backbone.View
       @editor.getSession().setValue slide.get "html"
       # console.log "changed", JSON.stringify @model.attributes
 
-    if @model.get "id" 
+    if @model.get "id"
       @model.fetch
         success: =>
           @trigger 'init', @
@@ -64,7 +64,7 @@ class Preview extends Backbone.View
     console.log "RELOADING PREVIEW", @id
     @iframe.attr "src", ""
     @iframe.attr "src", "/view/#{ @id }"
-    $.jGrowl("Saved and reloading preview now")
+    utils.msg.info "Saved and reloading preview now"
 
 # Refactor to listen to model's init and change events?
 # class Links extends Backbone.View
@@ -98,19 +98,10 @@ class FLIPS.Workspace extends Backbone.Router
   initEditor: (model) ->
     @editor = new Editor model: model
     
-    init = =>
-      id = model.get "id"
-      @preview.id = id
-      @preview.reload()
-      
-      # @links.id = id
-      # @links.render
-      
-    
     @editor.bind "init", =>
       @preview.id = model.get "id"
       @preview.reload()
-    
+
     model.bind "saved", =>
       @preview.id = model.get "id"
       @preview.reload()

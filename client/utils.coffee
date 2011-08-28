@@ -31,14 +31,14 @@ utils.mock = """<div class="slide" id="title-slide">
 
 utils.getSocket = -> io.connect window.location.origin
 
-class LightBox extends Backbone.View
+class Messaging extends Backbone.View
 
   show: (type, msg, modal) ->
     msg = "#{ type } #{ msg }"
     if modal
       alert msg
     else
-      console.log msg
+      $.jGrowl msg
 
   info: (msg, modal) -> @show "INFO", msg, modal
   warning: (msg, modal) -> @show "WARNING", msg, modal
@@ -48,4 +48,4 @@ class LightBox extends Backbone.View
 
 
 $ ->
-  utils.msg = new LightBox
+  utils.msg = new Messaging
