@@ -94,8 +94,8 @@ class Links extends Backbone.View
 
   constructor: (opts) ->
     super
-    @publicLink = @$('.public_link a').hrefTargetTop()
-    @remoteLink = @$('#remote_link').hrefTargetTop()
+    @publicLink = @$('.public_link a')
+    @remoteLink = @$('#remote_link')
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
 
