@@ -4,12 +4,13 @@
 
 1. Manage should always tell to which slide to change to. Not next!
 1. bit.ly integration
-1. Password for manage view
+1. Password for manage views
 1. Reload public view  using socket.io
 1. Manage conflicts. What if same revision is saved twice?
 1. Make it look nice
 1. Remove line numbers from editor
 1. Prevent JavaScript insertion
+1. Refactor views to use render pattern
 
 ## Nice to have
 
