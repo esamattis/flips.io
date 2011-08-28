@@ -16,9 +16,16 @@ class Editor extends Backbone.View
 
     @initAce()
 
+    @model.bind "initialfetch",  =>
+      console.log "settting HTML"
+      @removeUnsavedNotification()
+      @setEditorContents @model.get "html"
+
+      @editor.getSession().on "change", =>
+        console.log "CHANGE"
+        @showUnsavedNotification()
 
     @model.bind "change", (slide) =>
-       @setEditorContents slide.get "html"
 
     if @model.get "id"
       @model.fetch
@@ -34,9 +41,10 @@ class Editor extends Backbone.View
     @editor = ace.edit "editor"
     @editor.setShowPrintMargin false
     HTMLmode = require("ace/mode/html").Mode
-    @editor.getSession().setTabSize(2);
-    # @editor.getSession().setUseWrapMode(true);
-    @editor.getSession().setMode(new HTMLmode())
+    session = @editor.getSession()
+    session.setTabSize(2);
+    # session.setUseWrapMode(true);
+    session.setMode(new HTMLmode())
 
 
     # Hide the line numbering, doesn't work perfectly
@@ -60,6 +68,10 @@ class Editor extends Backbone.View
     @model.get "id"
 
 
+  showUnsavedNotification: ->
+    @saveButton.text "Save*"
+  removeUnsavedNotification: ->
+    @saveButton.text "Save"
 
   save: ->
     html = @editor.getSession().getValue()
@@ -67,6 +79,7 @@ class Editor extends Backbone.View
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
+        @removeUnsavedNotification()
 
         if not @hasEditUrl()
           window.location.hash = "#edit/#{ @model.get("id") }"
