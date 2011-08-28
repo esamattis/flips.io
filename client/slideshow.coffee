@@ -4,10 +4,6 @@ utils = NS "FLIPS.utils"
 SlideShow = FLIPS.models.SlideShow
 
 
-# next slide
-# prev
-# goto
-# reload
 
 class views.SlideShowView extends Backbone.View
   el: '.deck-container'
@@ -28,9 +24,10 @@ class views.SlideShowView extends Backbone.View
         @model.bind "change", _.once =>
           @_connectToRemote()
 
-    @socket.on "command", (cmd) =>
-      console.log "got cmd", cmd
-      @[cmd]?()
+    @socket.on "command", (ob) =>
+      console.log "got cmd", ob.args
+      ob.args ?= []
+      @[ob.name]?.apply this, ob.args
 
     @model.bind "change", =>
       @render()

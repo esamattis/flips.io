@@ -63,11 +63,9 @@ class Editor extends Backbone.View
 
   save: ->
     html = @editor.getSession().getValue()
-    # console.log "saving", JSON.stringify @model.attributes
     @model.set html: html
     @model.save null,
       success: (e) =>
-        utils.msg.info "saved #{ @model.get "id" }"
         @model.trigger "saved", @model
 
         if not @hasEditUrl()
@@ -85,6 +83,7 @@ class Preview extends Backbone.View
 
   constructor: (opts) ->
     super
+    @socket = utils.getSocket()
     @iframe = @$("iframe")
     @model.bind "change:id", => @reload()
     @model.bind "saved", => @reload()
@@ -94,9 +93,16 @@ class Preview extends Backbone.View
 
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
-    @iframe.attr "src", ""
-    @iframe.attr "src", "/view/#{ @model.id }"
-    utils.msg.info "Saved and reloading preview now"
+    if @iframe.attr("src") is "/initial"
+      @iframe.attr "src", "/view/#{ @model.id }"
+      console.log "setting iframe to real url #{ @iframe.attr "src" }"
+    else
+      console.log "reloading iframe via socket"
+      @socket.emit "manage",
+        target: @model.get "id"
+        name: "reload"
+
+
 
 # Refactor to listen to model's init and change events?
 class Links extends Backbone.View
@@ -105,14 +111,14 @@ class Links extends Backbone.View
   constructor: (opts) ->
     super
     @publicLink = @$('.public_link a')
-    @remoteLink = @$('#remote_link')
+    @remoteLink = @$('.remote_link a')
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
 
   render: ->
     console.log "RENDERING LINKS"
-    @publicLink.attr('href', "/view/#{@model.id}").show()
-    @remoteLink.attr('href', "/r/#{@model.id}").show()
+    @publicLink.attr('href', "/view/#{@model.id}").show "slow"
+    @remoteLink.attr('href', "/r/#{@model.id}").show "slow"
 
 class FLIPS.Workspace extends Backbone.Router
 
