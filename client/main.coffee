@@ -12,6 +12,9 @@ class Editor extends Backbone.View
   constructor: (opts) ->
     super
     @saveButton = $ "#save"
+    @saveButton.tipsy
+      gravity: 'n',
+      opacity: 1
     @saveButton.click => @save()
 
     @initAce()
@@ -121,6 +124,14 @@ class Links extends Backbone.View
     super
     @publicLink = @$('.public_link a')
     @remoteLink = @$('.remote_link a')
+    
+    @publicLink.tipsy
+      gravity: 'n',
+      opacity: 1
+    @remoteLink.tipsy
+      gravity: 'n',
+      opacity: 1
+    
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
 
@@ -136,7 +147,8 @@ class Password extends Backbone.View
     super
     
     @$('label').tipsy
-      gravity: 's'
+      gravity: 'n',
+      opacity: 1
     
     @toggle = @$('#toggle_password')
     @hidden = @$('#pass')
