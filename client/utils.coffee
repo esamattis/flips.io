@@ -1,8 +1,12 @@
 
+utils = NS "FLIPS.utils"
 S4 = ->
   (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 
-utils = NS "FLIPS.utils"
+if not window.console?.log?
+  window.console =
+    log: ->
+
 
 utils.guidGenerator = ->
   (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
@@ -33,6 +37,13 @@ utils.mock = """<div class="slide">
   </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
+
+log = console.log
+console.log = (msg, others...) ->
+  msg = "#{ window.location.href }: #{ msg }"
+  others.unshift msg
+  log.apply this, others
+
 
 class Messaging extends Backbone.View
 
