@@ -31,7 +31,7 @@ class Editor extends Backbone.View
     @editor.setShowPrintMargin false
     HTMLmode = require("ace/mode/html").Mode
     @editor.getSession().setTabSize(2);
-    @editor.getSession().setUseWrapMode(true);
+    # @editor.getSession().setUseWrapMode(true);
     @editor.getSession().setMode(new HTMLmode())
 
 
