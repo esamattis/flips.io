@@ -126,8 +126,9 @@ class Links extends Backbone.View
     @model.bind "initialfetch", => @render()
 
   render: ->
-    @publicLink.attr('href',@model.getPresentationURL()).show "slow"
-    @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
+    if @model.get "id"
+      @publicLink.attr('href',@model.getPresentationURL()).show "slow"
+      @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
 
 class FLIPS.Workspace extends Backbone.Router
 
