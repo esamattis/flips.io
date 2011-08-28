@@ -3,7 +3,7 @@ fs = require "fs"
 urlshortener = require "./urlshortener"
 
 
-filepath = __dirname + "sequence"
+filepath = __dirname + "/sequence"
 current = null
 last = null
 
