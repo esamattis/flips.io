@@ -5,7 +5,15 @@
         a Flips.io
 
 .toolbar
-  button.btn.primary#save Save
+  .save_button.item
+    button.btn.primary#save Save
+
+  .password.item
+    label(for="pass") Remote password
+    input.large#pass(type="text")
+
+  .public_link.item
+    a(href="foobar") public link
 
 
 .edit_view
@@ -16,8 +24,10 @@
 .preview
   iframe(frameborder="0", src="/initial")
 
+.about
+  :markdown
+    Flips.io was an entry in [Node Knockout 2011](http://nodeknockout.com/).
 
-#links
-  #public_link
-  #remote_link
+    TODO: Vote button here
+
 
