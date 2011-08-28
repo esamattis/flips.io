@@ -67,7 +67,6 @@ class Editor extends Backbone.View
   getDocId: ->
     @model.get "id"
 
-
   showUnsavedNotification: ->
     @saveButton.text "Save*"
   removeUnsavedNotification: ->
@@ -133,6 +132,28 @@ class Links extends Backbone.View
     @publicLink.attr('href', "/view/#{@model.id}").show "slow"
     @remoteLink.attr('href', "/r/#{@model.id}").show "slow"
 
+class Password extends Backbone.View
+  el: '.password'
+  
+  constructor: (opts) ->
+    super
+    @toggle = @$('#toggle_password')
+    @hidden = @$('#pass')
+    @plain = @$('#pass_clear').hide()
+    @isPlainText = false
+    
+    @toggle.click (e) =>
+      if @isPlainText
+        @hidden.val(@plain.hide().val()).show().focus()
+        @toggle.text('Show')
+      else
+        @plain.val(@hidden.hide().val()).show().focus()
+        @toggle.text('Hide')
+      
+      @isPlainText = !@isPlainText
+            
+      e.preventDefault()
+
 class FLIPS.Workspace extends Backbone.Router
 
   routes:
@@ -153,6 +174,8 @@ class FLIPS.Workspace extends Backbone.Router
     @preview = new Preview
       el: ".preview"
       model: model
+      
+    @password = new Password
 
 
   edit: (id) ->
