@@ -89,19 +89,20 @@ class Preview extends Backbone.View
     utils.msg.info "Saved and reloading preview now"
 
 # Refactor to listen to model's init and change events?
-# class Links extends Backbone.View
-#   el: '#links'
-#
-#   constructor: (opts) ->
-#     super
-#
-#     @id = opts.id
-#     @publicLink = @$('#public_link')
-#     @remoteLink = @$('#remote_link')
-#
-#   render: ->
-#     @publicLink.attr('href', "/view/#{@id}").show()
-#     @remoteLink.attr('href', "/r/#{@id}").show()
+class Links extends Backbone.View
+  el: '.toolbar'
+
+  constructor: (opts) ->
+    super
+    @publicLink = @$('.public_link a').hrefTargetTop()
+    @remoteLink = @$('#remote_link').hrefTargetTop()
+    @model.bind "change:id", => @render()
+    @model.bind "initialfetch", => @render()
+
+  render: ->
+    console.log "RENDERING LINKS"
+    @publicLink.attr('href', "/view/#{@model.id}").show()
+    @remoteLink.attr('href', "/r/#{@model.id}").show()
 
 class FLIPS.Workspace extends Backbone.Router
 
@@ -113,6 +114,9 @@ class FLIPS.Workspace extends Backbone.Router
   initViews: (opts={}) ->
     console.log "initing views"
     model = new SlideShowModel opts
+
+    @links = new Links
+      model: model
 
     @editor = new Editor
       model: model

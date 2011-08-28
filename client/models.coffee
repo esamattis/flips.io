@@ -19,11 +19,6 @@ class models.SlideShowModel extends Backbone.Model
       console.log "no id for model. setting default"
       @set html: utils.mock
 
-    @bind "init", ->
-      console.log "init"
-    @bind "change", ->
-      console.log "change"
-
 
   toJSON: ->
     html: @get "html"
