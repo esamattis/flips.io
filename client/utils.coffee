@@ -49,8 +49,8 @@ utils.mock = """<div class="slide">
     <h2>Learn more</h2>
     <ul>
       <div class="slide">
-        <li><a href="http://flips.io/#edit/k">Another Flips.io presentation</a></li>
-        <li><a href="http://imakewebthings.github.com/deck.js/introduction/">Deck.js presentation</a></li>
+        <li><a href="http://flips.io/#edit/k" target="_blank">Another Flips.io presentation</a></li>
+        <li><a href="http://imakewebthings.github.com/deck.js/introduction/" target="_blank">Deck.js presentation</a></li>
       </div>
     </ul>
 
