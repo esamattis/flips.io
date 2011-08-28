@@ -13,8 +13,16 @@ popBackboneId = (ob) ->
   delete ob.id
   id
 
+urlId = 1
+
 
 # Routes
+# http://localhost:5984/flips/_design/slides/_view/urlIds?key=3
+app.get "/urls/:urlId", (req, res) ->
+  res.contentType 'json'
+  console.log "sdf", req.params.urlId
+  db.getDocumentByUrlId req.params.urlId, (err, doc) ->
+    res.end JSON.stringify doc
 
 app.get '/', (req, res) ->
   res.exec ->
@@ -27,7 +35,8 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
-  # console.log "POST", req.body
+
+  req.body.shortUrlId = ++urlId
 
   db.save req.body, (err, doc) ->
     if err
