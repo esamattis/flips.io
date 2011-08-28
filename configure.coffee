@@ -30,6 +30,7 @@ app.configure ->
   app.shareFs __dirname + "/client/vendor/underscore.js"
   app.shareFs __dirname + "/client/vendor/backbone.js"
   app.shareFs __dirname + "/client/vendor/jquery.jgrowl.js"
+  app.shareFs __dirname + "/client/vendor/jquery.tipsy.js"
 
   app.shareFs __dirname + "/client/namespace.js"
   app.shareFs __dirname + "/client/utils.coffee"

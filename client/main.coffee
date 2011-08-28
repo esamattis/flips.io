@@ -134,6 +134,10 @@ class Password extends Backbone.View
   
   constructor: (opts) ->
     super
+    
+    @$('label').tipsy
+      gravity: 's'
+    
     @toggle = @$('#toggle_password')
     @hidden = @$('#pass')
     @plain = @$('#pass_clear').hide()

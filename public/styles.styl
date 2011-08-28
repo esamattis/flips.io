@@ -18,6 +18,7 @@ body
   border-width 0px 0px 5px 0px
   .save_button
     float left
+    margin-right: 20px
 
   .password
     float left
@@ -28,8 +29,11 @@ body
     display none
 
   .public_link, .remote_link
+    position relative
+    top 5px
     float right
-    margin-right 3em
+    margin-right 50px
+    display inline
 
 .edit_view
   position absolute
@@ -37,7 +41,6 @@ body
   bottom 0px
   left 0px
   right 0px
-  // border 2px solid red
 
 #editor
   width 50%
@@ -46,6 +49,7 @@ body
 button.save
   margin-top 420px
   margin-left: 20px
+  margin-right: 20px
 
 
 .preview iframe
@@ -60,5 +64,11 @@ button.save
   top 600px
   left 50%
   padding 2em
-
-
+  
+.tip
+  border-bottom-color #ccc
+  border-bottom-style dashed
+  border-bottom-width 1px
+  width: auto
+  position: relative
+  top: -2px

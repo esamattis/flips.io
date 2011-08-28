@@ -9,16 +9,16 @@
     button.btn.primary#save Save
 
   .password.item
-    label(for="pass") Remote password
+    label.tip(for="pass", original-title="Use this to protect remote controlling.") Remote password
     input.large#pass(type="password")
     input.large#pass_clear(type="text")
     a#toggle_password(href="#", style="margin-left: 5px;") Show
-
+  
   .remote_link.item.link
     a(href="#", target="_blank") Remote
 
   .public_link.item.link
-    a(href="#", target="_blank") Presentation view
+    a(href="#", target="_blank") Presentation View
 
 
 .edit_view
