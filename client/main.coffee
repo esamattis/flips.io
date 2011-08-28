@@ -1,7 +1,10 @@
-$ = jQuery
 
 utils = NS "FLIPS.utils"
 
+# $ ->
+#   $(".ask_secret").lightbox_me
+#     closeClick: false
+# 
 
 SlideShowModel = FLIPS.models.SlideShowModel
 
@@ -12,6 +15,8 @@ class Editor extends Backbone.View
     super
 
     @secret = new Secret
+    @secret.bind "change", =>
+      @showUnsavedNotification()
 
     @saveButton = $ "#save"
     @saveButton.tipsy
@@ -28,6 +33,7 @@ class Editor extends Backbone.View
         @hideUnsavedNotification()
 
       @setEditorContents @model.get "html"
+      @secret.setSecret @model.get "secret"
 
       @editor.getSession().on "change", =>
         console.log "CHANGE"
@@ -77,7 +83,9 @@ class Editor extends Backbone.View
     html = @editor.getSession().getValue()
     @model.set
       html: html,
-      secret: @secret.secret()
+      secret: @secret.getSecret()
+
+
     @model.save null,
       success: (e) =>
         @model.trigger "saved", @model
@@ -158,6 +166,9 @@ class Secret extends Backbone.View
     @plain = @$('#secret_clear').hide()
     @isPlainText = false
 
+    @hidden.edited => @trigger "change"
+    @plain.edited => @trigger "change"
+
     @toggle.click (e) =>
       if @isPlainText
         @hidden.val(@plain.hide().val()).show().focus()
@@ -170,7 +181,11 @@ class Secret extends Backbone.View
 
       e.preventDefault()
 
-  secret: ->
+  setSecret: (secret) ->
+    @plain.val secret
+    @hidden.val secret
+
+  getSecret: ->
     if @isPlainText
       return @plain.val()
     else

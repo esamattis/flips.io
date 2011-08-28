@@ -24,6 +24,7 @@ class models.SlideShowModel extends Backbone.Model
     "/#edit/#{@get "id"}"
 
   toJSON: ->
+    secret: @get "secret"
     html: @get "html"
     id: @get "id"
 
