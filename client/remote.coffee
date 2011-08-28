@@ -2,9 +2,11 @@ views = NS "FLIPS.views"
 utils = NS "FLIPS.utils"
 
 class views.Remote extends Backbone.View
+  el: ".remote"
 
   constructor: ->
     super
+    @currentEl = @$ "#current"
     @id = _.last window.location.pathname.split("/")
     @socket = utils.getSocket()
     @current = 0
@@ -18,6 +20,7 @@ class views.Remote extends Backbone.View
           target: @id
           name: "goto"
           args: [++@current]
+        @render()
 
       $("#prev").click (e) =>
         console.log "preving"
@@ -25,8 +28,11 @@ class views.Remote extends Backbone.View
           target: @id
           name: "goto"
           args: [--@current]
+        @render()
 
 
+  render: ->
+    @currentEl.text @current
 
 
 

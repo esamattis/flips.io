@@ -97,7 +97,7 @@ app.get "/initial", (req, res) ->
 
 app.get "/r/:id", (req, res) ->
   res.exec ->
-    new FLIPS.views.Remote
+    $ -> new FLIPS.views.Remote
 
   res.render "remote"
     layout: false
