@@ -17,11 +17,14 @@ utils.mock = """<div class="slide">
 
   <div class="slide">
     <h2>Create Slide Show</h2>
-    <h3>Add slides</h3>
-    <p>Slide content is simple HTML.</p>
-    <pre>&lt;div class="slide"&gt;
-    &lt;h1&gt;Hello World!&lt;/h1&gt;
-  &lt;/div&gt;</pre>
+    <div class="slide">
+      <h3>Add slides</h3>
+      <p>Slide content is simple HTML.</p>
+    </div>
+    <div class="slide">
+      <h3>Click save</h3>
+      <p>The Slide Show is saved and public URL becomes available.</p>
+    </div>
   </div>
 
   <div class="slide">
@@ -30,12 +33,17 @@ utils.mock = """<div class="slide">
   </div>
 
   <div class="slide">
-    <h2>Powered by</h2>
-    <a href="http://imakewebthings.github.com/deck.js/" target="_blank"><img src="http://i.imgur.com/J8ReH.png" />
-    <a href="http://ajaxorg.github.com/ace/" target="_blank"><img src="http://i.imgur.com/M1zIC.png" /></a>
-    <a href="http://nodejs.org/" target="_blank"><img src="http://i.imgur.com/xdNvu.png" /></a>
-    <a href="http://couchdb.apache.org/" target="_blank"><img src="http://i.imgur.com/QnwKY.png" /></a>
-    <p align="center">also <a href="http://socket.io/" target="_blank">Socket.IO</a>, <a href="http://expressjs.com/" target="_blank">Express</a>, <a href="http://documentcloud.github.com/backbone/" target="_blank">Backbone.js</a> and many more</p>
+    <h2>Learn more</h2>
+    <ul>
+      <div class="slide">
+        <li><a href="#">Flips.io presentation</a></li>
+        <li><a href="http://imakewebthings.github.com/deck.js/introduction/">Deck.js presentation</a></li>
+      </div>
+    </ul>
+
+    <div class="slide">
+      <h3>Thanks and don't forget to vote! :)</h3>
+    </div>
   </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
