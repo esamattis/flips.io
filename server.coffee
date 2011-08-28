@@ -3,9 +3,12 @@
 _  = require 'underscore'
 _.mixin require 'underscore.string'
 
+
+{alphabet} = require "./urlshortener"
 {app, io} = require "./configure"
 module.exports = app
 db = require "./db"
+urlgen = require "./shorturlgenerator"
 
 
 popBackboneId = (ob) ->
@@ -13,8 +16,16 @@ popBackboneId = (ob) ->
   delete ob.id
   id
 
+urlId = 1
+
 
 # Routes
+# http://localhost:5984/flips/_design/slides/_view/urlIds?key=3
+app.get "/urls/:url", (req, res) ->
+  res.contentType 'json'
+  console.log "sdf", req.params.url
+  db.getDocByURL req.params.url, (err, doc) ->
+    res.end JSON.stringify doc
 
 app.get '/', (req, res) ->
   res.exec ->
@@ -27,15 +38,15 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
-  # console.log "POST", req.body
+  urlgen.getNext (url) ->
 
-  db.save req.body, (err, doc) ->
-    if err
-      console.log "error posting", req.body, err
-      res.send 501
-      res.end JSON.stringify err
-      return
-    res.end JSON.stringify doc
+    db.save url, req.body, (err, doc) ->
+      if err
+        console.log "error posting", req.body, err
+        res.send 501
+        res.end JSON.stringify err
+        return
+      res.end JSON.stringify doc
 
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'
@@ -73,7 +84,7 @@ app.get "/slides/:id", (req, res) ->
     res.end JSON.stringify doc
 
 
-app.get "/view/:id", (req, res) ->
+app.get new RegExp("^/([#{ alphabet }]+$)"), (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView
@@ -84,7 +95,7 @@ app.get "/view/:id", (req, res) ->
     layout: false
 
 
-app.get "/initial", (req, res) ->
+app.get "/start/initial", (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView

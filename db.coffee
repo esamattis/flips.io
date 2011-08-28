@@ -29,6 +29,17 @@ db.getAlways = (id, initdoc, cb) ->
     else 
       cb? null, doc
 
+db.save '_design/slides',
+  url:
+    map: (doc) ->
+      if doc.url
+        emit doc.url, doc
+
+db.getDocByURL = (url, cb) ->
+  db.view "slides/url", key: url,  (err, docs) ->
+    console.log "GETC", err, docs
+    doc = if _.isEmpty(docs) then null else _.first(docs).value
+    cb err, doc
 
 init = ->
   console.log "Connected to CouchDB"

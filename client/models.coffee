@@ -15,7 +15,7 @@ class models.SlideShowModel extends Backbone.Model
         target: @
 
   getPresentationURL: ->
-    "/view/#{@get "id"}"
+    "/#{@get "id"}"
 
   getRemoteURL: ->
     "/r/#{@get "id"}"
@@ -25,7 +25,6 @@ class models.SlideShowModel extends Backbone.Model
 
   toJSON: ->
     html: @get "html"
-    secret: @get "secret"
     id: @get "id"
 
   fetch: (opts={}) ->

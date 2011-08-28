@@ -10,9 +10,9 @@ class Editor extends Backbone.View
 
   constructor: (opts) ->
     super
-    
+
     @secret = new Secret
-    
+
     @saveButton = $ "#save"
     @saveButton.tipsy
       gravity: 's',
@@ -75,8 +75,8 @@ class Editor extends Backbone.View
 
   save: ->
     html = @editor.getSession().getValue()
-    @model.set 
-      html: html, 
+    @model.set
+      html: html,
       secret: @secret.secret()
     @model.save null,
       success: (e) =>
@@ -108,7 +108,7 @@ class Preview extends Backbone.View
 
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
-    if @iframe.attr("src") is "/initial"
+    if @iframe.attr("src") is "/start/initial"
       @iframe.attr "src", @model.getPresentationURL()
       console.log "setting iframe to real url #{ @iframe.attr "src" }"
     else
@@ -127,14 +127,14 @@ class Links extends Backbone.View
     super
     @publicLink = @$('.public_link a')
     @remoteLink = @$('.remote_link a')
-    
+
     @publicLink.tipsy
       gravity: 's',
       opacity: 1
     @remoteLink.tipsy
       gravity: 's',
       opacity: 1
-    
+
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
 
@@ -145,19 +145,19 @@ class Links extends Backbone.View
 
 class Secret extends Backbone.View
   el: '.secret'
-  
+
   constructor: (opts) ->
     super
-    
+
     @$('label').tipsy
       gravity: 's',
       opacity: 1
-    
+
     @toggle = @$('#toggle_secret')
     @hidden = @$('#secret')
     @plain = @$('#secret_clear').hide()
     @isPlainText = false
-    
+
     @toggle.click (e) =>
       if @isPlainText
         @hidden.val(@plain.hide().val()).show().focus()
@@ -165,11 +165,11 @@ class Secret extends Backbone.View
       else
         @plain.val(@hidden.hide().val()).show().focus()
         @toggle.text('Hide')
-      
+
       @isPlainText = !@isPlainText
-            
+
       e.preventDefault()
-      
+
   secret: ->
     if @isPlainText
       return @plain.val()
