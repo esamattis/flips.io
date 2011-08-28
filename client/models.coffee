@@ -14,6 +14,14 @@ class models.SlideShowModel extends Backbone.Model
         source: source
         target: @
 
+  getPresentationURL: ->
+    "/view/#{@get "id"}"
+
+  getRemoteURL: ->
+    "/r/#{@get "id"}"
+
+  getEditURL: ->
+    "/#edit/#{@get "id"}"
 
   toJSON: ->
     html: @get "html"

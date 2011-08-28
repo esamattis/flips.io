@@ -6,26 +6,42 @@ class views.Remote extends Backbone.View
 
   constructor: ->
     super
-    @currentEl = @$ "#current"
-    @id = _.last window.location.pathname.split("/")
-    @socket = utils.getSocket()
     @current = 0
+    @currentEl = @$ "#current"
+    @maxEl = @$ "#max"
 
+    @model.bind "initialfetch", =>
+      slideHTML = @model.get "html"
+      slideCount = $("<div>").html(slideHTML).find(".slide").size()
+      @max = slideCount
+      @render()
+      @connectToSocketIo()
+
+    @model.fetch()
+    @socket = utils.getSocket()
+
+
+  connectToSocketIo: ->
     @socket.on "connect", =>
-      console.log "connected"
+      utils.msg.info "Connected to server"
 
       $("#next").click (e) =>
-        console.log "nexting"
+        if @current is @max-1
+          utils.msg.error "Last slide"
+          return
+
         @socket.emit "manage",
-          target: @id
+          target: @model.get "id"
           name: "goto"
           args: [++@current]
         @render()
 
       $("#prev").click (e) =>
-        console.log "preving"
+        if @current is 0
+          utils.msg.error "First slide"
+          return
         @socket.emit "manage",
-          target: @id
+          target: @model.get "id"
           name: "goto"
           args: [--@current]
         @render()
@@ -33,6 +49,9 @@ class views.Remote extends Backbone.View
 
   render: ->
     @currentEl.text @current
+    @maxEl.text @max
+    console.log "setting #{ @current }"
+    @currentEl.text @current+1
 
 
 

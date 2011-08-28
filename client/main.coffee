@@ -104,7 +104,7 @@ class Preview extends Backbone.View
   reload: ->
     console.log "RELOADING PREVIEW", @model.id
     if @iframe.attr("src") is "/initial"
-      @iframe.attr "src", "/view/#{ @model.id }"
+      @iframe.attr "src", @model.getPresentationURL()
       console.log "setting iframe to real url #{ @iframe.attr "src" }"
     else
       console.log "reloading iframe via socket"
@@ -126,9 +126,8 @@ class Links extends Backbone.View
     @model.bind "initialfetch", => @render()
 
   render: ->
-    console.log "RENDERING LINKS"
-    @publicLink.attr('href', "/view/#{@model.id}").show "slow"
-    @remoteLink.attr('href', "/r/#{@model.id}").show "slow"
+    @publicLink.attr('href',@model.getPresentationURL()).show "slow"
+    @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
 
 class FLIPS.Workspace extends Backbone.Router
 
