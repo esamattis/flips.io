@@ -91,6 +91,9 @@ app.get "/r/:id", (req, res) ->
   res.render "remote"
     layout: false
 
+app.get "/initial", (req, res) ->
+  res.render "initial"
+    layout: false
 
 io.sockets.on 'connection', (socket) ->
   console.log "got socket"
