@@ -16,24 +16,26 @@ utils.mock = """<div class="slide">
   </div>
 
   <div class="slide">
-    <h2>How to Make a Slide?</h2>
-    <ol>
-      <li>
-        <h3>Add a slide</h3>
-        <p>&lt;div class="slide"&gt;...&lt;/div&gt;</p>
-        <p>Slide content is simple HTML.</p>
-      </li>
-    </ol>
-  </div>
-
-  <div class="slide">
-    <h2>Embed Pics</h2>
-    <img src="http://i.imgur.com/1GJOC.jpg" alt="" title="Hosted by imgur.com" />
+    <h2>Create Slide Show</h2>
+    <h3>Add slides</h3>
+    <p>Slide content is simple HTML.</p>
+    <pre><p>&lt;div class="slide"&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;/div&gt;</p></pre>
   </div>
 
   <div class="slide">
     <h2>Embed video</h2>
-    <iframe width="560" height="345" src="http://www.youtube.com/embed/6Io3aSEkG_s" frameborder="0" allowfullscreen></iframe>
+    <iframe width="420" height="345" src="http://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="slide">
+    <h2>Powered by</h2>
+    <a href="http://imakewebthings.github.com/deck.js/" target="_blank"><img src="http://i.imgur.com/J8ReH.png" />
+    <a href="http://ajaxorg.github.com/ace/" target="_blank"><img src="http://i.imgur.com/M1zIC.png" /></a>
+    <a href="http://nodejs.org/" target="_blank"><img src="http://i.imgur.com/xdNvu.png" /></a>
+    <a href="http://couchdb.apache.org/" target="_blank"><img src="http://i.imgur.com/QnwKY.png" /></a>
+    <p align="center">also <a href="http://socket.io/" target="_blank">Socket.IO</a>, <a href="http://documentcloud.github.com/backbone/" target="_blank">Backbone.js</a> and many more</p>
   </div>"""
 
 utils.getSocket = -> io.connect window.location.origin
