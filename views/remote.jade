@@ -2,7 +2,11 @@
 html
   head
     title Remote
+    meta(content='True', name='HandheldFriendly')
+    meta(content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;', name='viewport')
+    meta(name="viewport", content="width=device-width")
 
+    link(rel='stylesheet', href='/stylesheets/bootstrap-1.1.1.min.css')
     link(rel='stylesheet', href='/remote.css')
     link(rel='stylesheet', href='/stylesheets/jquery.jgrowl.css')
 
@@ -16,14 +20,16 @@ html
         span /
         span#max ?
 
+
       .buttons
-        button#prev prev
-        button#next next
+        button.btn.primary#prev prev
+        button.btn.primary#next next
+
+      .secret
+        label(for="secretInput") Your secret if any
+        input.large#secretInput
 
       #speakernote
-      .secret
-        label(for="secretInput")
-        input.large#secretInput
 
     script(type="text/javascript")
       var _gaq = _gaq || [];

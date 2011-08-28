@@ -72,3 +72,4 @@ class views.Remote extends Backbone.View
     @currentEl.text @current+1
 
     @speakernote.html($(@html).find(".speakernote:eq(#{@current})"))
+
