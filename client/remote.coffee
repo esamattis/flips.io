@@ -9,10 +9,19 @@ class views.Remote extends Backbone.View
     @current = 0
     @currentEl = @$ "#current"
     @maxEl = @$ "#max"
+    @speakernote = $ "#speakernote"
 
     @model.bind "initialfetch", =>
-      slideHTML = @model.get "html"
-      slideCount = $("<div>").html(slideHTML).find(".slide").size()
+      slideShowHTML = @model.get "html"
+      
+      # todo: refactor me
+      @html = slideShowHTML
+      
+      @slides = $("<div>").html(slideShowHTML).find(".slide")
+      slideCount = @slides.size()
+      
+      # @speakernote.text("dfsfdd")
+      
       @max = slideCount
       @render()
       @connectToSocketIo()
@@ -23,7 +32,7 @@ class views.Remote extends Backbone.View
 
   connectToSocketIo: ->
     @socket.on "connect", =>
-      utils.msg.info "Connected to server"
+      # utils.msg.info "Connected to server"
 
       $("#next").click (e) =>
         if @current is @max-1
@@ -52,9 +61,5 @@ class views.Remote extends Backbone.View
     @maxEl.text @max
     console.log "setting #{ @current }"
     @currentEl.text @current+1
-
-
-
-
-
-
+    
+    @speakernote.html($(@html).find(".speakernote:eq(#{@current})"))
