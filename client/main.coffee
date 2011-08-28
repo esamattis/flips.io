@@ -40,7 +40,6 @@ class Editor extends Backbone.View
         @showUnsavedNotification()
 
 
-    @model.fetch()
 
   setEditorContents: (code) ->
     @editor.getSession().setValue code
@@ -151,6 +150,23 @@ class Links extends Backbone.View
       @publicLink.attr('href',@model.getPresentationURL()).show "slow"
       @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
 
+
+class AskSecret extends Backbone.View
+  el: ".ask_secret"
+
+  constructor: ->
+    @button = @$ "button"
+    @input = @$ "input"
+
+    @button.click (e) =>
+      e.preventDefault()
+      $.cookies.set "secret", @input.val()
+      window.location.reload()
+
+  ask: ->
+    $(@el).lightbox_me
+      closeClick: false
+
 class Secret extends Backbone.View
   el: '.secret'
 
@@ -201,6 +217,9 @@ class FLIPS.Workspace extends Backbone.Router
     console.log "initing views"
     model = new SlideShowModel opts
 
+    @askSecret = new AskSecret
+      model: model
+
     @links = new Links
       model: model
 
@@ -210,6 +229,11 @@ class FLIPS.Workspace extends Backbone.Router
     @preview = new Preview
       el: ".preview"
       model: model
+
+    model.fetch()
+    model.bind "initialfetch", =>
+      if model.get "readOnly"
+        @askSecret.ask()
 
   edit: (id) ->
     console.log "EDIT ROUTE", id

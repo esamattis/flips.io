@@ -51,18 +51,26 @@ app.post "/slides", (req, res) ->
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'
 
-
   id = popBackboneId req.body
-  # console.log "PUT", req.body
 
-  db.save id, req.body, (err, doc) ->
-    if err
-      console.log "error updating", req.body, err
+  db.get id, (err, doc) ->
+    secret = doc.secret
+    if secret and secret isnt req.cookies.secret
+      console.log "CANNOT SAVE", id, secret, "!=", req.cookies.secret
       res.send 501
-      res.end JSON.stringify err
+      res.end JSON.stringify
+        error: 1
+        message: "wrong secret"
       return
 
-    res.end JSON.stringify doc
+    db.save id, req.body, (err, doc) ->
+      if err
+        console.log "error updating", req.body, err
+        res.send 501
+        res.end JSON.stringify err
+        return
+
+      res.end JSON.stringify doc
 
 
 app.get "/slides", (req, res) ->
@@ -80,6 +88,13 @@ app.get "/slides/:id", (req, res) ->
       res.send 501
       res.end JSON.stringify err
       return
+
+    secret = doc.secret
+    console.log "test db:", secret, "cookie:",  req.cookies.secret
+    if secret and req.cookies.secret isnt secret
+      doc.readOnly = true
+      delete doc.secret
+      console.log "Read only!", doc._id
 
     res.end JSON.stringify doc
 
@@ -105,6 +120,7 @@ app.get "/start/initial", (req, res) ->
     layout: false
 
 
+secretCache = {}
 
 app.get "/r/:id", (req, res) ->
   res.exec ->
