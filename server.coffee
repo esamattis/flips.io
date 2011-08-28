@@ -77,7 +77,7 @@ app.get "/view/:id", (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView
-        model: new FLIPS.models.SlideShow
+        model: new FLIPS.models.SlideShowModel
           id: _.last window.location.pathname.split("/")
 
   res.render "slideshow"
@@ -88,7 +88,7 @@ app.get "/initial", (req, res) ->
   res.exec ->
     $ ->
       window.slideShowView = new FLIPS.views.SlideShowView
-        model: new FLIPS.models.SlideShow
+        model: new FLIPS.models.SlideShowModel
 
   res.render "slideshow"
     layout: false

@@ -3,7 +3,7 @@ $ = jQuery
 utils = NS "FLIPS.utils"
 
 
-SlideShow = FLIPS.models.SlideShow
+SlideShowModel = FLIPS.models.SlideShowModel
 
 class Editor extends Backbone.View
   el: ".edit_view"
@@ -16,15 +16,19 @@ class Editor extends Backbone.View
 
     @initAce()
 
+
     @model.bind "change", (slide) =>
-      @editor.getSession().setValue slide.get "html"
-      # console.log "changed", JSON.stringify @model.attributes
+       @setEditorContents slide.get "html"
 
     if @model.get "id"
       @model.fetch
         success: =>
-          @trigger 'init', @
+          @model.trigger 'initialfetch', @
+    else
+      @setEditorContents @model.get "html"
 
+  setEditorContents: (code) ->
+    @editor.getSession().setValue code
 
   initAce: ->
     @editor = ace.edit "editor"
@@ -71,29 +75,34 @@ class Preview extends Backbone.View
 
   constructor: (opts) ->
     super
-    @id = opts.id
     @iframe = @$("iframe")
+    @model.bind "change:id", => @reload()
+    @model.bind "saved", => @reload()
+    @model.bind "initialfetch", =>
+      @reload()
+
 
   reload: ->
-    console.log "RELOADING PREVIEW", @id
+    console.log "RELOADING PREVIEW", @model.id
     @iframe.attr "src", ""
-    @iframe.attr "src", "/view/#{ @id }"
+    @iframe.attr "src", "/view/#{ @model.id }"
     utils.msg.info "Saved and reloading preview now"
 
 # Refactor to listen to model's init and change events?
-# class Links extends Backbone.View
-#   el: '#links'
-#
-#   constructor: (opts) ->
-#     super
-#
-#     @id = opts.id
-#     @publicLink = @$('#public_link')
-#     @remoteLink = @$('#remote_link')
-#
-#   render: ->
-#     @publicLink.attr('href', "/view/#{@id}").show()
-#     @remoteLink.attr('href', "/r/#{@id}").show()
+class Links extends Backbone.View
+  el: '.toolbar'
+
+  constructor: (opts) ->
+    super
+    @publicLink = @$('.public_link a').hrefTargetTop()
+    @remoteLink = @$('#remote_link').hrefTargetTop()
+    @model.bind "change:id", => @render()
+    @model.bind "initialfetch", => @render()
+
+  render: ->
+    console.log "RENDERING LINKS"
+    @publicLink.attr('href', "/view/#{@model.id}").show()
+    @remoteLink.attr('href', "/r/#{@model.id}").show()
 
 class FLIPS.Workspace extends Backbone.Router
 
@@ -101,38 +110,33 @@ class FLIPS.Workspace extends Backbone.Router
     "": "start"
     "edit/:id": "edit"
 
-  constructor: (opts) ->
-    super
+
+  initViews: (opts={}) ->
+    console.log "initing views"
+    model = new SlideShowModel opts
+
+    @links = new Links
+      model: model
+
+    @editor = new Editor
+      model: model
 
     @preview = new Preview
       el: ".preview"
+      model: model
 
-    # @links = new Links
-
-  initEditor: (model) ->
-    @editor = new Editor model: model
-
-    @editor.bind "init", =>
-      @preview.id = model.get "id"
-      @preview.reload()
-
-    model.bind "saved", =>
-      @preview.id = model.get "id"
-      @preview.reload()
 
   edit: (id) ->
-    console.log "edit", id
-    if @editor?.getDocId() isnt id
-      ss = new SlideShow
-        id: id
+    console.log "EDIT ROUTE", id
 
-      @initEditor ss
+    if @editor?.getDocId() isnt id
+      console.log "Id changed!, initing views"
+      @initViews id: id
 
 
   start: ->
-    console.log "start"
-    @initEditor new SlideShow
-    @editor.model.set html: utils.mock
+    console.log "START ROUTE"
+    @initViews()
 
 
 
