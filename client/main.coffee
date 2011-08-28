@@ -45,6 +45,16 @@ class Editor extends Backbone.View
     $(".ace_gutter").hide()
     $(".ace_scroller").css('width',  parseInt($(".ace_scroller").css('width')) + lineNumberWidth)
 
+    # Add save shortcut
+    canon = require('pilot/canon')
+    canon.addCommand
+      name: 'myCommand'
+      bindKey:
+        win: "Ctrl-S"
+        mac: "Command-S"
+        sender: 'editor'
+      exec: (env, args, request) =>
+        @save()
 
   getDocId: ->
     @model.get "id"
