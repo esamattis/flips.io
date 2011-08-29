@@ -14,6 +14,17 @@ class Editor extends Backbone.View
   constructor: (opts) ->
     super
 
+    HtmlMode = require('ace/mode/html').Mode
+    JadeMode = require('ace/mode/jade').Mode
+
+    @modes =
+      html: new HtmlMode()
+      jade: new JadeMode()
+
+    @modeEl = @$('#mode')
+    @modeEl.change =>
+      @setMode()
+
     @secret = new Secret
     @secret.bind "change", =>
       @showUnsavedNotification()
@@ -32,25 +43,29 @@ class Editor extends Backbone.View
       else
         @hideUnsavedNotification()
 
-      @setEditorContents @model.get "html"
+      @setEditorContents @model.get "code"
+      
+      @modeEl.val(@model.get "mode")
+      @setMode
+      
       @secret.setSecret @model.get "secret"
 
       @editor.getSession().on "change", =>
         console.log "CHANGE"
         @showUnsavedNotification()
 
-
+  setMode: ->
+    @editor.getSession().setMode(@modes[@modeEl.val()])
 
   setEditorContents: (code) ->
     @editor.getSession().setValue code
 
-  initAce: ->
+  initAce: =>
     @editor = ace.edit "editor"
     @editor.setShowPrintMargin false
-    HTMLmode = require("ace/mode/html").Mode
     session = @editor.getSession()
     session.setTabSize(2);
-    session.setMode(new HTMLmode())
+    @setMode('html')
 
 
     # Hide the line numbering, doesn't work perfectly
@@ -79,11 +94,13 @@ class Editor extends Backbone.View
     @saveButton.text "Save"
 
   save: ->
-    html = @editor.getSession().getValue()
+    code = @editor.getSession().getValue()
+    mode = @modeEl.val()
+    
     @model.set
-      html: html,
+      code: code,
+      mode: mode,
       secret: @secret.getSecret()
-
 
     console.log "sending save #{ document.cookie }"
     @model.save null,

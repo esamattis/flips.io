@@ -13,7 +13,7 @@ class views.SlideShowView extends Backbone.View
     @socket = utils.getSocket()
 
     if not @model.get "id"
-      @model.set html: utils.mock
+      @model.set code: utils.mock, mode: 'html'
       @render()
 
     @socket.on "connect", =>
@@ -52,5 +52,5 @@ class views.SlideShowView extends Backbone.View
     $.deck("go", slide)
 
   render: ->
-    $(@el).prepend @model.get "html"
+    $(@el).prepend @model.getHtml()
     $.deck(".slide")

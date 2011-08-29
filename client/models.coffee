@@ -12,6 +12,18 @@ class models.SlideShowModel extends Backbone.Model
         source: source
         target: @
 
+  getHtml: ->
+    mode = @get "mode"
+    code = @get "code"
+    if mode == "html"
+      return code
+    else if mode == "jade"
+      # todo:
+      # return jade.compile(code)()
+      return '<h1>TODO: This should be compiled from Jade</h1>'
+    else
+      console.log('should not happen')
+
   getPresentationURL: ->
     "/#{@get "id"}"
 
@@ -23,7 +35,9 @@ class models.SlideShowModel extends Backbone.Model
 
   toJSON: ->
     secret: @get "secret"
-    html: @get "html"
+    code: @get "code"
+    mode: @get "mode"
+    language: @get "language"
     id: @get "id"
 
   fetch: (opts={}) ->
@@ -34,7 +48,7 @@ class models.SlideShowModel extends Backbone.Model
 
     if not @get "id"
       console.log "using mock"
-      @set html: utils.mock
+      @set code: utils.mock
       @triggerInitialFetch "default"
       origCb? e
       opts.success @

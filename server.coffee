@@ -9,7 +9,7 @@ _.mixin require 'underscore.string'
 module.exports = app
 db = require "./db"
 urlgen = require "./shorturlgenerator"
-
+jade = require 'jade'
 
 popBackboneId = (ob) ->
   id = ob.id
@@ -173,9 +173,8 @@ io.sockets.on 'connection', (socket) ->
   socket.on "obey", (id) ->
     @join id
 
-
-
 if require.main is module
   app.listen(8000)
+
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env)
 

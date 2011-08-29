@@ -5,7 +5,6 @@ stylus = require 'stylus'
 nib = require 'nib'
 io = require 'socket.io'
 
-
 compile = (str, path) ->
   stylus(str).set("filename", path).use(nib())
 

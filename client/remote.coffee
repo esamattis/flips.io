@@ -13,7 +13,7 @@ class views.Remote extends Backbone.View
     @inputSecret = @$ "#secretInput"
 
     @model.bind "initialfetch", =>
-      slideShowHTML = @model.get "html"
+      slideShowHTML = @model.getHtml()
 
       # todo: refactor me
       @html = slideShowHTML
@@ -71,5 +71,5 @@ class views.Remote extends Backbone.View
     console.log "setting #{ @current }"
     @currentEl.text @current+1
 
-    @speakernote.html($(@html).find(".speakernote:eq(#{@current})"))
+    @speakernote.html($(@html).find(".note:eq(#{@current})"))
 
