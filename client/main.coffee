@@ -24,6 +24,7 @@ class Editor extends Backbone.View
     @modeEl = @$('#mode')
     @modeEl.change =>
       @setMode()
+      @showUnsavedNotification()
 
     @secret = new Secret
     @secret.bind "change", =>

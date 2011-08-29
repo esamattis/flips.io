@@ -18,13 +18,10 @@ class models.SlideShowModel extends Backbone.Model
     if mode == "html"
       return code
     else if mode == "jade"
-      # todo:
-      # return jade.compile(code)()
-      # debugger
       jade = require('jade')
       return jade.compile(code)()
     else
-      console.log('should not happen')
+      return '<script type="text/javascript">alert("should not happen");</script>'
 
   getPresentationURL: ->
     "/#{@get "id"}"
