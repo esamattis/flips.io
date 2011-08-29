@@ -21,11 +21,6 @@ class Editor extends Backbone.View
       html: new HtmlMode()
       jade: new JadeMode()
 
-    @modeEl = @$('#mode')
-    @modeEl.change =>
-      @setMode()
-      @showUnsavedNotification()
-
     @secret = new Secret
     @secret.bind "change", =>
       @showUnsavedNotification()
@@ -38,6 +33,11 @@ class Editor extends Backbone.View
 
     @initAce()
 
+    @modeEl = @$('#mode')
+    @modeEl.change =>
+      @setMode()
+      @showUnsavedNotification()
+
     @model.bind "initialfetch", (e) =>
       if e.source is "default"
         @showUnsavedNotification()
@@ -46,8 +46,9 @@ class Editor extends Backbone.View
 
       @setEditorContents @model.get "code"
       
+      alert(@model.get "mode")
       @modeEl.val(@model.get "mode")
-      @setMode
+      @setMode()
       
       @secret.setSecret @model.get "secret"
 
@@ -66,14 +67,14 @@ class Editor extends Backbone.View
     @editor.setShowPrintMargin false
     session = @editor.getSession()
     session.setTabSize(2);
-    @setMode('html')
+    @setMode
 
 
     # Hide the line numbering, doesn't work perfectly
     lineNumberWidth = parseInt($(".ace_scroller").css('left'))
     $(".ace_scroller").css('left', '0px')
     $(".ace_gutter").hide()
-    $(".ace_scroller").css('width',  parseInt($(".ace_scroller").css('width')) + lineNumberWidth)
+    $(".ace_scroller").css('width', parseInt($(".ace_scroller").css('width')) + lineNumberWidth)
 
     # Add save shortcut
     canon = require('pilot/canon')

@@ -58,6 +58,36 @@ utils.mock = """<div class="slide">
       <h3>Thanks and don't forget to vote! :)</h3>
     </div>
   </div>"""
+  
+utils.jadeMock = """.slide
+    h1 Getting Started with Flips.IO
+
+  .slide
+    h2 Create Slide Show
+
+    .slide
+      h3 Add slides
+      p Slides are basic HTML.
+
+    .slide
+      h3 Click save
+      p The Slide Show is saved and public URL becomes available.
+
+  .slide
+    h2 Example: Embed video
+    <iframe src="http://player.vimeo.com/video/14784101?portrait=0" width="500" height="290" frameborder="0"></iframe>
+
+  .slide
+    h2 Learn more
+    ul
+      .slide
+        li
+          a(href="http://flips.io/#edit/k", target="_blank") Another Flips.io presentation
+        li
+          a(href="http://imakewebthings.github.com/deck.js/introduction/", target="_blank") Deck.js presentation
+
+    .slide
+      h3 Thanks and don't forget to vote! :)"""
 
 utils.getSocket = -> io.connect window.location.origin
 
