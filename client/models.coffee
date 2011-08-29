@@ -20,7 +20,9 @@ class models.SlideShowModel extends Backbone.Model
     else if mode == "jade"
       # todo:
       # return jade.compile(code)()
-      return '<h1>TODO: This should be compiled from Jade</h1>'
+      # debugger
+      jade = require('jade')
+      return jade.compile(code)()
     else
       console.log('should not happen')
 
