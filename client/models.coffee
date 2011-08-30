@@ -20,9 +20,10 @@ class models.SlideShowModel extends Backbone.Model
         jade.compile(code)()
       catch e
         """
-        <div class="slide">
+        <div class="slide jade_error">
           <h2>Invalid Jade syntax</h2>
           <pre>#{ $('<div>').text(e.message).html() }</pre>
+          <a href="http://jade-lang.com/" target="_blank">What is Jade?</a>
         </div>
         """
 
