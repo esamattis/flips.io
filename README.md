@@ -1,4 +1,3 @@
-
 # Flips.io
 
 todo desc
@@ -6,15 +5,20 @@ todo desc
 
 # Developing
 
-Install deps:
+Fetch submodules
+
+    git submodule init
+    git submodule update
+
+Install deps
 
     npm install
 
-Run dev server:
+Run dev server
 
     ./run
 
-Deploy:
+Deploy
 
     ./deploy linode
 
