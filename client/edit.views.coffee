@@ -56,7 +56,6 @@ class views.Editor extends Backbone.View
     session.setTabSize(2);
 
     @editor.getSession().on "change", =>
-      console.log "changing model"
       @model.set code: @editor.getSession().getValue()
 
     @model.bind "change:mode", =>
@@ -113,8 +112,14 @@ class views.Preview extends Backbone.View
     super
     @socket = utils.getSocket()
     @iframe = @$("iframe")
+    @contentWindow = @iframe.get(0).contentWindow
 
     @model.bind "change:id", => @reload()
+    @model.bind "change:code", =>
+      console.log "code changed!"
+      @contentWindow.postMessage @model.get("code"), "*"
+
+
     @model.bind "saved", =>
       @setSecret @model.get "secret"
       @reload()

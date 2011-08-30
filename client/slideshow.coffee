@@ -11,8 +11,10 @@ class views.SlideShowView extends Backbone.View
   constructor: (opts) ->
     super
 
-    $(window).bind "message", (e) ->
-      console.log "Iframe got a message from parent", e
+    $(window).bind "message", (e) =>
+      data = e.originalEvent.data
+      console.log "Iframe got a message from parent", data
+      @model.set code: data
 
     @socket = utils.getSocket()
 
