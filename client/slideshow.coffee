@@ -4,15 +4,49 @@ utils = NS "FLIPS.utils"
 {SlideShow} = FLIPS.models
 
 
+class CSSSwitcher extends Backbone.View
+  tagName: "link"
+
+  modelAttr: null
+  getHref: ->
+    throw new Error "Abstract class"
+
+  constructor: (opts) ->
+    super
+    @head = $("head").get 0
+    $(@el).attr "rel", "stylesheet"
+    @model.bind "change:#{ @modelAttr }", => @render()
+
+  isInDOM: ->
+    $.contains @head, @el
+
+  render: ->
+    value = @model.get @modelAttr
+    if not value or value is "nothing"
+      $(@el).detach()
+      return
+
+    $(@el).attr "href", @getHref()
+
+    if not @isInDOM()
+      console.log "adding css"
+      $(@head).append @el
+
+class TransitionSwitcher extends CSSSwitcher
+  modelAttr: "transition"
+  getHref: ->
+     "/deck.js/themes/transition/#{ @model.get @modelAttr }.css"
+
+
 class views.SlideShowView extends Backbone.View
   el: '.deck-container'
 
   constructor: (opts) ->
     super
-    @deckNavigationHTML = $("#deck_template").html()
+    @transitionSwitcher = new TransitionSwitcher
+      model: @model
 
-    @deckTransitionCSS = $ "<link>",
-      rel: "stylesheet"
+    @deckNavigationHTML = $("#deck_template").html()
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
@@ -54,17 +88,6 @@ class views.SlideShowView extends Backbone.View
       @socket.emit "obey", @model.get "id"
 
 
-  activateTransitionEffects: ->
-    transitionId = @model.get "transition"
-    if not transitionId or transitionId is "nothing"
-      @deckTransitionCSS.remove()
-      return
-
-    @deckTransitionCSS.attr "href", "/deck.js/themes/transition/#{ transitionId }.css"
-
-    if $("##{ @deckTransitionCSS.attr "id" }").size() is 0
-      console.log "adding effect"
-      $("head").append @deckTransitionCSS
 
 
   next: ->
@@ -84,5 +107,4 @@ class views.SlideShowView extends Backbone.View
     $(@el).html @deckNavigationHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
-    @activateTransitionEffects()
 
