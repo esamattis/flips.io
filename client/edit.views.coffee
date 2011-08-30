@@ -16,40 +16,39 @@ class views.Editor extends Backbone.View
       jade: new JadeMode()
 
     @secret = new views.Secret
-    @secret.bind "change", =>
-      @showUnsavedNotification()
+    @secret.bind "change", => @trigger "change"
 
     @saveButton = $ "#save"
     @saveButton.tipsy
       gravity: 's',
       opacity: 1
+
     @saveButton.click => @save()
 
     @initAce()
 
     @modeEl = @$('#mode')
     @modeEl.change =>
-      @setMode()
+      @_setMode()
       @showUnsavedNotification()
 
     @model.bind "initialfetch", (e) =>
+      @setEditorContents @model.get "code"
+      @modeEl.val(@model.get "mode")
+      @_setMode()
+      @secret.setSecret @model.get "secret"
+
       if e.source is "default"
         @showUnsavedNotification()
       else
         @hideUnsavedNotification()
 
-      @setEditorContents @model.get "code"
 
-      @modeEl.val(@model.get "mode")
-      @setMode()
 
-      @secret.setSecret @model.get "secret"
 
-      @editor.getSession().on "change", =>
-        console.log "CHANGE"
-        @showUnsavedNotification()
+    @bind "change", => @showUnsavedNotification()
 
-  setMode: ->
+  _setMode: ->
     @editor.getSession().setMode(@modes[@modeEl.val()])
 
   setEditorContents: (code) ->
@@ -60,7 +59,8 @@ class views.Editor extends Backbone.View
     @editor.setShowPrintMargin false
     session = @editor.getSession()
     session.setTabSize(2);
-    @setMode
+    @_setMode
+    @editor.getSession().on "change", => @trigger "change"
 
 
     # Hide the line numbering, doesn't work perfectly
