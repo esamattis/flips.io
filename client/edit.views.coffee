@@ -18,9 +18,6 @@ class views.Editor extends Backbone.View
     @secret = new views.Secret
 
     @saveButton = $ "#save"
-    @saveButton.tipsy
-      gravity: 's',
-      opacity: 1
 
     @saveButton.click => @save()
 
@@ -160,12 +157,6 @@ class views.Links extends Backbone.View
     @publicLink = @$('.public_link a')
     @remoteLink = @$('.remote_link a')
 
-    @publicLink.tipsy
-      gravity: 's',
-      opacity: 1
-    @remoteLink.tipsy
-      gravity: 's',
-      opacity: 1
 
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()
@@ -199,9 +190,6 @@ class views.Secret extends Backbone.View
   constructor: (opts) ->
     super
 
-    @$('label').tipsy
-      gravity: 's',
-      opacity: 1
 
     @toggle = @$('#toggle_secret')
     @hidden = @$('#secret')

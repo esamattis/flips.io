@@ -26,6 +26,10 @@ class FLIPS.Workspace extends Backbone.Router
       el: ".preview"
       model: model
 
+    $('[original-title]').tipsy
+      gravity: 's',
+      opacity: 1
+
     model.fetch()
     model.bind "initialfetch", =>
       if model.get "readOnly"
