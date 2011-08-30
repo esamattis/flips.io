@@ -25,6 +25,7 @@ html
     script(type="text/javascript", src="/deck.js/extensions/menu/deck.menu.js")
     script(type="text/javascript", src="/deck.js/extensions/navigation/deck.navigation.js")
     script(type="text/javascript", src="/deck.js/extensions/status/deck.status.js")
+    script(type="text/javascript", src="/deck.js/extensions/notes/deck.notes.js")
     script#deck_template(type="text/x-jade-template").
       // goto
       form(action=".", method="get").goto-form
@@ -46,10 +47,14 @@ html
       a(href=".", title="Permalink to this slide").deck-permalink #
 
       // Speaker notes
-      // .deck-notes
-      //   a.deck-show-notes(href="#") Show speaker notes
-      //   a.deck-hide-notes(href="#") Hide speaker notes
-      //   .deck-display-note Example note
+      .deck-notes
+
+        // a.deck-show-notes(href="#") Show speaker notes
+        a.deck-hide-notes(href="#").deck-note-button Hide
+        .deck-note-container Example note
+
+      .deck-show-notes
+        a(href="#").deck-note-button Show Speaker Notes
 
       script(type="text/javascript")
         var _gaq = _gaq || [];
