@@ -17,12 +17,12 @@ class models.SlideShowModel extends Backbone.Model
     jade: (code) ->
       jade = require('jade')
       try
-        return jade.compile(code)()
+        jade.compile(code)()
       catch e
-        return """
+        """
         <div class="slide">
           <h2>Invalid Jade syntax</h2>
-          <pre>#{ e.message }</pre>
+          <pre>#{ $('<div>').text(e.message).html() }</pre>
         </div>
         """
 
