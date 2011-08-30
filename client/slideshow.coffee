@@ -10,6 +10,7 @@ class views.SlideShowView extends Backbone.View
   constructor: (opts) ->
     super
     @deckNavigationHTML = $("#deck_template").html()
+    @deckTransitionCSS = $ "#deck_transition"
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
@@ -20,6 +21,7 @@ class views.SlideShowView extends Backbone.View
     $(document).bind "deck.change", (event, from, to) =>
       console.log "SKIDE CHGAN", event, from, to
       @currentSlideId = to
+
 
     @socket = utils.getSocket()
 
@@ -49,6 +51,16 @@ class views.SlideShowView extends Backbone.View
       console.log "connecting to remote"
       @socket.emit "obey", @model.get "id"
 
+
+  activateTransitionEffects: ->
+    if $("##{ @deckTransitionCSS.attr "id" }").size() is 0
+      console.log "adding effect"
+      $("head").append @deckTransitionCSS
+
+  disableTransitionEffects: ->
+    console.log "removing effect"
+    @deckTransitionCSS.remove()
+
   next: ->
     $.deck("next")
 
@@ -66,5 +78,4 @@ class views.SlideShowView extends Backbone.View
     $(@el).html @deckNavigationHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
-    $.deck("go", @currentSlideId)
 
