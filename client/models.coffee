@@ -19,7 +19,15 @@ class models.SlideShowModel extends Backbone.Model
       return code
     else if mode == "jade"
       jade = require('jade')
-      return jade.compile(code)()
+      try
+        return jade.compile(code)()
+      catch e
+        return """
+        <div class="slide">
+          <h2>Invalid Jade syntax</h2>
+          <pre>#{ e.message }</pre>
+        </div>
+        """
     else
       return '<script type="text/javascript">alert("should not happen");</script>'
 
