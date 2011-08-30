@@ -10,6 +10,10 @@ class views.SlideShowView extends Backbone.View
 
   constructor: (opts) ->
     super
+
+    $(window).bind "message", (e) ->
+      console.log "Iframe got a message from parent", e
+
     @socket = utils.getSocket()
 
     if not @model.get "id"
@@ -52,5 +56,6 @@ class views.SlideShowView extends Backbone.View
     $.deck("go", slide)
 
   render: ->
-    $(@el).prepend @model.getHtml()
+    $(@el).html @model.getHtml()
     $.deck(".slide")
+

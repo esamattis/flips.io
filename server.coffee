@@ -125,7 +125,7 @@ app.get "/start/initial", (req, res) ->
 
 app.get "/r/:id", (req, res) ->
   res.exec ->
-    $ -> new FLIPS.views.Remote
+    $ -> new FLIPS.views.MobileRemote
         model: new FLIPS.models.SlideShowModel
           id: _.last window.location.pathname.split("/")
 

@@ -1,14 +1,8 @@
-
+views = NS "FLIPS.edit.views"
 utils = NS "FLIPS.utils"
 
-# $ ->
-#   $(".ask_secret").lightbox_me
-#     closeClick: false
-# 
 
-SlideShowModel = FLIPS.models.SlideShowModel
-
-class Editor extends Backbone.View
+class views.Editor extends Backbone.View
   el: ".edit_view"
 
   constructor: (opts) ->
@@ -21,7 +15,7 @@ class Editor extends Backbone.View
       html: new HtmlMode()
       jade: new JadeMode()
 
-    @secret = new Secret
+    @secret = new views.Secret
     @secret.bind "change", =>
       @showUnsavedNotification()
 
@@ -45,11 +39,10 @@ class Editor extends Backbone.View
         @hideUnsavedNotification()
 
       @setEditorContents @model.get "code"
-      
-      alert(@model.get "mode")
+
       @modeEl.val(@model.get "mode")
       @setMode()
-      
+
       @secret.setSecret @model.get "secret"
 
       @editor.getSession().on "change", =>
@@ -98,7 +91,7 @@ class Editor extends Backbone.View
   save: ->
     code = @editor.getSession().getValue()
     mode = @modeEl.val()
-    
+
     @model.set
       code: code,
       mode: mode,
@@ -123,7 +116,7 @@ class Editor extends Backbone.View
 
 
 
-class Preview extends Backbone.View
+class views.Preview extends Backbone.View
 
   constructor: (opts) ->
     super
@@ -156,7 +149,7 @@ class Preview extends Backbone.View
 
 
 # Refactor to listen to model's init and change events?
-class Links extends Backbone.View
+class views.Links extends Backbone.View
   el: '.toolbar'
 
   constructor: (opts) ->
@@ -180,7 +173,7 @@ class Links extends Backbone.View
       @remoteLink.attr('href', @model.getRemoteURL()).show "slow"
 
 
-class AskSecret extends Backbone.View
+class views.AskSecret extends Backbone.View
   el: ".ask_secret"
 
   constructor: ->
@@ -197,7 +190,7 @@ class AskSecret extends Backbone.View
     $(@el).lightbox_me
       closeClick: false
 
-class Secret extends Backbone.View
+class views.Secret extends Backbone.View
   el: '.secret'
 
   constructor: (opts) ->
@@ -236,46 +229,3 @@ class Secret extends Backbone.View
       return @plain.val()
     else
       return @hidden.val()
-
-class FLIPS.Workspace extends Backbone.Router
-
-  routes:
-    "": "start"
-    "edit/:id": "edit"
-
-  initViews: (opts={}) ->
-    console.log "initing views"
-    model = new SlideShowModel opts
-
-    @askSecret = new AskSecret
-      model: model
-
-    @links = new Links
-      model: model
-
-    @editor = new Editor
-      model: model
-
-    @preview = new Preview
-      el: ".preview"
-      model: model
-
-    model.fetch()
-    model.bind "initialfetch", =>
-      if model.get "readOnly"
-        @askSecret.ask()
-
-  edit: (id) ->
-    console.log "EDIT ROUTE", id
-
-    if @editor?.getDocId() isnt id
-      console.log "Id changed!, initing views"
-      @initViews id: id
-
-
-  start: ->
-    console.log "START ROUTE"
-    @initViews()
-
-
-

@@ -1,7 +1,7 @@
 views = NS "FLIPS.views"
 utils = NS "FLIPS.utils"
 
-class views.Remote extends Backbone.View
+class views.MobileRemote extends Backbone.View
   el: ".remote"
 
   constructor: ->
