@@ -12,12 +12,9 @@ class models.SlideShowModel extends Backbone.Model
         source: source
         target: @
 
-  getHtml: ->
-    mode = @get "mode"
-    code = @get "code"
-    if mode == "html"
-      return code
-    else if mode == "jade"
+  parsers:
+    html: (html) -> html
+    jade: (code) ->
       jade = require('jade')
       try
         return jade.compile(code)()
@@ -28,8 +25,12 @@ class models.SlideShowModel extends Backbone.Model
           <pre>#{ e.message }</pre>
         </div>
         """
-    else
-      return '<script type="text/javascript">alert("should not happen");</script>'
+
+  getHtml: ->
+    parser = @parsers[@get "mode"]
+    parser = @parsers.html unless parser
+    parser @get "code"
+
 
   getPresentationURL: ->
     "/#{@get "id"}"
