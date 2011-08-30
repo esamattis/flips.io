@@ -16,7 +16,6 @@ class views.Editor extends Backbone.View
       jade: new JadeMode()
 
     @secret = new views.Secret
-    @secret.bind "change", => @trigger "change"
 
     @saveButton = $ "#save"
     @saveButton.tipsy
@@ -28,14 +27,14 @@ class views.Editor extends Backbone.View
     @initAce()
 
     @modeEl = @$('#mode')
+
     @modeEl.change =>
-      @_setMode()
-      @showUnsavedNotification()
+      @model.set mode: @modeEl.val()
+
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"
       @modeEl.val(@model.get "mode")
-      @_setMode()
       @secret.setSecret @model.get "secret"
 
       if e.source is "default"
@@ -44,12 +43,8 @@ class views.Editor extends Backbone.View
         @hideUnsavedNotification()
 
 
+    @model.bind "change", => @showUnsavedNotification()
 
-
-    @bind "change", => @showUnsavedNotification()
-
-  _setMode: ->
-    @editor.getSession().setMode(@modes[@modeEl.val()])
 
   setEditorContents: (code) ->
     @editor.getSession().setValue code
@@ -59,9 +54,13 @@ class views.Editor extends Backbone.View
     @editor.setShowPrintMargin false
     session = @editor.getSession()
     session.setTabSize(2);
-    @_setMode
-    @editor.getSession().on "change", => @trigger "change"
 
+    @editor.getSession().on "change", =>
+      console.log "changing model"
+      @model.set code: @editor.getSession().getValue()
+
+    @model.bind "change:mode", =>
+      @editor.getSession().setMode(@modes[@model.get "mode"])
 
     # Hide the line numbering, doesn't work perfectly
     lineNumberWidth = parseInt($(".ace_scroller").css('left'))
@@ -89,14 +88,6 @@ class views.Editor extends Backbone.View
     @saveButton.text "Save"
 
   save: ->
-    code = @editor.getSession().getValue()
-    mode = @modeEl.val()
-
-    @model.set
-      code: code,
-      mode: mode,
-      secret: @secret.getSecret()
-
     console.log "sending save #{ document.cookie }"
     @model.save null,
       success: (e) =>
