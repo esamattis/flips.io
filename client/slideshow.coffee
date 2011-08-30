@@ -17,7 +17,7 @@ class CSSSwitcher extends Backbone.View
     @model.bind "change:#{ @modelAttr }", => @render()
 
   isInDOM: -> $.contains @head, @el
-  getValue: -> @model.get @modelAttr 
+  getValue: -> @model.get @modelAttr
 
   render: ->
     value = @model.get @modelAttr
@@ -28,7 +28,6 @@ class CSSSwitcher extends Backbone.View
     $(@el).attr "href", @getHref()
 
     if not @isInDOM()
-      console.log "adding css"
       $(@head).append @el
 
 class TransitionSwitcher extends CSSSwitcher
@@ -52,7 +51,9 @@ class views.SlideShowView extends Backbone.View
     @themeSwitcher = new ThemeSwicher
       model: @model
 
-    @deckNavigationHTML = $("#deck_template").html()
+    jade = require('jade')
+    template = jade.compile $("#deck_template").html()
+    @deckNavigationHTML = template()
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
