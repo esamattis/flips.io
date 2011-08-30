@@ -26,8 +26,11 @@ class views.Editor extends Backbone.View
 
     @initAce()
 
-    @modeEl = @$('#mode')
+    @transitionEl = @$('#transition')
+    @transitionEl.change =>
+      @model.set transition: @transitionEl.val()
 
+    @modeEl = @$('#mode')
     @modeEl.change =>
       @model.set mode: @modeEl.val()
 
@@ -115,9 +118,9 @@ class views.Preview extends Backbone.View
     @contentWindow = @iframe.get(0).contentWindow
 
     @model.bind "change:id", => @reload()
-    @model.bind "change:code", =>
+    @model.bind "change", =>
       console.log "code changed!"
-      @contentWindow.postMessage @model.get("code"), "*"
+      @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
 
 
     @model.bind "saved", =>

@@ -36,6 +36,7 @@ class models.SlideShowModel extends Backbone.Model
     secret: @get "secret"
     code: @get "code"
     mode: @get "mode"
+    transition: @get "transition"
     language: @get "language"
     id: @get "id"
 

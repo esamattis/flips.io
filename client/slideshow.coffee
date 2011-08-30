@@ -10,12 +10,14 @@ class views.SlideShowView extends Backbone.View
   constructor: (opts) ->
     super
     @deckNavigationHTML = $("#deck_template").html()
-    @deckTransitionCSS = $ "#deck_transition"
+
+    @deckTransitionCSS = $ "<link>",
+      rel: "stylesheet"
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
       data = e.originalEvent.data
-      @model.set code: data
+      @model.set JSON.parse data
 
     @currentSlideId = 0
     $(document).bind "deck.change", (event, from, to) =>
@@ -53,13 +55,17 @@ class views.SlideShowView extends Backbone.View
 
 
   activateTransitionEffects: ->
+    transitionId = @model.get "transition"
+    if not transitionId or transitionId is "nothing"
+      @deckTransitionCSS.remove()
+      return
+
+    @deckTransitionCSS.attr "href", "/deck.js/themes/transition/#{ transitionId }.css"
+
     if $("##{ @deckTransitionCSS.attr "id" }").size() is 0
       console.log "adding effect"
       $("head").append @deckTransitionCSS
 
-  disableTransitionEffects: ->
-    console.log "removing effect"
-    @deckTransitionCSS.remove()
 
   next: ->
     $.deck("next")
@@ -78,4 +84,5 @@ class views.SlideShowView extends Backbone.View
     $(@el).html @deckNavigationHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
+    @activateTransitionEffects()
 
