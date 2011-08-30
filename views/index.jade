@@ -15,7 +15,7 @@
 
 .toolbar
   .save_button.item
-    button.btn.primary#save(original-title="Ctrl+S") Save
+    button.btn.primary#save(original-title="Shortcut Ctrl+S") Save
 
   .secret.item
     label.tip(for="secret", original-title="Define a password to protect editing and remote controlling of this slide show") Secret
@@ -31,18 +31,18 @@
 
 
 .edit_view
-  select#mode.medium
+  select#mode.medium(original-title="Select input method")
     option(value='html') HTML
     option(value='jade') Jade
 
-  select#transition.medium
+  select#transition.medium(original-title="Select a transition")
     option(value='nothing') No transition
     option(value='fade') Fade
     option(value='horizontal-slide') Horizontal Slide
     option(value='vertical-slide') Vertical Slide
     option(value='horizontal-slide') Horizontal Slide
 
-  select#theme.medium
+  select#theme.medium(original-title="Select a theme")
     option(value='nothing') No theme
     option(value='neon') Neon
     option(value='swiss') Swiss
@@ -58,8 +58,8 @@
   \created for 
   a(href="http://nodeknockout.com/") Node Knockout 2011
   .
-
-  p &copy; 2011 Alexander Hanhikoski, Esa-Matti Suuronen
+  :markdown
+    &copy; 2011 [Alexander Hanhikoski](https://twitter.com/#!/alexhanh), [Esa-Matti Suuronen](https://twitter.com/#!/esamatti)
   div.
     <iframe src="http://nodeknockout.com/iframe/sliders" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
     </iframe>
