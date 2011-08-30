@@ -10,7 +10,7 @@ html
     link(rel='stylesheet', href='/deck.js/extensions/menu/deck.menu.css')
     link(rel='stylesheet', href='/deck.js/extensions/navigation/deck.navigation.css')
     link(rel='stylesheet', href='/deck.js/extensions/status/deck.status.css')
-    link(rel='stylesheet', href='/deck.js/extensions/status/deck.status.css')
+    link(rel='stylesheet', href='/deck.js/extensions/notes/deck.notes.css')
 
     link(rel='stylesheet', href='/styles.css')
 
@@ -25,7 +25,7 @@ html
     script(type="text/javascript", src="/deck.js/extensions/menu/deck.menu.js")
     script(type="text/javascript", src="/deck.js/extensions/navigation/deck.navigation.js")
     script(type="text/javascript", src="/deck.js/extensions/status/deck.status.js")
-    script#deck_template(type="text/x-jade-template")
+    script#deck_template(type="text/x-jade-template").
       // goto
       form(action=".", method="get").goto-form
         label(for="goto-slide") Go to slide:
@@ -44,6 +44,12 @@ html
 
       // hash
       a(href=".", title="Permalink to this slide").deck-permalink #
+
+      // Speaker notes
+      // .deck-notes
+      //   a.deck-show-notes(href="#") Show speaker notes
+      //   a.deck-hide-notes(href="#") Hide speaker notes
+      //   .deck-display-note Example note
 
       script(type="text/javascript")
         var _gaq = _gaq || [];
