@@ -34,6 +34,10 @@ class views.Editor extends Backbone.View
     @modeEl.change =>
       @model.set mode: @modeEl.val()
 
+    @themeEl = @$('#theme')
+    @themeEl.change =>
+      @model.set theme: @themeEl.val()
+
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"

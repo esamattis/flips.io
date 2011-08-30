@@ -6,10 +6,9 @@ utils = NS "FLIPS.utils"
 
 class CSSSwitcher extends Backbone.View
   tagName: "link"
-
   modelAttr: null
-  getHref: ->
-    throw new Error "Abstract class"
+
+  getHref: -> throw new Error "Abstract class"
 
   constructor: (opts) ->
     super
@@ -17,8 +16,8 @@ class CSSSwitcher extends Backbone.View
     $(@el).attr "rel", "stylesheet"
     @model.bind "change:#{ @modelAttr }", => @render()
 
-  isInDOM: ->
-    $.contains @head, @el
+  isInDOM: -> $.contains @head, @el
+  getValue: -> @model.get @modelAttr 
 
   render: ->
     value = @model.get @modelAttr
@@ -35,7 +34,12 @@ class CSSSwitcher extends Backbone.View
 class TransitionSwitcher extends CSSSwitcher
   modelAttr: "transition"
   getHref: ->
-     "/deck.js/themes/transition/#{ @model.get @modelAttr }.css"
+     "/deck.js/themes/transition/#{ @getValue() }.css"
+
+class ThemeSwicher extends CSSSwitcher
+  modelAttr: "theme"
+  getHref: ->
+     "/deck.js/themes/style/#{ @getValue() }.css"
 
 
 class views.SlideShowView extends Backbone.View
@@ -44,6 +48,8 @@ class views.SlideShowView extends Backbone.View
   constructor: (opts) ->
     super
     @transitionSwitcher = new TransitionSwitcher
+      model: @model
+    @themeSwitcher = new ThemeSwicher
       model: @model
 
     @deckNavigationHTML = $("#deck_template").html()
