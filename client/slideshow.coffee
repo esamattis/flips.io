@@ -12,9 +12,14 @@ class views.SlideShowView extends Backbone.View
     @deckNavigationHTML = $("#deck_template").html()
 
     $(window).bind "message", (e) =>
+      console.log "MSEG", $.deck('getSlide')
       data = e.originalEvent.data
-      console.log "Iframe got a message from parent", data
       @model.set code: data
+
+    @currentSlideId = 0
+    $(document).bind "deck.change", (event, from, to) =>
+      console.log "SKIDE CHGAN", event, from, to
+      @currentSlideId = to
 
     @socket = utils.getSocket()
 
@@ -61,4 +66,5 @@ class views.SlideShowView extends Backbone.View
     $(@el).html @deckNavigationHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
+    $.deck("go", @currentSlideId)
 
