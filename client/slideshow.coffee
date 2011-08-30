@@ -1,8 +1,7 @@
 
 views = NS "FLIPS.views"
 utils = NS "FLIPS.utils"
-SlideShow = FLIPS.models.SlideShow
-
+{SlideShow} = FLIPS.models
 
 
 class views.SlideShowView extends Backbone.View
@@ -10,6 +9,7 @@ class views.SlideShowView extends Backbone.View
 
   constructor: (opts) ->
     super
+    @deckNavigationHTML = $("#deck_template").html()
 
     $(window).bind "message", (e) =>
       data = e.originalEvent.data
@@ -58,6 +58,7 @@ class views.SlideShowView extends Backbone.View
     $.deck("go", slide)
 
   render: ->
-    $(@el).html @model.getHtml()
+    $(@el).html @deckNavigationHTML
+    $(@el).prepend @model.getHtml()
     $.deck(".slide")
 
