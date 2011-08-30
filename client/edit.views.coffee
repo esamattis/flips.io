@@ -40,6 +40,8 @@ class views.Editor extends Backbone.View
       @setEditorContents @model.get "code"
       @modeEl.val(@model.get "mode")
       @secret.setSecret @model.get "secret"
+      @themeEl.val(@model.get "theme")
+      @transitionEl.val(@model.get "transition")
 
       if e.source is "default"
         @showUnsavedNotification()
