@@ -35,6 +35,30 @@ class views.Editor extends Backbone.View
     @themeEl.change =>
       @model.set theme: @themeEl.val()
 
+    $(@el).find('textarea').listenInput =>
+      selection = @editor.getSelectionRange()
+      
+      # Get code before selection
+      range = selection.clone()
+      range.setStart(0, 0)
+      code = @editor.getSession().getTextRange(range)
+      
+      mode = @model.get "mode"
+      result = 0
+      # todo: improve the regexes
+      if mode == "html"
+        result = code.match(/<div class="slide">/g)
+      else if mode == "jade"
+        result = code.match(/\.slide/g)
+      else
+        alert('a fuzzy and cute kitten just died :(')
+      
+      currentSlide = 0
+      if result?
+        currentSlide = result.length - 1
+      
+      if currentSlide != @model.get 'currentSlide'
+        @model.set currentSlide: currentSlide
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"
@@ -58,6 +82,7 @@ class views.Editor extends Backbone.View
   initAce: =>
     @editor = ace.edit "editor"
     @editor.setShowPrintMargin false
+    
     session = @editor.getSession()
     session.setTabSize(2);
 
@@ -67,7 +92,7 @@ class views.Editor extends Backbone.View
     @model.bind "change:mode", =>
       @editor.getSession().setMode(@modes[@model.get "mode"])
 
-    # Hide the line numbering, doesn't work perfectly
+    # Hide the line numbering. TODO: doesn't work perfectly
     lineNumberWidth = parseInt($(".ace_scroller").css('left'))
     $(".ace_scroller").css('left', '0px')
     $(".ace_gutter").hide()
@@ -121,10 +146,12 @@ class views.Preview extends Backbone.View
     @contentWindow = @iframe.get(0).contentWindow
 
     @model.bind "change:id", => @reload()
-    @model.bind "change", =>
+    @model.bind "change:code", =>
       console.log "code changed!"
       @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
-
+      
+    @model.bind "change:currentSlide", => 
+      console.log "current slide changed to #{@model.get "currentSlide"}"
 
     @model.bind "saved", =>
       @setSecret @model.get "secret"
@@ -158,7 +185,6 @@ class views.Links extends Backbone.View
     super
     @publicLink = @$('.public_link a')
     @remoteLink = @$('.remote_link a')
-
 
     @model.bind "change:id", => @render()
     @model.bind "initialfetch", => @render()

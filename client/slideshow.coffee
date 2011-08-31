@@ -114,4 +114,5 @@ class views.SlideShowView extends Backbone.View
     $(@el).html @deckNavigationHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
+    
 
