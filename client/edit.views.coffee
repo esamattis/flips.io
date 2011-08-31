@@ -146,7 +146,7 @@ class views.Preview extends Backbone.View
     @contentWindow = @iframe.get(0).contentWindow
 
     @model.bind "change:id", => @reload()
-    @model.bind "change:code", =>
+    @model.bind "change", =>
       console.log "code changed!"
       @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
       
