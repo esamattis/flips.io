@@ -57,8 +57,12 @@ class views.SlideShowView extends Backbone.View
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
-      data = e.originalEvent.data
-      @model.set JSON.parse data
+      data = JSON.parse e.originalEvent.data
+
+      if data.event == "onSlideChange"
+        @goto(data.slide)
+      else
+        @model.set data
 
     @currentSlideId = 0
     $(document).bind "deck.change", (event, from, to) =>

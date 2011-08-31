@@ -60,7 +60,11 @@ class views.Editor extends Backbone.View
       if newSlide != @currentSlide
         @currentSlide = newSlide
         console.log "slide changed!"
-        # todo: somehow call SlideShowView.goto(@currentSlide)
+        
+        data = {}#@model.toJSON()
+        data["event"] = "onSlideChange"
+        data["slide"] = @currentSlide
+        $("iframe").get(0).contentWindow.postMessage JSON.stringify(data), "*"
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"
@@ -150,6 +154,8 @@ class views.Preview extends Backbone.View
     @model.bind "change:id", => @reload()
     @model.bind "change", =>
       console.log "code changed!"
+      data = @model.toJSON()
+      data["event"] = "onCodeChange"
       @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
       
     @model.bind "change:currentSlide", => 
