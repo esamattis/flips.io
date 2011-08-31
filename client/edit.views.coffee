@@ -53,12 +53,14 @@ class views.Editor extends Backbone.View
       else
         alert('a fuzzy and cute kitten just died :(')
       
-      currentSlide = 0
+      newSlide = 0
       if result?
-        currentSlide = result.length - 1
+        newSlide = result.length - 1
       
-      if currentSlide != @model.get 'currentSlide'
-        @model.set currentSlide: currentSlide
+      if newSlide != @currentSlide
+        @currentSlide = newSlide
+        console.log "slide changed!"
+        # todo: somehow call SlideShowView.goto(@currentSlide)
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"
