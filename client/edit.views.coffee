@@ -36,7 +36,7 @@ class views.Editor extends Backbone.View
       @model.set theme: @themeEl.val()
 
     # $(@el).find('textarea').listenInput =>
-    @editor.getSession().selection.on('changeCursor', =>
+    @editor.getSession().selection.on 'changeCursor', =>
       selection = @editor.getSelectionRange()
 
       # Get code before selection
@@ -66,7 +66,6 @@ class views.Editor extends Backbone.View
         data["event"] = "onSlideChange"
         data["slide"] = @currentSlide
         $("iframe").get(0).contentWindow.postMessage JSON.stringify(data), "*"
-    )
 
     @model.bind "initialfetch", (e) =>
       @setEditorContents @model.get "code"
