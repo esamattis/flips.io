@@ -2,3 +2,6 @@
 	path = public/deck.js
 	url = git@github.com:epeli/deck.js.git
 	
+[submodule "public/javascripts/ace/jade-highlighter"]
+	path = public/javascripts/ace/jade-highlighter
+	url = git@github.com:alexhanh/jade-highlight.git
