@@ -10,13 +10,22 @@ Fetch submodules
     git submodule init
     git submodule update
 
-Install deps
+Install deps for dev modules
 
-    npm install
+    cd dev_node_modules/piles/
+    npm install --dev
+
+Install deps on this repo root:
+
+    npm install --dev
 
 Run dev server
 
     ./run
+
+To test production mode
+
+    NODE_ENV=production ./run
 
 Deploy
 

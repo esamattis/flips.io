@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-./node_modules/.bin/supervisor -w . --extensions 'node|js|coffee'  app.js
+export NODE_PATH=dev_node_modules:$NODE_PATH
+./node_modules/.bin/supervisor -w . --extensions 'node|js|coffee' server.coffee

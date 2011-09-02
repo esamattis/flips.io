@@ -5,10 +5,10 @@ stylus = require 'stylus'
 nib = require 'nib'
 io = require 'socket.io'
 
-compile = (str, path) ->
-  stylus(str).set("filename", path).use(nib())
+piles = require "piles"
+js = piles.createJSManager()
+css = piles.createCSSManager()
 
-{addCodeSharingTo} = require("express-share")
 
 app = express.createServer()
 io = require('socket.io').listen app
@@ -20,37 +20,74 @@ exports.app = app
 exports.io = io
 
 # Configuration
-
 app.configure ->
+
   app.use express.bodyParser()
   app.use express.cookieParser()
-  addCodeSharingTo app
-  app.shareUrl "/socket.io/socket.io.js"
-  app.shareFs __dirname + "/client/vendor/jquery.js"
-  app.shareFs __dirname + "/client/vendor/underscore.js"
-  app.shareFs __dirname + "/client/vendor/backbone.js"
-  app.shareFs __dirname + "/client/vendor/jquery.jgrowl.js"
-  app.shareFs __dirname + "/client/vendor/jquery.tipsy.js"
-  app.shareFs __dirname + "/client/vendor/jquery.lightbox_me.js"
-
-  app.shareFs __dirname + "/client/namespace.js"
-  app.shareFs __dirname + "/client/utils.coffee"
-  app.shareFs __dirname + "/client/models.coffee"
-  app.shareFs __dirname + "/client/edit.views.coffee"
-  app.shareFs __dirname + "/client/edit.coffee"
-  app.shareFs __dirname + "/client/slideshow.coffee"
-  app.shareFs __dirname + "/client/mobile.coffee"
-
-  # Bug? Does not work under stylesheets dirs
-  app.use stylus.middleware
-    src: __dirname + "/public"
-    compile: compile
-
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
-  app.use express.methodOverride()
+  # app.use express.methodOverride()
   # app.use app.router
   app.use express.static __dirname + '/public'
+
+app.configure ->
+  js.bind app
+  css.bind app
+
+  # Global assets
+  js.addUrl "/socket.io/socket.io.js"
+  js.addFile __dirname + "/client/vendor/jquery.js"
+  js.addFile __dirname + "/client/vendor/underscore.js"
+  js.addFile __dirname + "/client/vendor/backbone.js"
+  js.addFile __dirname + "/client/namespace.js"
+  js.addFile __dirname + "/client/vendor/jquery.jgrowl.js"
+  js.addFile __dirname + "/client/vendor/jquery.tipsy.js"
+  js.addFile __dirname + "/client/vendor/jquery.lightbox_me.js"
+
+  js.addFile __dirname + "/client/utils.coffee"
+  js.addFile __dirname + "/client/models.coffee"
+  js.addFile __dirname + "/client/mobile.coffee"
+
+  css.addFile __dirname + "/public/stylesheets/jquery.jgrowl.css"
+  css.addFile __dirname + "/public/stylesheets/tipsy.css"
+
+  # Editor assets
+  js.addFile "editor", __dirname + "/public/javascripts/ace/ace.js"
+  js.addFile "editor", __dirname + "/public/javascripts/ace/mode-html.js"
+  js.addFile "editor", __dirname + "/public/javascripts/ace/jade-highlighter/mode-jade.js"
+  js.addFile "editor", __dirname + "/client/edit.views.coffee"
+  js.addFile "editor", __dirname + "/client/edit.coffee"
+
+  css.addUrl "editor", "http://fonts.googleapis.com/css?family=Leckerli+One"
+  css.addFile "editor", __dirname + "/public/stylesheets/bootstrap-1.1.1.min.css"
+  css.addFile "editor", __dirname + "/public/styles.styl"
+  css.addFile "editor", __dirname + "/public/scrollbars.styl"
+
+
+  # Slideshow assets
+  js.addFile "slideshow", __dirname + "/client/slideshow.coffee"
+
+  # Does not work when minified to a one file
+  js.addUrl "slideshow", "/javascripts/jade.js"
+
+  js.addFile "slideshow", __dirname + "/public/deck.js/modernizr.custom.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/core/deck.core.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/goto/deck.goto.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/hash/deck.hash.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/menu/deck.menu.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/navigation/deck.navigation.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/status/deck.status.js"
+  js.addFile "slideshow", __dirname + "/public/deck.js/extensions/notes/deck.notes.js"
+
+  css.addFile "slideshow", __dirname + "/public/deck.js/core/deck.core.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/goto/deck.goto.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/hash/deck.hash.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/menu/deck.menu.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/navigation/deck.navigation.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/status/deck.status.css"
+  css.addFile "slideshow", __dirname + "/public/deck.js/extensions/notes/deck.notes.css"
+
+
 
 app.configure 'development', ->
   console.log "pid is", process.pid

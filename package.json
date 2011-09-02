@@ -8,7 +8,6 @@
   , "dependencies": {
       "coffee-script": ""
       , "express": ""
-      , "express-share": ""
       , "jade": ""
       , "socket.io": ""
       , "markdown-js": ""
@@ -18,6 +17,5 @@
       , "underscore": ""
       , "underscore.string": ""
       , "cradle": ""
-      , "nko": ""
   }
 }

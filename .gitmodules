@@ -1,7 +1,9 @@
 [submodule "public/deck.js"]
 	path = public/deck.js
 	url = git@github.com:epeli/deck.js.git
-	
 [submodule "public/javascripts/ace/jade-highlighter"]
 	path = public/javascripts/ace/jade-highlighter
 	url = git@github.com:alexhanh/jade-highlight.git
+[submodule "dev_node_modules/piles"]
+	path = dev_node_modules/piles
+	url = git@github.com:epeli/node-piles.git
