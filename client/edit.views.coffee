@@ -38,12 +38,12 @@ class views.Editor extends Backbone.View
     # $(@el).find('textarea').listenInput =>
     @editor.getSession().selection.on('changeCursor', =>
       selection = @editor.getSelectionRange()
-      
+
       # Get code before selection
       range = selection.clone()
       range.setStart(0, 0)
       code = @editor.getSession().getTextRange(range)
-      
+
       mode = @model.get "mode"
       result = 0
       # todo: improve the regexes
@@ -53,15 +53,15 @@ class views.Editor extends Backbone.View
         result = code.match(/\.slide/g)
       else
         alert('a fuzzy and cute kitten just died :(')
-      
+
       newSlide = 0
       if result?
         newSlide = result.length - 1
-      
+
       if newSlide != @currentSlide
         @currentSlide = newSlide
         console.log "slide changed!"
-        
+
         data = {}#@model.toJSON()
         data["event"] = "onSlideChange"
         data["slide"] = @currentSlide
@@ -90,7 +90,7 @@ class views.Editor extends Backbone.View
   initAce: =>
     @editor = ace.edit "editor"
     @editor.setShowPrintMargin false
-    
+
     session = @editor.getSession()
     session.setTabSize(2);
 
@@ -152,15 +152,19 @@ class views.Preview extends Backbone.View
     @socket = utils.getSocket()
     @iframe = @$("iframe")
     @contentWindow = @iframe.get(0).contentWindow
+    @dirty = false
 
     @model.bind "change:id", => @reload()
-    @model.bind "change", =>
-      console.log "code changed!"
+    @model.bind "change", => @dirty = true
+    $(window).keyup _.throttle =>
+      return unless @dirty
+      @dirty = false
       data = @model.toJSON()
       data["event"] = "onCodeChange"
       @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
-      
-    @model.bind "change:currentSlide", => 
+    , 400
+
+    @model.bind "change:currentSlide", =>
       console.log "current slide changed to #{@model.get "currentSlide"}"
 
     @model.bind "saved", =>

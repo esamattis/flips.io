@@ -53,7 +53,7 @@ class views.SlideShowView extends Backbone.View
 
     jade = require('jade')
     template = jade.compile $("#deck_template").html()
-    @deckNavigationHTML = template()
+    @deckHTML = template()
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
@@ -115,8 +115,8 @@ class views.SlideShowView extends Backbone.View
     $.deck("go", slide)
 
   render: ->
-    $(@el).html @deckNavigationHTML
+    $(@el).html @deckHTML
     $(@el).prepend @model.getHtml()
     $.deck(".slide")
-    
+
 
