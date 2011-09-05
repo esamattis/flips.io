@@ -1,6 +1,7 @@
 
 views = NS "FLIPS.views"
 utils = NS "FLIPS.utils"
+remote = NS "FLIPS.remote"
 {SlideShow} = FLIPS.models
 
 
@@ -55,51 +56,28 @@ class views.SlideShowView extends Backbone.View
     template = jade.compile $("#deck_template").html()
     @deckHTML = template()
 
-    $(window).bind "message", (e) =>
-      console.log "MSEG", $.deck('getSlide')
-      data = JSON.parse e.originalEvent.data
-
-      if data.event == "onSlideChange"
-        @goto(data.slide)
-      else
-        @model.set data
+    @receiver = new remote.Receiver this
 
     @currentSlideId = 0
     $(document).bind "deck.change", (event, from, to) =>
       console.log "SKIDE CHGAN", event, from, to
       @currentSlideId = to
 
-
-    @socket = utils.getSocket()
-
     if not @model.get "id"
       @model.set code: utils.mock, mode: 'html'
       @render()
 
-    @socket.on "connect", =>
-      console.log "connected"
-      if @model.get "id"
-        @_connectToRemote()
-      else
-        @model.bind "change", _.once =>
-          @_connectToRemote()
-
-    @socket.on "command", (ob) =>
-      console.log "got cmd", ob.args
-      ob.args ?= []
-      @[ob.name]?.apply this, ob.args
 
     @model.bind "change", =>
       @render()
 
     @model.fetch()
 
-  _connectToRemote: ->
-      console.log "connecting to remote"
-      @socket.emit "obey", @model.get "id"
 
 
-
+  update: (data) ->
+    console.log "updating model with", data
+    @model.set data
 
   next: ->
     $.deck("next")
