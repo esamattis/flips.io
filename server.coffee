@@ -145,7 +145,7 @@ routeManage = (ob) ->
 
     if secretCache[ob.target] is null or secretCache[ob.target] is ""
       console.log "no secret. routing"
-      @broadcast.to(ob.target).emit "command", ob
+      @broadcast.to(ob.target).emit "cmd", ob
 
     else if secretCache[ob.target] is undefined
       console.log "secret not in cache"
@@ -161,11 +161,11 @@ routeManage = (ob) ->
 
     else if secretCache[ob.target] is ob.secret
       console.log "secret ok. routing"
-      @broadcast.to(ob.target).emit "command", ob
+      @broadcast.to(ob.target).emit "cmd", ob
 
     else
       console.log "wrong secret #{ ob.secret } should be #{ secretCache[ob.target] }"
-      @emit "error", "bad secret"
+      @emit "unauthorized", "bad secret"
 
 
 io.sockets.on 'connection', (socket) ->

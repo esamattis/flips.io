@@ -1,4 +1,5 @@
 utils = NS "FLIPS.utils"
+remote = NS "FLIPS.remote"
 {SlideShowModel} = FLIPS.models
 {AskSecret, Links, Editor, Preview, Secret} = NS "FLIPS.edit.views"
 
@@ -13,18 +14,31 @@ class FLIPS.Workspace extends Backbone.Router
     console.log "initing views"
     model = new SlideShowModel opts
 
+    @globalRemote = new remote.RemoteSocket model
+
     @askSecret = new AskSecret
+      el: ".ask_secret"
       model: model
 
     @links = new Links
+      el: '.toolbar'
       model: model
 
     @editor = new Editor
+      el: ".edit_view"
       model: model
 
     @preview = new Preview
       el: ".preview"
       model: model
+
+    # @editor.bind "editposition", (currentSlideIndex) =>
+    #   @preview.iframeRemote.goto currentSlideIndex
+
+
+    model.bind "saved", =>
+      # TODO: update
+      @globalRemote.reload()
 
     $('[original-title]').tipsy
       gravity: 's',

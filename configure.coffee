@@ -45,6 +45,7 @@ app.configure ->
   js.addFile __dirname + "/client/vendor/jquery.lightbox_me.js"
 
   js.addFile __dirname + "/client/utils.coffee"
+  js.addFile __dirname + "/client/remote.coffee"
   js.addFile __dirname + "/client/models.coffee"
   js.addFile __dirname + "/client/mobile.coffee"
 
