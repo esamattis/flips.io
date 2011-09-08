@@ -4,13 +4,39 @@ express = require 'express'
 stylus = require 'stylus'
 nib = require 'nib'
 io = require 'socket.io'
+everyauth = require 'everyauth'
+Promise = everyauth.Promise
+users = require './users'
 
 piles = require "piles"
 js = piles.createJSManager()
 css = piles.createCSSManager()
 
+# Setup authentication providers
+everyauth.github
+  .appId('f648c6f2e0a50097eaa1')
+  .appSecret('3ac69da84d13b9cffc19465e38134a89272583c3')
+  .findOrCreateUser (session, accessToken, accessTokenExtra, githubUserMetadata) ->
+    promise = new Promise()
+    
+    users.findOrCreateUserGithub(githubUserMetadata, promise)
+    
+    return true
+    
+    # console.log session
+    # console.log accessToken
+    # console.log accessTokenExtra
+    # console.log githubUserMetadata
+    # debugger
+    # return false
+    # find or create user logic goes here
+  .redirectPath('/')
+  .callbackPath('/auth/github/callback')
+
+
 
 app = express.createServer()
+
 io = require('socket.io').listen app
 
 io.configure ->
@@ -21,14 +47,27 @@ exports.io = io
 
 # Configuration
 app.configure ->
+  #
+  app.use express.cookieParser()
+
+  app.use express.session {secret: "90ndsj9dfdsf"}
+  app.use everyauth.middleware()
 
   app.use express.bodyParser()
-  app.use express.cookieParser()
+  
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
   # app.use express.methodOverride()
   # app.use app.router
   app.use express.static __dirname + '/public'
+  
+  everyauth.helpExpress(app)
+  
+  # everyauth.everymodule.findUserById (userId, callback) ->
+  #   console.log "ASDFAFDDD"
+  #   callback("lol", users.findUser(userId))
+  
+
 
 app.configure ->
   js.bind app

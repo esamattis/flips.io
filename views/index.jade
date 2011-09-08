@@ -12,6 +12,14 @@
     .container(style="width: 100%;")
       h3#logo(style="margin-left: 15px;")
         a Flips.io
+      ul.nav
+        - if (everyauth.loggedIn)
+          li
+            p Hello #{everyauth.github.user.name}
+            a(href:"/logout") Logout
+        - else
+          li 
+            a(href:"/auth/github") Login with Github
 
 .toolbar
   .save_button.item

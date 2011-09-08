@@ -7,6 +7,7 @@ c = new cradle.Connection
 name = "flips"
 db = c.database name
 
+
 db.exists (err, exists)->
   throw err if err
   if not exists
@@ -45,7 +46,6 @@ init = ->
   console.log "Connected to CouchDB"
 
 module.exports = db
-
 
 
 if require.main is module
