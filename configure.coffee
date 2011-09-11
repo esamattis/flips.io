@@ -12,6 +12,11 @@ piles = require "piles"
 js = piles.createJSManager()
 css = piles.createCSSManager()
 
+everyauth.everymodule.findUserById (userId, callback) ->
+  console.log "ASDFAFDDD"
+  # callback("lol", users.findUser(userId))
+
+
 # Setup authentication providers
 everyauth.github
   .appId('f648c6f2e0a50097eaa1')
@@ -47,27 +52,20 @@ exports.io = io
 
 # Configuration
 app.configure ->
-  #
+  app.use express.bodyParser()
   app.use express.cookieParser()
 
   app.use express.session {secret: "90ndsj9dfdsf"}
   app.use everyauth.middleware()
 
-  app.use express.bodyParser()
   
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
   # app.use express.methodOverride()
   # app.use app.router
   app.use express.static __dirname + '/public'
-  
-  everyauth.helpExpress(app)
-  
-  # everyauth.everymodule.findUserById (userId, callback) ->
-  #   console.log "ASDFAFDDD"
-  #   callback("lol", users.findUser(userId))
-  
 
+everyauth.helpExpress(app)
 
 app.configure ->
   js.bind app

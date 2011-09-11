@@ -30,6 +30,8 @@ app.get "/urls/:url", (req, res) ->
     res.end JSON.stringify doc
 
 app.get '/', (req, res) ->
+  console.log "req.user"
+  console.log req.user
   res.exec ->
     $ ->
       ws = new FLIPS.Workspace
