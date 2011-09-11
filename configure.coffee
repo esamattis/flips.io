@@ -90,9 +90,11 @@ app.configure ->
 
 
 app.configure 'development', ->
+  js.liveUpdate css, io
   console.log "pid is", process.pid
   fs.writeFile __dirname + "/flips.pid", "#{ process.pid }".trim()
   app.use express.errorHandler dumpExceptions: true, showStack: true
+
 
 
 app.configure 'production', ->
