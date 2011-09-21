@@ -3,6 +3,21 @@ remote = NS "FLIPS.remote"
 {SlideShowModel} = FLIPS.models
 {AskSecret, Links, Editor, Preview, Secret} = NS "FLIPS.edit.views"
 
+$ ->
+  windowWidth = $(window).width()
+  editor = $ "#editor"
+  preview = $ ".preview iframe"
+  $(".ace_sb").mousedown ->
+    console.log "DOWN"
+
+  $(window).mousemove _.throttle (e) ->
+      return
+      pos = e.pageX / windowWidth * 100
+      console.log "win", pos
+      editor.css width: pos + "%"
+      preview.css left: pos + "%"
+    , 100
+
 
 class FLIPS.Workspace extends Backbone.Router
 
