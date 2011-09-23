@@ -4,7 +4,8 @@ remote = NS "FLIPS.remote"
 
 class Remote
 
-  constructor: -> _.extend @, Backbone.Events
+  constructor: ->
+    _.extend @, Backbone.Events
 
   update: (data) ->
     @post "update", data
@@ -24,9 +25,9 @@ class remote.RemoteIframe extends Remote
   post: (cmd, args...) ->
     w = @iframe.get(0).contentWindow
     console.log "posting to iframe", @iframe, w
-    w.postMessage JSON.stringify
+    w.postMessage JSON.stringify(
       cmd: cmd
-      args: args
+      args: args)
     , "*"
 
 
@@ -56,7 +57,7 @@ class remote.Receiver
   listenParentWindow: ->
     console.log "listening window"
     $(window).bind "message", (e) =>
-      console.log "getting from parent", e
+      console.log "getting from parent window", e
       cmdOb = JSON.parse e.originalEvent.data
       @trigger "cmd", cmdOb
 
