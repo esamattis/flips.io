@@ -173,7 +173,6 @@ class views.Preview extends Backbone.View
 
     @model.bind "saved", =>
       @setSecret @model.get "secret"
-      @reload()
 
     @model.bind "initialfetch", (e) =>
       if e.source is "db"

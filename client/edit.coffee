@@ -46,10 +46,8 @@ class FLIPS.Workspace extends Backbone.Router
     # @editor.bind "editposition", (currentSlideIndex) =>
     #   @preview.iframeRemote.goto currentSlideIndex
 
-
     model.bind "saved", =>
-      # TODO: update
-      @globalRemote.reload()
+      @globalRemote.update model.toJSON()
 
     $('[original-title]').tipsy
       gravity: 's',

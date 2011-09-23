@@ -16,20 +16,6 @@ popBackboneId = (ob) ->
   delete ob.id
   id
 
-urlId = 1
-
-
-app.get "/body", (req, res) ->
-  res.send '''
-    <form action="" method="post" accept-charset="utf-8">
-      <input type="text" name="lol" />
-    <p><input type="submit" value="Continue &rarr;"></p>
-    </form>
-  '''
-
-app.post "/body", (req, res) ->
-  console.log req.body
-  res.send req.body
 
 
 # Routes
@@ -150,12 +136,13 @@ app.get "/r/:id", (req, res) ->
 allowedCmds =
   goto: true
   reload: true
+  update: true
 
 secretCache = {}
 
 routeManage = (ob) ->
-    if not allowedCmds[ob.name]
-      console.log "Illegal command #{ ob.name } for #{ ob.target }"
+    if not allowedCmds[ob.cmd]
+      console.log "Illegal command #{ ob.cmd } for #{ ob.target }"
       return
 
     if secretCache[ob.target] is null or secretCache[ob.target] is ""
@@ -184,7 +171,7 @@ routeManage = (ob) ->
 
 
 io.sockets.on 'connection', (socket) ->
-  socket.on "manage", routeManage
+  socket.on "cmd", routeManage
   socket.on "obey", (id) ->
     @join id
 

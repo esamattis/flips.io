@@ -1,8 +1,6 @@
 
 utils = NS "FLIPS.utils"
-
-
-
+$ = jQuery
 
 
 S4 = ->
@@ -111,9 +109,7 @@ class Messaging extends Backbone.View
   info: (msg, modal) -> @show "INFO", msg, modal
   warning: (msg, modal) -> @show "WARNING", msg, modal
   error: (msg, modal) -> @show "ERROR", msg, modal
-
   hide: ->
-
 
 $ ->
   utils.msg = new Messaging
