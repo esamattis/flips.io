@@ -106,12 +106,14 @@
  * - Namespaced all events
  */
 (function($) {
-
 	/** jGrowl Wrapper - Establish a base jGrowl Container for compatibility with older releases. **/
 	$.jGrowl = function( m , o ) {
 		// To maintain compatibility with older version that only supported one instance we'll create the base container.
-		if ( $('#jGrowl').size() == 0 ) 
+		console.log("size is ", $('#jGrowl').size());
+		if ( $('#jGrowl').size() == 0 )  {
+			console.log("adding");
 			$('<div id="jGrowl"></div>').addClass( (o && o.position) ? o.position : $.jGrowl.defaults.position ).appendTo('body');
+		}
 
 		// Create a notification on the container.
 		$('#jGrowl').jGrowl(m,o);
