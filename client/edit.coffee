@@ -32,19 +32,15 @@ class FLIPS.Workspace extends Backbone.Router
     @globalRemote = new remote.RemoteSocket model
 
     @askSecret = new AskSecret
-      el: ".ask_secret"
       model: model
 
     @links = new Links
-      el: '.toolbar'
       model: model
 
     @editor = new Editor
-      el: ".edit_view"
       model: model
 
     @preview = new Preview
-      el: ".preview"
       model: model
 
     # @editor.bind "editposition", (currentSlideIndex) =>

@@ -39,7 +39,7 @@ class remote.RemoteSocket extends Remote
 
   post: (cmd, args...) ->
     @socket.emit "cmd",
-      target: @mode.get "id"
+      target: @model.get "id"
       secret: @secret
       cmd: cmd
       args: args
