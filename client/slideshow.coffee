@@ -60,7 +60,6 @@ class views.SlideShowView extends Backbone.View
 
     @currentSlideId = 0
     $(document).bind "deck.change", (event, from, to) =>
-      console.log "SKIDE CHGAN", event, from, to
       @currentSlideId = to
 
     if not @model.get "id"
@@ -77,6 +76,7 @@ class views.SlideShowView extends Backbone.View
 
   update: (data) ->
     console.log "updating model with", data
+    utils.msg.info "Model updated"
     @model.set data
 
   next: ->
