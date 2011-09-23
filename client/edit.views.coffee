@@ -4,6 +4,7 @@ remote = NS "FLIPS.remote"
 
 
 class views.Editor extends Backbone.View
+  el: ".edit_view"
 
   constructor: (opts) ->
     super
@@ -18,20 +19,21 @@ class views.Editor extends Backbone.View
     @secret = new views.Secret
 
     @saveButton = $ "#save"
-
-    @saveButton.click => @save()
+    @saveButton.click (e) =>
+      e.preventDefault()
+      @save()
 
     @initAce()
 
-    @transitionEl = @$('#transition')
+    @transitionEl = $('#transition')
     @transitionEl.change =>
       @model.set transition: @transitionEl.val()
 
-    @modeEl = @$('#mode')
+    @modeEl = $('#mode')
     @modeEl.change =>
       @model.set mode: @modeEl.val()
 
-    @themeEl = @$('#theme')
+    @themeEl = $('#theme')
     @themeEl.change =>
       @model.set theme: @themeEl.val()
 
@@ -144,13 +146,15 @@ class views.Editor extends Backbone.View
 
       error: (e, err) =>
         console.log "failed to save", @model, e, err
-        utils.msg.error "failed to save #{ @model.get "id" }", true
+        utils.msg.error "failed to save #{ @model }", true
 
   hasEditUrl: -> !!window.location.hash
 
 
 
 class views.Preview extends Backbone.View
+
+  el: ".preview"
 
   constructor: (opts) ->
     super
@@ -191,6 +195,8 @@ class views.Preview extends Backbone.View
 # Refactor to listen to model's init and change events?
 class views.Links extends Backbone.View
 
+  el: '.toolbar'
+
   constructor: (opts) ->
     super
     @publicLink = @$('.public_link a')
@@ -206,6 +212,8 @@ class views.Links extends Backbone.View
 
 
 class views.AskSecret extends Backbone.View
+
+  el: ".ask_secret"
 
   constructor: ->
     @button = @$ "button"

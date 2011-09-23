@@ -19,6 +19,18 @@ popBackboneId = (ob) ->
 urlId = 1
 
 
+app.get "/body", (req, res) ->
+  res.send '''
+    <form action="" method="post" accept-charset="utf-8">
+      <input type="text" name="lol" />
+    <p><input type="submit" value="Continue &rarr;"></p>
+    </form>
+  '''
+
+app.post "/body", (req, res) ->
+  console.log req.body
+  res.send req.body
+
 
 # Routes
 # http://localhost:5984/flips/_design/slides/_view/urlIds?key=3
@@ -39,6 +51,7 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
+  console.log "ADD NEW", req.body
   urlgen.getNext (url) ->
     db.save url, req.body, (err, doc) ->
       if err
@@ -46,7 +59,9 @@ app.post "/slides", (req, res) ->
         res.send 501
         res.end JSON.stringify err
         return
+      console.log "ALL ok", arguments
       res.end JSON.stringify doc
+      console.log "done"
 
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'
