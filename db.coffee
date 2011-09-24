@@ -17,17 +17,7 @@ db.exists (err, exists)->
   else
     init()
 
-db.getAlways = (id, initdoc, cb) ->
-  db.get id, (err, doc) ->
-    if err?.reason is "missing"
-      console.log "saving", initdoc
-      db.save id, initdoc, (err, res) ->
-        return cb? err if err
-        db.getAlways id, cb
-    else if err
-      cb? err
-    else 
-      cb? null, doc
+
 
 db.save '_design/slides',
   url:
