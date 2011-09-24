@@ -1,5 +1,8 @@
 
 utils = NS "FLIPS.utils"
+$ = jQuery
+
+
 S4 = ->
   (((1 + Math.random()) * 65536) | 0).toString(16).substring(1)
 
@@ -40,10 +43,6 @@ utils.mock = """<div class="slide">
     </div>
   </div>
 
-  <div class="slide">
-    <h2>Example: Embed video</h2>
-    <iframe src="http://player.vimeo.com/video/14784101?portrait=0" width="500" height="290" frameborder="0"></iframe>
-  </div>
 
   <div class="slide">
     <h2>Learn more</h2>
@@ -58,7 +57,7 @@ utils.mock = """<div class="slide">
       <h3>Thanks and don't forget to vote! :)</h3>
     </div>
   </div>"""
-  
+
 utils.jadeMock = """.slide
     h1 Getting Started with Flips.IO
 
@@ -110,9 +109,7 @@ class Messaging extends Backbone.View
   info: (msg, modal) -> @show "INFO", msg, modal
   warning: (msg, modal) -> @show "WARNING", msg, modal
   error: (msg, modal) -> @show "ERROR", msg, modal
-
   hide: ->
-
 
 $ ->
   utils.msg = new Messaging
@@ -128,7 +125,7 @@ $ ->
   * @argument sKey (String): the name of the cookie;
   * @argument sValue (String): the value of the cookie;
   * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the
-  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session; 
+  *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;
   * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location;
   * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not
   * specified, defaults to the host portion of the current document location;

@@ -58,7 +58,12 @@ class models.SlideShowModel extends Backbone.Model
 
     if not @get "id"
       console.log "using mock"
-      @set code: utils.mock, mode: 'html', transition: 'nothing', theme: 'nothing'
+      @set
+        code: utils.mock
+        mode: 'html'
+        transition: 'nothing'
+        theme: 'nothing'
+
       @triggerInitialFetch "default"
       origCb? e
       opts.success @

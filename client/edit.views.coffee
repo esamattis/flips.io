@@ -1,5 +1,6 @@
 views = NS "FLIPS.edit.views"
 utils = NS "FLIPS.utils"
+remote = NS "FLIPS.remote"
 
 
 class views.Editor extends Backbone.View
@@ -18,8 +19,9 @@ class views.Editor extends Backbone.View
     @secret = new views.Secret
 
     @saveButton = $ "#save"
-
-    @saveButton.click => @save()
+    @saveButton.click (e) =>
+      e.preventDefault()
+      @save()
 
     @initAce()
 
@@ -37,7 +39,38 @@ class views.Editor extends Backbone.View
       alert('change! :)')
       @model.set theme: @themeEl.val()
 
-    # $(@el).find('textarea').listenInput =>
+
+    @model.bind "initialfetch", (e) =>
+
+      console.log "GOT INIT CODE", 1
+      try
+        @editor.getSession().setValue @model.get "code"
+        # @editor.getSession().setValue "<img>"
+      catch e
+        console.log "WTF exception", e
+
+      @modeEl.val @model.get "mode"
+      @secret.setSecret @model.get "secret"
+      @themeEl.val @model.get "theme"
+      @transitionEl.val @model.get "transition"
+
+
+      console.log "GOT INIT CODE", 2
+
+      @editor.getSession().on "change", =>
+        console.log "code changed"
+        @model.set code: @editor.getSession().getValue()
+
+
+      if e.source is "default"
+        @showUnsavedNotification()
+      else
+        @hideUnsavedNotification()
+
+
+    @model.bind "change", => @showUnsavedNotification()
+
+  emitPositionEvents: ->
     @editor.getSession().selection.on 'changeCursor', =>
       selection = @editor.getSelectionRange()
 
@@ -60,46 +93,23 @@ class views.Editor extends Backbone.View
       if result?
         newSlide = result.length - 1
 
-      if newSlide != @currentSlide
+      if newSlide isnt @currentSlide
         @currentSlide = newSlide
-        console.log "slide changed!"
-
-        data = {}#@model.toJSON()
-        data["event"] = "onSlideChange"
-        data["slide"] = @currentSlide
-        $("iframe").get(0).contentWindow.postMessage JSON.stringify(data), "*"
-
-    @model.bind "initialfetch", (e) =>
-      @setEditorContents @model.get "code"
-      @modeEl.val(@model.get "mode")
-      @secret.setSecret @model.get "secret"
-      @themeEl.val(@model.get "theme")
-      @transitionEl.val(@model.get "transition")
-
-      if e.source is "default"
-        @showUnsavedNotification()
-      else
-        @hideUnsavedNotification()
+        @trigger "editposition", @currentSlide
+        console.log "slide changed to #{ @currentSlide }"
 
 
-    @model.bind "change", => @showUnsavedNotification()
-
-
-  setEditorContents: (code) ->
-    @editor.getSession().setValue code
 
   initAce: =>
     @editor = ace.edit "editor"
     @editor.setShowPrintMargin false
 
-    session = @editor.getSession()
-    session.setTabSize(2);
-
-    @editor.getSession().on "change", =>
-      @model.set code: @editor.getSession().getValue()
+    @editor.getSession().setTabSize(2);
+    @emitPositionEvents()
 
     @model.bind "change:mode", =>
-      @editor.getSession().setMode(@modes[@model.get "mode"])
+      console.log "setting mode", @model.get "mode"
+      @editor.getSession().setMode @modes[@model.get "mode"]
 
     # Hide the line numbering. TODO: doesn't work perfectly
     lineNumberWidth = parseInt($(".ace_scroller").css('left'))
@@ -118,8 +128,6 @@ class views.Editor extends Backbone.View
       exec: (env, args, request) =>
         @save()
 
-  getDocId: ->
-    @model.get "id"
 
   showUnsavedNotification: ->
     @saveButton.text "Save*"
@@ -140,7 +148,7 @@ class views.Editor extends Backbone.View
 
       error: (e, err) =>
         console.log "failed to save", @model, e, err
-        utils.msg.error "failed to save #{ @model.get "id" }", true
+        utils.msg.error "failed to save #{ @model }", true
 
   hasEditUrl: -> !!window.location.hash
 
@@ -148,29 +156,26 @@ class views.Editor extends Backbone.View
 
 class views.Preview extends Backbone.View
 
+  el: ".preview"
+
   constructor: (opts) ->
     super
-    @socket = utils.getSocket()
     @iframe = @$("iframe")
-    @contentWindow = @iframe.get(0).contentWindow
+    @iframeRemote = new remote.RemoteIframe @iframe
     @dirty = false
 
     @model.bind "change:id", => @reload()
     @model.bind "change", => @dirty = true
     $(window).keyup _.throttle =>
       return unless @dirty
+      console.log "GOT chnae"
       @dirty = false
-      data = @model.toJSON()
-      data["event"] = "onCodeChange"
-      @contentWindow.postMessage JSON.stringify(@model.toJSON()), "*"
+      @iframeRemote.update @model.toJSON()
     , 400
-
-    @model.bind "change:currentSlide", =>
-      console.log "current slide changed to #{@model.get "currentSlide"}"
 
     @model.bind "saved", =>
       @setSecret @model.get "secret"
-      @reload()
+
     @model.bind "initialfetch", (e) =>
       if e.source is "db"
         @reload()
@@ -184,16 +189,13 @@ class views.Preview extends Backbone.View
       @iframe.attr "src", @model.getPresentationURL()
       console.log "setting iframe to real url #{ @iframe.attr "src" }"
     else
-      console.log "reloading iframe via socket"
-      @socket.emit "manage",
-        target: @model.get "id"
-        name: "reload"
-        secret: docCookies.getItem("secret")
+      @iframeRemote.reload()
 
 
 
 # Refactor to listen to model's init and change events?
 class views.Links extends Backbone.View
+
   el: '.toolbar'
 
   constructor: (opts) ->
@@ -211,6 +213,7 @@ class views.Links extends Backbone.View
 
 
 class views.AskSecret extends Backbone.View
+
   el: ".ask_secret"
 
   constructor: ->

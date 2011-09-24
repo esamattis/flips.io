@@ -40,15 +40,16 @@ app.configure ->
   js.addFile __dirname + "/client/vendor/underscore.js"
   js.addFile __dirname + "/client/vendor/backbone.js"
   js.addFile __dirname + "/client/namespace.js"
-  js.addFile __dirname + "/client/vendor/jquery.jgrowl.js"
+  js.addFile __dirname + "/client/vendor/jgrowl/jquery.jgrowl.js"
   js.addFile __dirname + "/client/vendor/jquery.tipsy.js"
   js.addFile __dirname + "/client/vendor/jquery.lightbox_me.js"
 
   js.addFile __dirname + "/client/utils.coffee"
+  js.addFile __dirname + "/client/remote.coffee"
   js.addFile __dirname + "/client/models.coffee"
   js.addFile __dirname + "/client/mobile.coffee"
 
-  css.addFile __dirname + "/public/stylesheets/jquery.jgrowl.css"
+  css.addFile __dirname + "/client/vendor/jgrowl/jquery.jgrowl.css"
   css.addFile __dirname + "/public/stylesheets/tipsy.css"
 
   # Editor assets

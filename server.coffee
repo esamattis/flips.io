@@ -16,8 +16,6 @@ popBackboneId = (ob) ->
   delete ob.id
   id
 
-urlId = 1
-
 
 
 # Routes
@@ -39,6 +37,7 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
+  console.log "ADD NEW", req.body
   urlgen.getNext (url) ->
     db.save url, req.body, (err, doc) ->
       if err
@@ -46,7 +45,9 @@ app.post "/slides", (req, res) ->
         res.send 501
         res.end JSON.stringify err
         return
+      console.log "ALL ok", arguments
       res.end JSON.stringify doc
+      console.log "done"
 
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'
@@ -135,17 +136,18 @@ app.get "/r/:id", (req, res) ->
 allowedCmds =
   goto: true
   reload: true
+  update: true
 
 secretCache = {}
 
 routeManage = (ob) ->
-    if not allowedCmds[ob.name]
-      console.log "Illegal command #{ ob.name } for #{ ob.target }"
+    if not allowedCmds[ob.cmd]
+      console.log "Illegal command #{ ob.cmd } for #{ ob.target }"
       return
 
     if secretCache[ob.target] is null or secretCache[ob.target] is ""
       console.log "no secret. routing"
-      @broadcast.to(ob.target).emit "command", ob
+      @broadcast.to(ob.target).emit "cmd", ob
 
     else if secretCache[ob.target] is undefined
       console.log "secret not in cache"
@@ -161,15 +163,15 @@ routeManage = (ob) ->
 
     else if secretCache[ob.target] is ob.secret
       console.log "secret ok. routing"
-      @broadcast.to(ob.target).emit "command", ob
+      @broadcast.to(ob.target).emit "cmd", ob
 
     else
       console.log "wrong secret #{ ob.secret } should be #{ secretCache[ob.target] }"
-      @emit "error", "bad secret"
+      @emit "unauthorized", "bad secret"
 
 
 io.sockets.on 'connection', (socket) ->
-  socket.on "manage", routeManage
+  socket.on "cmd", routeManage
   socket.on "obey", (id) ->
     @join id
 

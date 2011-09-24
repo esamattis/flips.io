@@ -1,6 +1,22 @@
 utils = NS "FLIPS.utils"
+remote = NS "FLIPS.remote"
 {SlideShowModel} = FLIPS.models
 {AskSecret, Links, Editor, Preview, Secret} = NS "FLIPS.edit.views"
+
+$ ->
+  windowWidth = $(window).width()
+  editor = $ "#editor"
+  preview = $ ".preview iframe"
+  $(".ace_sb").mousedown ->
+    console.log "DOWN"
+
+  $(window).mousemove _.throttle (e) ->
+      return
+      pos = e.pageX / windowWidth * 100
+      console.log "win", pos
+      editor.css width: pos + "%"
+      preview.css left: pos + "%"
+    , 100
 
 
 class FLIPS.Workspace extends Backbone.Router
@@ -13,6 +29,8 @@ class FLIPS.Workspace extends Backbone.Router
     console.log "initing views"
     model = new SlideShowModel opts
 
+    @globalRemote = new remote.RemoteSocket model
+
     @askSecret = new AskSecret
       model: model
 
@@ -23,8 +41,13 @@ class FLIPS.Workspace extends Backbone.Router
       model: model
 
     @preview = new Preview
-      el: ".preview"
       model: model
+
+    # @editor.bind "editposition", (currentSlideIndex) =>
+    #   @preview.iframeRemote.goto currentSlideIndex
+
+    model.bind "saved", =>
+      @globalRemote.update model.toJSON()
 
     $('[original-title]').tipsy
       gravity: 's',

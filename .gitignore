@@ -4,3 +4,5 @@ flips.pid
 styles.css
 public/remote.css
 sequence.db
+.hg
+selenium-server-standalone-*.jar
