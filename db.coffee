@@ -19,12 +19,6 @@ db.exists (err, exists)->
 
 
 
-db.save '_design/slides',
-  url:
-    map: (doc) ->
-      if doc.url
-        emit doc.url, doc
-
 db.getDocByURL = (url, cb) ->
   db.view "slides/url", key: url,  (err, docs) ->
     console.log "GETC", err, docs
