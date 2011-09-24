@@ -1,7 +1,9 @@
 
-soda = require("soda")
+soda = require "soda"
 _  = require 'underscore'
 _.mixin require 'underscore.string'
+
+helpers = require "./helpers"
 
 browser = soda.createClient
   host: "localhost"
@@ -15,12 +17,16 @@ browser.on "command", (cmd, args) ->
 editor = "css=#editor textarea"
 
 jasmine.asyncSpecWait.timeout = 30 * 1000
+beforeEach helpers.resetDB jasmine
 
 describe "When saving", ->
+
+
   it "gives new url", ->
     jasmine.asyncSpecWait()
     browser
       .chain
+      .setSpeed(200)
       .session()
       .open('/')
       .focus(editor)
@@ -37,5 +43,4 @@ describe "When saving", ->
         if (err) then throw err
         jasmine.asyncSpecDone()
         console.log('done')
-
 

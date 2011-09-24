@@ -3,17 +3,11 @@ async = require "async"
 {nextUrl} = require "../shorturlgenerator"
 db = require "../db"
 {encode, decode} = require "../urlshortener"
+helpers = require "./helpers"
 
 describe "url generator gives unique urls", ->
 
-  beforeEach ->
-    jasmine.asyncSpecWait()
-    console.log "destroying exinsting db"
-    db.destroy ->
-      console.log "destroyed", arguments
-      db.create ->
-        console.log "created new ", arguments
-        jasmine.asyncSpecDone()
+  beforeEach helpers.resetDB jasmine
 
 
   it "get b as first", ->
