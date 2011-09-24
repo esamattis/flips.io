@@ -2,6 +2,9 @@
     "name": "flips.io"
   , "version": "0.0.1"
   , "private": true
+  , "scripts": {
+     "test": "./run-tests.sh"
+    }
   , "devDependencies": {
       "supervisor": ""
       , "jasmine-node": ""
