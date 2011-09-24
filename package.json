@@ -22,5 +22,6 @@
       , "underscore": "1.1.7"
       , "underscore.string": "1.1.6"
       , "cradle": "0.5.7"
+      , "async": ""
   }
 }

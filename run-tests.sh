@@ -1,11 +1,7 @@
-#!/bin/bash
 
-./run &
-java -jar selenium-server-standalone-2.7.0.jar &
+export FLIPS_DB=flips_test
 
-sleep 3
+# http_proxy="" curl -X DELETE http://localhost:5984/$FLIPS_DB/
 
-node_modules/jasmine-node/bin/jasmine-node --coffee spec/
-
-trap "kill 0" SIGINT SIGTERM EXIT
+node_modules/jasmine-node/bin/jasmine-node --coffee spec/urlgenerator.spec.coffee
 

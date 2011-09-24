@@ -3,12 +3,10 @@
 _  = require 'underscore'
 _.mixin require 'underscore.string'
 
-
+{nextUrl} = require "./shorturlgenerator"
 {alphabet} = require "./urlshortener"
 {app, io} = require "./configure"
-module.exports = app
 db = require "./db"
-urlgen = require "./shorturlgenerator"
 jade = require 'jade'
 
 popBackboneId = (ob) ->
@@ -16,6 +14,10 @@ popBackboneId = (ob) ->
   delete ob.id
   id
 
+
+app.get "/id", (req, res) ->
+  nextUrl (err, url) ->
+    res.send "err: #{ err?.reason } id: #{ url }"
 
 
 # Routes
@@ -37,17 +39,14 @@ app.get '/', (req, res) ->
 
 app.post "/slides", (req, res) ->
   res.contentType 'json'
-  console.log "ADD NEW", req.body
-  urlgen.getNext (url) ->
+  nextUrl (err, url) ->
     db.save url, req.body, (err, doc) ->
       if err
         console.log "error posting", req.body, err
         res.send 501
         res.end JSON.stringify err
         return
-      console.log "ALL ok", arguments
       res.end JSON.stringify doc
-      console.log "done"
 
 app.put "/slides/:id", (req, res) ->
   res.contentType 'json'
@@ -180,3 +179,4 @@ if require.main is module
 
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env)
 
+module.exports = app

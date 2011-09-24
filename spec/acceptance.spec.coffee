@@ -31,7 +31,7 @@ describe "When saving", ->
       .typeKeys(editor, "hello")
       .click("id=save")
       .getLocation (url) ->
-        expect(_.startsWith url, "http://localhost:8000/#edit/").toBe true
+        expect(url).toBe "http://localhost:8000/#edit/b"
       .testComplete()
       .end (err) ->
         if (err) then throw err

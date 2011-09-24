@@ -4,29 +4,29 @@ _  = require 'underscore'
 _.mixin require 'underscore.string'
 
 c = new cradle.Connection
-name = "flips"
-db = c.database name
-
-db.exists (err, exists)->
-  throw err if err
-  if not exists
-    db.create (err, foo) ->
-      throw err if err
-      console.log "created db", name
-      init()
-  else
-    init()
 
 
+dbname = process.env.FLIPS_DB or "flips"
+db = c.database dbname
 
-db.getDocByURL = (url, cb) ->
-  db.view "slides/url", key: url,  (err, docs) ->
-    console.log "GETC", err, docs
-    doc = if _.isEmpty(docs) then null else _.first(docs).value
-    cb err, doc
+
+db.getAlways = (id, initdoc, cb) ->
+  db.get id, (err, doc) ->
+    if err?.reason is "missing"
+      db.save id, initdoc, (err, res) ->
+        return cb? err if err
+        db.getAlways id, initdoc, cb
+    else if err
+      cb? err
+    else 
+      cb? null, doc
+
+
+
+
 
 init = ->
-  console.log "Connected to CouchDB"
+  console.log "Connected to CouchDB", dbname
 
 module.exports = db
 
