@@ -19,15 +19,19 @@ Install deps on this repo root:
 
     npm install --dev
 
-Run dev server
+Run server
 
-    ./run
+    npm start
+
+Develop server
+
+    bin/develop
 
 To test production mode
 
-    NODE_ENV=production ./run
+    NODE_ENV=production npm start
 
 Deploy
 
-    ./deploy linode
+    bin/deploy linode
 
