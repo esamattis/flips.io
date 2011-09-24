@@ -4,6 +4,7 @@
   , "private": true
   , "devDependencies": {
       "supervisor": ""
+      , "jasmine-node": ""
   }
   , "dependencies": {
       "coffee-script": "1.1.2"
