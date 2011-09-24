@@ -1,8 +1,6 @@
 node_modules
 .DS_store
 flips.pid
-styles.css
-public/remote.css
-sequence.db
 .hg
 selenium-server-standalone-*.jar
+npm-debug.log

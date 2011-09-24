@@ -1,5 +1,5 @@
 
-db = require "../db"
+db = require "../lib/db"
 
 exports.resetDB = (jasmine) -> ->
   if not process.env.FLIPS_DB or process.env.FLIPS_DB is "flips"

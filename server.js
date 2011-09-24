@@ -1,5 +1,5 @@
 require("coffee-script");
-var app = require("./server");
+var app = require("./lib/server");
 
 app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
   console.log('Ready');

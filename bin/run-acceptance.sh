@@ -12,7 +12,7 @@ then
 fi
 
 java -jar $SELENIUM &
-./run &
+bin/run &
 
 sleep 5
 

@@ -1,8 +1,8 @@
 
 async = require "async"
-{nextUrl} = require "../shorturlgenerator"
-db = require "../db"
-{encode, decode} = require "../urlshortener"
+{nextUrl} = require "../lib/shorturlgenerator"
+db = require "../lib/db"
+{encode, decode} = require "../lib/urlshortener"
 helpers = require "./helpers"
 
 describe "url generator gives unique urls", ->

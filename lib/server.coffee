@@ -5,7 +5,7 @@ _.mixin require 'underscore.string'
 
 {nextUrl} = require "./shorturlgenerator"
 {alphabet} = require "./urlshortener"
-{app, io} = require "./configure"
+{app, io} = require "../configure"
 db = require "./db"
 jade = require 'jade'
 

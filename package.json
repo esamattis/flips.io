@@ -4,6 +4,8 @@
   , "private": true
   , "scripts": {
      "test": "./run-tests.sh"
+     , "start": "NODE_PATH=dev_node_modules node server.js"
+     , "stop": "kill `cat flips.pid`"
     }
   , "devDependencies": {
       "supervisor": ""
