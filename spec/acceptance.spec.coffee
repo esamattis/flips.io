@@ -10,7 +10,7 @@ browser = soda.createClient
   browser: "firefox"
 
 browser.on "command", (cmd, args) ->
-  console.log " [33mundefined[0m: undefined", cmd, args.join(", ")
+  console.log(' \x1b[33m%s\x1b[0m: %s', cmd, args.join(', '))
 
 editor = "css=#editor textarea"
 
