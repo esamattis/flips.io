@@ -51,9 +51,11 @@ class views.SlideShowView extends Backbone.View
     @themeSwitcher = new ThemeSwicher
       model: @model
 
-    jade = require('jade')
-    template = jade.compile $("#deck_template").html()
-    @deckHTML = template()
+    # jade = require('jade')
+    # template = jade.compile $("#deck_template").html()
+    # @deckHTML = template()
+
+    @deckHTML = $("#deck_template").html()
 
     $(window).bind "message", (e) =>
       console.log "MSEG", $.deck('getSlide')
@@ -66,7 +68,7 @@ class views.SlideShowView extends Backbone.View
 
     @currentSlideId = 0
     $(document).bind "deck.change", (event, from, to) =>
-      console.log "SKIDE CHGAN", event, from, to
+      console.log "SLIDE CHANGE", event, from, to
       @currentSlideId = to
 
 

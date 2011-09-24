@@ -65,8 +65,9 @@
     <iframe src="http://nodeknockout.com/iframe/sliders" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
     </iframe>
 
-script(type="text/javascript", src="http://static.wehearvoices.net/widget.js")
-script(type="text/javascript", src="http://widget.wehearvoices.net/node/init.js?user_id=39e49e1c-d1b9-11e0-956c-fefdb24f91c5")
+- if ((process.env.NODE_ENV || "").toLowerCase() === "production")
+  script(type="text/javascript", src="http://static.wehearvoices.net/widget.js")
+  script(type="text/javascript", src="http://widget.wehearvoices.net/node/init.js?user_id=39e49e1c-d1b9-11e0-956c-fefdb24f91c5")
 
 script(type="text/javascript")
   var _gaq = _gaq || [];

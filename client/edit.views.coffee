@@ -23,16 +23,18 @@ class views.Editor extends Backbone.View
 
     @initAce()
 
-    @transitionEl = @$('#transition')
+    @transitionEl = $('#transition')
     @transitionEl.change =>
       @model.set transition: @transitionEl.val()
 
-    @modeEl = @$('#mode')
+    @modeEl = $('#mode')
+
     @modeEl.change =>
       @model.set mode: @modeEl.val()
 
-    @themeEl = @$('#theme')
+    @themeEl = $('#theme')
     @themeEl.change =>
+      alert('change! :)')
       @model.set theme: @themeEl.val()
 
     # $(@el).find('textarea').listenInput =>
