@@ -11,6 +11,10 @@ then
     exit 1
 fi
 
+
+curl -X DELETE http://localhost:5984/$FLIPS_DB
+curl -X PUT http://localhost:5984/$FLIPS_DB
+
 java -jar $SELENIUM &
 npm start &
 

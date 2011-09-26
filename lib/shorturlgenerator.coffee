@@ -25,7 +25,7 @@ reservedNames =
 
 
 exports.nextUrl = (cb) ->
-  db.getAlways "urlsequence", sequence: 0, (err, doc) ->
+  db.db.getAlways "urlsequence", sequence: 0, (err, doc) ->
     return cb err if err
 
     loop # Skip reserved names
@@ -34,7 +34,7 @@ exports.nextUrl = (cb) ->
       break unless reservedNames[url]
 
 
-    db.save "urlsequence", doc, (err) ->
+    db.db.save "urlsequence", doc, (err) ->
       if err?.error is "conflict"
         console.log "#{ seq } #{ url } is in conflict. Retrying."
         return exports.nextUrl cb
@@ -42,7 +42,7 @@ exports.nextUrl = (cb) ->
       return cb err if err
 
 
-      db.get url, (err, doc) ->
+      db.db.get url, (err, doc) ->
 
         if err?.error is "not_found"
           return cb null, url

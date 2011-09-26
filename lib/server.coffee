@@ -25,7 +25,7 @@ app.get "/id", (req, res) ->
 app.get "/urls/:url", (req, res) ->
   res.contentType 'json'
   console.log "sdf", req.params.url
-  db.getDocByURL req.params.url, (err, doc) ->
+  db.db.getDocByURL req.params.url, (err, doc) ->
     res.end JSON.stringify doc
 
 app.get '/', (req, res) ->
@@ -40,7 +40,7 @@ app.get '/', (req, res) ->
 app.post "/slides", (req, res) ->
   res.contentType 'json'
   nextUrl (err, url) ->
-    db.save url, req.body, (err, doc) ->
+    db.db.save url, req.body, (err, doc) ->
       if err
         console.log "error posting", req.body, err
         res.send 501
@@ -53,7 +53,7 @@ app.put "/slides/:id", (req, res) ->
 
   id = popBackboneId req.body
 
-  db.get id, (err, doc) ->
+  db.db.get id, (err, doc) ->
     secret = doc.secret
     if secret and secret isnt req.cookies.secret
       console.log "CANNOT SAVE", id, secret, "!=", req.cookies.secret
@@ -63,7 +63,7 @@ app.put "/slides/:id", (req, res) ->
         message: "wrong secret"
       return
 
-    db.save id, req.body, (err, doc) ->
+    db.db.save id, req.body, (err, doc) ->
       if err
         console.log "error updating", req.body, err
         res.send 501
@@ -85,7 +85,7 @@ app.get "/slides/:id", (req, res) ->
   res.contentType 'json'
   # console.log "GET", req.params
 
-  db.get req.params.id, (err, doc) ->
+  db.db.get req.params.id, (err, doc) ->
     if err
       console.log "error getting", req.params, err
       res.send 501
@@ -151,7 +151,7 @@ routeManage = (ob) ->
     else if secretCache[ob.target] is undefined
       console.log "secret not in cache"
 
-      db.get ob.target, (err, doc) =>
+      db.db.get ob.target, (err, doc) =>
         if doc.secret
           secretCache[ob.target] = doc.secret
         else

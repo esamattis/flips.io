@@ -5,18 +5,29 @@ db = require "../lib/db"
 {encode, decode} = require "../lib/urlshortener"
 helpers = require "./helpers"
 
+
 describe "url generator gives unique urls", ->
 
-  beforeEach helpers.resetDB jasmine
 
+  beforeEach ->
+    asyncSpecWait()
+    helpers.resetDB null, (err) ->
+      throw err if err
+      asyncSpecDone()
 
   it "get b as first", ->
-    jasmine.asyncSpecWait()
-
+    asyncSpecWait()
     nextUrl (err, url) ->
       throw err if err
       expect(url).toBe "b"
-      jasmine.asyncSpecDone()
+      asyncSpecDone()
+
+  it "resets database between test. This is b too.", ->
+    asyncSpecWait()
+    nextUrl (err, url) ->
+      throw err if err
+      expect(url).toBe "b"
+      asyncSpecDone()
 
 
   createUrlTasks = (count) ->
@@ -57,7 +68,9 @@ describe "url generator gives unique urls", ->
     count = 50
     [urls, tasks] = createUrlTasks count
     async.parallel tasks, (err) ->
-      throw err if err
+      if err
+        console.log err
+        throw err if err
 
       expect(Object.keys(urls).length).toBe count, "we asked for #{ count } urls"
 

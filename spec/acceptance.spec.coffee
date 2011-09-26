@@ -17,12 +17,12 @@ browser.on "command", (cmd, args) ->
 editor = "css=#editor textarea"
 
 jasmine.asyncSpecWait.timeout = 30 * 1000
-beforeEach helpers.resetDB jasmine
+
 
 describe "When saving", ->
 
   it "gives new url", ->
-    jasmine.asyncSpecWait()
+    asyncSpecWait()
     browser
       .chain
       .setSpeed(200)
@@ -40,7 +40,7 @@ describe "When saving", ->
       .testComplete()
       .end (err) ->
         if (err) then throw err
-        jasmine.asyncSpecDone()
+        asyncSpecDone()
         console.log('done')
 
 
@@ -55,8 +55,10 @@ testSlide = """
 """
 
 describe "When moving cursor", ->
+
+
   it "it changes the slide for me", ->
-    jasmine.asyncSpecWait()
+    asyncSpecWait()
     browser
       .chain
       .setSpeed(200)
@@ -79,12 +81,12 @@ describe "When moving cursor", ->
       .testComplete()
       .end (err) ->
         if (err) then throw err
-        jasmine.asyncSpecDone()
+        asyncSpecDone()
         console.log('done')
 
 
   it "it changes the slide for me even when I have saved", ->
-    jasmine.asyncSpecWait()
+    asyncSpecWait()
     browser
       .chain
       .setSpeed(200)
@@ -108,6 +110,6 @@ describe "When moving cursor", ->
       .testComplete()
       .end (err) ->
         if (err) then throw err
-        jasmine.asyncSpecDone()
+        asyncSpecDone()
         console.log('done')
 
