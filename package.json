@@ -11,6 +11,7 @@
       "supervisor": ""
       , "soda": ""
       , "jasmine-node": ""
+      , "request": ""
   }
   , "dependencies": {
       "coffee-script": "1.1.2"
