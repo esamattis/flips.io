@@ -7,8 +7,6 @@ $ ->
   windowWidth = $(window).width()
   editor = $ "#editor"
   preview = $ ".preview iframe"
-  $(".ace_sb").mousedown ->
-    console.log "DOWN"
 
   $(window).mousemove _.throttle (e) ->
       return
@@ -26,8 +24,14 @@ class FLIPS.Workspace extends Backbone.Router
     "edit/:id": "edit"
 
   initViews: (opts={}) ->
-    console.log "initing views"
     model = new SlideShowModel opts
+    model.bind "initialfetch", =>
+      console.log "BINDING"
+      @editor.bind "editposition", (pos) =>
+        @preview.iframeRemote.goto pos
+
+      if model.get "readOnly"
+        @askSecret.ask()
 
     @globalRemote = new remote.RemoteSocket model
 
@@ -43,23 +47,18 @@ class FLIPS.Workspace extends Backbone.Router
     @preview = new Preview
       model: model
 
-    # @editor.bind "editposition", (currentSlideIndex) =>
-    #   @preview.iframeRemote.goto currentSlideIndex
 
     model.bind "saved", =>
       @globalRemote.update model.toJSON()
+
 
     $('[original-title]').tipsy
       gravity: 's',
       opacity: 1
 
     model.fetch()
-    model.bind "initialfetch", =>
-      if model.get "readOnly"
-        @askSecret.ask()
 
   edit: (id) ->
-    console.log "EDIT ROUTE", id
 
     if @editor?.getDocId() isnt id
       console.log "Id changed!, initing views"
@@ -67,7 +66,6 @@ class FLIPS.Workspace extends Backbone.Router
 
 
   start: ->
-    console.log "START ROUTE"
     @initViews()
 
 

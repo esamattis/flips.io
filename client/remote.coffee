@@ -10,8 +10,9 @@ class Remote
   update: (data) ->
     @post "update", data
 
-  goto: (index) ->
-    @post "update", index
+  goto: (pos) ->
+    console.log "GOING remote", pos
+    @post "goto", pos
 
   reload: ->
     @post "reload"
@@ -50,6 +51,7 @@ class remote.Receiver
   constructor: (@ob) ->
     _.extend @, Backbone.Events
     @bind "cmd", (cmdOb) ->
+      console.log "EXEC", cmdOb.cmd, cmdOb
       @ob[cmdOb.cmd]?.apply @ob, cmdOb.args
     @listenParentWindow()
     @listenSocket()

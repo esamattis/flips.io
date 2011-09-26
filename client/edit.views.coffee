@@ -42,7 +42,6 @@ class views.Editor extends Backbone.View
 
     @model.bind "initialfetch", (e) =>
 
-      console.log "GOT INIT CODE", 1
       try
         @editor.getSession().setValue @model.get "code"
         # @editor.getSession().setValue "<img>"
@@ -55,10 +54,8 @@ class views.Editor extends Backbone.View
       @transitionEl.val @model.get "transition"
 
 
-      console.log "GOT INIT CODE", 2
 
       @editor.getSession().on "change", =>
-        console.log "code changed"
         @model.set code: @editor.getSession().getValue()
 
 
@@ -96,7 +93,6 @@ class views.Editor extends Backbone.View
       if newSlide isnt @currentSlide
         @currentSlide = newSlide
         @trigger "editposition", @currentSlide
-        console.log "slide changed to #{ @currentSlide }"
 
 
 
@@ -108,7 +104,6 @@ class views.Editor extends Backbone.View
     @emitPositionEvents()
 
     @model.bind "change:mode", =>
-      console.log "setting mode", @model.get "mode"
       @editor.getSession().setMode @modes[@model.get "mode"]
 
     # Hide the line numbering. TODO: doesn't work perfectly
@@ -168,7 +163,6 @@ class views.Preview extends Backbone.View
     @model.bind "change", => @dirty = true
     $(window).keyup _.throttle =>
       return unless @dirty
-      console.log "GOT chnae"
       @dirty = false
       @iframeRemote.update @model.toJSON()
     , 400
@@ -184,7 +178,6 @@ class views.Preview extends Backbone.View
     @secret = secret
 
   reload: ->
-    console.log "RELOADING PREVIEW", @model.id
     if @iframe.attr("src") is "/start/initial"
       @iframe.attr "src", @model.getPresentationURL()
       console.log "setting iframe to real url #{ @iframe.attr "src" }"

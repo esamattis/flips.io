@@ -21,7 +21,6 @@ beforeEach helpers.resetDB jasmine
 
 describe "When saving", ->
 
-
   it "gives new url", ->
     jasmine.asyncSpecWait()
     browser
@@ -38,6 +37,74 @@ describe "When saving", ->
       .click("id=save")
       .getLocation (url) ->
         expect(url).toBe "http://localhost:8000/#edit/b"
+      .testComplete()
+      .end (err) ->
+        if (err) then throw err
+        jasmine.asyncSpecDone()
+        console.log('done')
+
+
+testSlide = """
+<div class=\"slide\">
+  <h1>Slide 1</h1>
+</div>
+
+<div class=\"slide\">
+  <h1>Slide 2</h1>
+</div>
+"""
+
+describe "When moving cursor", ->
+  it "it changes the slide for me", ->
+    jasmine.asyncSpecWait()
+    browser
+      .chain
+      .setSpeed(200)
+      .session()
+      .open('/')
+      .focus(editor)
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .selectFrame("css=iframe")
+      .getLocation (url) ->
+        expect(url).toBe "http://localhost:8000/start/initial#slide-2"
+      .testComplete()
+      .end (err) ->
+        if (err) then throw err
+        jasmine.asyncSpecDone()
+        console.log('done')
+
+
+  it "it changes the slide for me even when I have saved", ->
+    jasmine.asyncSpecWait()
+    browser
+      .chain
+      .setSpeed(200)
+      .session()
+      .open('/')
+      .click("id=save") # Save!
+      .focus(editor)
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .keyDown(editor, '\\40')
+      .selectFrame("css=iframe")
+      .getLocation (url) ->
+        expect(url).toBe "http://localhost:8000/c#slide-2"
       .testComplete()
       .end (err) ->
         if (err) then throw err
