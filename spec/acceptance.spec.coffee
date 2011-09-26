@@ -57,7 +57,7 @@ testSlide = """
 describe "When moving cursor", ->
 
 
-  it "it changes the slide for me", ->
+  it "changes the slide for me", ->
     asyncSpecWait()
     browser
       .chain
@@ -78,7 +78,7 @@ describe "When moving cursor", ->
         console.log('done')
 
 
-  it "it changes the slide for me even when I have saved", ->
+  it "changes the slide for me even when I have saved", ->
     asyncSpecWait()
     browser
       .chain
