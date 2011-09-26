@@ -65,16 +65,9 @@ describe "When moving cursor", ->
       .session()
       .open('/')
       .focus(editor)
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
+      .and (b) ->
+        for i in [0...9]
+          b.keyDown(editor, '\\40')
       .selectFrame("css=iframe")
       .getLocation (url) ->
         expect(url).toBe "http://localhost:8000/start/initial#slide-2"
@@ -94,16 +87,9 @@ describe "When moving cursor", ->
       .open('/')
       .click("id=save") # Save!
       .focus(editor)
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
-      .keyDown(editor, '\\40')
+      .and (b) ->
+        for i in [0...9]
+          b.keyDown(editor, '\\40')
       .selectFrame("css=iframe")
       .getLocation (url) ->
         expect(url).toBe "http://localhost:8000/c#slide-2"
