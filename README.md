@@ -1,5 +1,7 @@
 # Flips.io
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/epeli/flips.io.svg)](https://greenkeeper.io/)
+
 todo desc
 
 
